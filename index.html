@@ -551,7 +551,7 @@
                     <button type="button" id="myOrdersBtn" class="bn-item">আমার বুকিং</button>
                     <button type="button" id="languageToggle" class="language-toggle bn-item" aria-label="ভাষা পরিবর্তন">
                         <span class="language-toggle-icon" aria-hidden="true">文</span>
-                        <span id="languageToggleLabel">ভাষা / Language</span>
+                        <span id="languageToggleLabel">English</span>
                     </button>
                     <button type="button" id="logoutBtn" class="logout-item en-item">Log out</button>
                 </div>
@@ -1933,7 +1933,7 @@
     <script>
         (function () {
             const languagePairs = {
-                'ভাষা / Language': 'Language / ভাষা', 'সব সেবা': 'All Services', 'আমার বুকিং': 'My Bookings',
+                'সব সেবা': 'All Services', 'আমার বুকিং': 'My Bookings',
                 'লগইন': 'Log in', 'লগইন করুন': 'Log in', 'রেজিস্ট্রেশন করুন': 'Register', 'রেজিস্ট্রেশন': 'Register',
                 'নতুন অ্যাকাউন্ট খুলতে চান?': 'Create a new account?', 'আগেই অ্যাকাউন্ট আছে?': 'Already have an account?',
                 'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? যেমন: AC, ক্লিনিং...': 'What service are you looking for? e.g. AC, cleaning...',
@@ -2016,9 +2016,9 @@
                     field.placeholder = replaceLanguageText(field.dataset.originalPlaceholder);
                 });
                 const languageLabel = document.getElementById('languageToggleLabel');
-                if (languageLabel) languageLabel.textContent = currentLanguage === 'en' ? 'Language' : 'ভাষা';
+                if (languageLabel) languageLabel.textContent = currentLanguage === 'en' ? 'বাংলা' : 'English';
                 const languageToggle = document.getElementById('languageToggle');
-                if (languageToggle) languageToggle.setAttribute('aria-label', currentLanguage === 'en' ? 'Change language' : 'ভাষা পরিবর্তন');
+                if (languageToggle) languageToggle.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch to Bengali' : 'Switch to English');
                 const profileAllServices = document.getElementById('profileAllServices');
                 if (profileAllServices) profileAllServices.textContent = currentLanguage === 'en' ? 'All Services' : 'সব সেবা';
                 const myOrdersLabel = document.getElementById('myOrdersBtn');

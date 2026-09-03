@@ -212,7 +212,7 @@
             <div class="profile-dropdown" id="dashboardDropdown">
                 <a href="admin.html">Admin Panel</a>
                 <a href="index.html">সব সেবা</a>
-                <button type="button" id="adminLanguageToggle" class="language-toggle"><span class="language-toggle-icon" aria-hidden="true">文</span><span id="adminLanguageToggleLabel">ভাষা</span></button>
+                <button type="button" id="adminLanguageToggle" class="language-toggle"><span class="language-toggle-icon" aria-hidden="true">文</span><span id="adminLanguageToggleLabel">English</span></button>
                 <button type="button" id="adminLogoutBtnFromMenu" class="logout-item">Log out</button>
             </div>
         </div>
@@ -861,7 +861,7 @@
                     field.placeholder = translate(field.dataset.originalPlaceholder);
                 });
                 const label = document.getElementById('adminLanguageToggleLabel');
-                if (label) label.textContent = language === 'en' ? 'Language' : 'ভাষা';
+                if (label) label.textContent = language === 'en' ? 'বাংলা' : 'English';
                 const adminBookingHeading = document.getElementById('adminBookingHeading');
                 if (adminBookingHeading) adminBookingHeading.textContent = language === 'en' ? 'Admin Dashboard - Booking Management' : 'অ্যাডমিন ড্যাশবোর্ড - বুকিং ম্যানেজমেন্ট';
                 const adminBannerHeading = document.getElementById('adminBannerHeading');
