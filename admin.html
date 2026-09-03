@@ -1,112 +1,332 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShebaNow - Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Sheba<span style="color: #d9534f;">Now</span> - অ্যাডমিন প্যানেল</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
-        .login-box { max-width: 350px; margin: 80px auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .login-box h2 { text-align: center; color: #008060; margin-bottom: 20px; }
-        .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .login-box button { width: 100%; padding: 12px; background: #008060; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", "Segoe UI", sans-serif; background-color: #f9f9f9; color: #333; }
+        html[lang="bn"] *, html[lang="bn"] *::before, html[lang="bn"] *::after { font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", "Segoe UI", sans-serif !important; }
+        html[lang="en"] *, html[lang="en"] *::before, html[lang="en"] *::after { font-family: "Times New Roman", Times, serif !important; }
+        body { min-height: 100vh; display: flex; flex-direction: column; }
+        .en-text, .en-item, .profile-dropdown .en-item, .profile-trigger, .nav-links a, .logo, .btn-submit, .admin-header button, .banner-upload-actions button { font-family: "Times New Roman", Times, serif; }
         
-        .admin-dashboard { display: none; max-width: 1200px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #008060; padding-bottom: 15px; }
-        
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
-        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; }
-        .admin-table th { background-color: #008060; color: white; }
-        
-        .btn-setfee { background-color: #f0ad4e; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; margin-bottom: 4px; font-weight: bold; display: block; width: 100%; }
-        .btn-confirm { background-color: #0275d8; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; margin-bottom: 4px; font-weight: bold; display: block; width: 100%; }
-        .btn-complete { background-color: #5cb85c; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; display: block; width: 100%; }
-        .btn-change-pass { background-color: #f0ad4e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-logout { background-color: #d9534f; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        
-        .img-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 4px; border: 1px solid #ccc; }
-        
+        .navbar { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 15px 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 24px; font-weight: bold; color: #008060; cursor: pointer; }
+        .logo span { color: #d9534f; }
+        .nav-links { display: flex; align-items: center; gap: 15px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; }
+
+        .profile-menu { position: relative; }
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(8, 115, 87, 0.18);
+            background: linear-gradient(135deg, #f5fffb, #edf8f4);
+            color: #0b5c46;
+            border-radius: 999px;
+            padding: 9px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(15, 155, 114, 0.10);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .profile-trigger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 20px rgba(15, 155, 114, 0.14);
+        }
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #008060, #0f9b72);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+        }
+        .profile-menu .caret {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            min-width: 200px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(15, 155, 114, 0.10);
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.15);
+            padding: 10px;
+            display: none;
+            z-index: 120;
+            backdrop-filter: blur(8px);
+        }
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            right: 20px;
+            width: 14px;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.96);
+            border-left: 1px solid rgba(15, 155, 114, 0.10);
+            border-top: 1px solid rgba(15, 155, 114, 0.10);
+            transform: rotate(45deg);
+        }
+        .profile-dropdown.show { display: block; }
+        .profile-dropdown a,
+        .profile-dropdown button {
+            width: 100%;
+            display: block;
+            border: none;
+            background: transparent;
+            color: #1f2937;
+            text-align: left;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+            font-family: "Times New Roman", Times, serif;
+        }
+        .profile-dropdown a + a,
+        .profile-dropdown button {
+            margin-top: 4px;
+        }
+        .profile-dropdown a:not(:last-child) {
+            border-bottom: 1px solid #edf2f2;
+        }
+        .profile-dropdown a:hover,
+        .profile-dropdown button:hover {
+            background: linear-gradient(135deg, #effcf7, #f2faf6);
+            color: #008060;
+        }
+        .profile-dropdown .logout-item {
+            color: #d12d2d;
+            border-top: 1px solid #f2d8d8;
+            margin-top: 6px;
+        }
+        .profile-dropdown .logout-item:hover {
+            background: #fff3f3;
+            color: #b42318;
+        }
+        .language-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #1f2937;
+            text-align: left;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: "Times New Roman", Times, serif;
+        }
+        .language-toggle:hover { background: linear-gradient(135deg, #effcf7, #f2faf6); color: #008060; }
+        .language-toggle-icon { color: #008060; font-family: "Segoe UI Symbol", sans-serif; margin-right: 6px; }
+
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 340px; position: relative; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
-        .modal-content input, .modal-content select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 100%; max-width: 350px; position: relative; }
+        
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 22px; cursor: pointer; color: #d9534f; font-weight: bold; }
+        .close-btn:hover { color: #a94442; }
+
+        .modal-content h2 { margin-bottom: 15px; font-size: 20px; color: #008060; }
+        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn-submit { background: #008060; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        #adminPanelContainer { max-width: 1300px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #008060, #0a9a72); color: white; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; box-shadow: 0 12px 28px rgba(0, 128, 96, 0.18); }
+        .banner-admin-card, .service-image-admin-card {
+            background: linear-gradient(180deg, #ffffff 0%, #fbfffd 100%);
+            padding: 18px;
+            border-radius: 14px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+            border: 1px solid rgba(8, 115, 87, 0.08);
+            margin-bottom: 18px;
+        }
+        .banner-admin-card h3 { margin-bottom: 12px; color: #008060; font-weight: 900; }
+        .banner-preview-box { width: 100%; max-width: 980px; border-radius: 18px; overflow: hidden; background: linear-gradient(135deg, #0d1b3d, #142f68, #08152b); border: 2px dashed rgba(0,0,0,0.12); margin: 0 auto 12px; aspect-ratio: 16 / 5.2; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
+        .banner-preview-box img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .banner-upload-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; width: 100%; }
+        .banner-upload-actions input[type="file"] { flex: 1 1 220px; min-width: 0; background: #f5f5f5; border: 1px solid #ddd; padding: 10px; border-radius: 8px; }
+        .banner-upload-actions button { background: #008060; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .banner-upload-actions .delete-btn, .service-image-controls .delete-btn {
+            background: #d9534f; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer;
+        }
+        .en-ui, .en-ui * { font-family: "Times New Roman", Times, serif !important; font-weight: 700; letter-spacing: 0.01em; }
+        .service-image-admin-card h3 { margin-bottom: 12px; color: #008060; font-weight: 900; }
+        .service-image-settings-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; align-items: stretch; }
+        .service-image-row {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px;
+            border: 1px solid #e8eceb; border-radius: 12px; background: linear-gradient(180deg, #fbfffd, #f7faf8);
+            min-width: 0; flex-wrap: wrap;
+        }
+        .service-image-label { font-weight: 700; font-size: 13px; color: #1c2b2d; min-width: 130px; flex: 1 1 130px; }
+        .service-image-controls { display: flex; align-items: center; gap: 8px; flex: 1 1 220px; justify-content: flex-end; flex-wrap: wrap; min-width: 0; }
+        .service-image-controls input[type="file"] { flex: 1 1 150px; min-width: 0; max-width: 180px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 8px; }
+        .service-image-preview { width: 42px; height: 42px; object-fit: cover; border-radius: 8px; border: 1px solid #dfe7e4; background: #f3f7f6; display: none; flex-shrink: 0; }
+        .service-image-controls button { background: #008060; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .admin-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .admin-table th, .admin-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: middle; }
+        .admin-table th { background: #f1f1f1; color: #333; font-size: 13px; }
+        .admin-table .en-ui, .admin-table .en-ui * { font-family: "Times New Roman", Times, serif !important; font-weight: 700; letter-spacing: 0.01em; }
+        .admin-table td a { font-family: "Times New Roman", Times, serif !important; }
+        .admin-table select, .admin-table button { font-family: "Times New Roman", Times, serif !important; font-weight: 700; }
+        .admin-table .premium-bengali { font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", sans-serif !important; font-weight: 700; }
+
+        footer { background: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 50px; }
+        footer h3 { color: white; margin-bottom: 8px; font-size: 28px; font-weight: 900; letter-spacing: -0.04em; }
+        footer h3 .brand-green, footer .brand-green { color: #2cc990 !important; display: inline-block; font-family: "Times New Roman", Times, serif; font-weight: 900; }
+        footer h3 .brand-red, footer .brand-red { color: #d9534f !important; display: inline-block; font-family: "Times New Roman", Times, serif; font-weight: 900; }
+        footer p { font-size: 13px; margin: 4px 0; color: #e8e8e8; font-weight: 700; }
+        footer p, footer p * { font-family: "Times New Roman", Times, serif !important; }
+        footer .brand-green, footer .brand-red { font-family: "Times New Roman", Times, serif !important; }
     </style>
 </head>
 <body>
 
-    <div id="loginBox" class="login-box">
-        <h2>অ্যাডমিন লগইন</h2>
-        <form id="adminLoginForm">
-            <input type="text" id="adminUser" placeholder="User Name" required>
-            <input type="password" id="adminPass" placeholder="Password" required>
-            <button type="submit">লগইন করুন</button>
-        </form>
-    </div>
-
-    <div id="dashboard" class="admin-dashboard">
-        <div class="header">
-            <h2>ShebaNow - অ্যাডমিন ম্যানেজমেন্ট</h2>
-            <div>
-                <button class="btn-change-pass" id="openPassModalBtn">পাসওয়ার্ড পরিবর্তন</button>
-                <button class="btn-logout" id="logoutAdminBtn">লগ-আউট</button>
+    <header class="navbar">
+        <div class="logo"><span class="brand-green">Sheba</span><span class="brand-red">Now</span> - Admin</div>
+        <div class="profile-menu">
+            <button type="button" class="profile-trigger" id="dashboardMenuToggle" aria-expanded="false" aria-controls="dashboardDropdown">
+                <span class="profile-avatar">A</span>
+                <span>Dashboard</span>
+                <span class="caret">▾</span>
+            </button>
+            <div class="profile-dropdown" id="dashboardDropdown">
+                <a href="admin.html">Admin Panel</a>
+                <a href="index.html">সব সেবা</a>
+                <button type="button" id="adminLanguageToggle" class="language-toggle"><span class="language-toggle-icon" aria-hidden="true">文</span><span id="adminLanguageToggleLabel">ভাষা</span></button>
+                <button type="button" id="adminLogoutBtnFromMenu" class="logout-item">Log out</button>
             </div>
+        </div>
+    </header>
+
+    <!-- Admin Panel View -->
+    <div id="adminPanelContainer">
+        <div class="admin-header">
+            <h2 id="adminBookingHeading" data-language-key="admin-booking-heading">অ্যাডমিন ড্যাশবোর্ড - বুকিং ম্যানেজমেন্ট</h2>
+            <div style="display: flex; gap: 10px;">
+                <button id="changeAdminPassBtn" style="background: #f0ad4e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">পাসওয়ার্ড পরিবর্তন করুন</button>
+            </div>
+        </div>
+
+        <div class="banner-admin-card">
+            <h3 id="adminBannerHeading" data-language-key="admin-banner-heading">হোম পেজ ডাইনামিক ব্যানার</h3>
+            <div class="banner-preview-box">
+                <img id="adminBannerPreview" alt="banner preview" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80">
+            </div>
+            <div class="banner-upload-actions">
+                <input type="file" id="bannerUploadInput" accept="image/*" multiple>
+                <button type="button" id="updateBannerBtn">ব্যানার আপলোড ও সেভ করুন</button>
+                <button type="button" id="deleteBannerBtn" class="delete-btn">ডিলিট করুন</button>
+            </div>
+        </div>
+
+        <div class="service-image-admin-card">
+            <h3>সার্ভিস কার্ডের ছবি সেট করুন</h3>
+            <div id="serviceImageSettingsList" class="service-image-settings-list"></div>
         </div>
 
         <div style="overflow-x: auto;">
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>ID & তারিখ</th>
-                        <th>গ্রাহক ও মোবাইল</th>
-                        <th>সেবা ও বিবরণ</th>
-                        <th>ছবি</th>
-                        <th>ঠিকানা</th>
-                        <th>পেমেন্ট তথ্য</th>
-                        <th>স্ট্যাটাস</th>
+                        <th>অর্ডার আইডি</th>
+                        <th>সেবার নাম</th>
+                        <th>গ্রাহকের নাম ও ফোন</th>
+                        <th>ঠিকানা ও বিবরণ</th>
+                        <th>ছবিসমূহ</th>
+                        <th>স্ট্যাটাস ও পেমেন্ট ইনফো</th>
                         <th>অ্যাকশন</th>
                     </tr>
                 </thead>
-                <tbody id="adminOrderTableBody"></tbody>
+                <tbody id="adminOrdersTableBody">
+                    <tr><td colspan="7" style="text-align: center;">লোড হচ্ছে...</td></tr>
+                </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Password Modal -->
-    <div id="passModal" class="modal">
+    <!-- Admin Login Modal (Forces login if session is not active) -->
+    <div id="adminLoginModal" class="modal" style="display: flex;">
         <div class="modal-content">
-            <span class="close-btn" id="closePassModal">&times;</span>
-            <h3 style="margin-top:0; color:#008060;">পাসওয়ার্ড পরিবর্তন</h3>
-            <form id="changePassForm">
+            <h2>অ্যাডমিন লগইন</h2>
+            <form id="adminLoginForm">
+                <input type="password" id="adminPasswordInput" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required>
+                <button type="submit" class="btn-submit">লগইন করুন</button>
+            </form>
+            <p style="text-align: center; margin-top: 10px;"><a href="index.html" style="color: #008060; text-decoration: none; font-size: 13px;">← ইউজার সাইটে ফিরে যান</a></p>
+        </div>
+    </div>
+
+    <!-- Admin Password Change Modal -->
+    <div id="adminChangePassModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeAdminPassModal">&times;</span>
+            <h2>অ্যাডমিন পাসওয়ার্ড পরিবর্তন</h2>
+            <form id="adminChangePassForm">
                 <input type="password" id="currentPassInput" placeholder="বর্তমান পাসওয়ার্ড" required>
-                <input type="password" id="newPassInput" placeholder="নতুন পাসওয়ার্ড" required>
-                <button type="submit" style="width:100%; background:#008060; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;">সেভ করুন</button>
+                <input type="password" id="newPassInput" placeholder="নতুন পাসওয়ার্ড (কমপক্ষে ৪ সংখ্যা)" required>
+                <button type="submit" class="btn-submit">পাসওয়ার্ড আপডেট করুন</button>
             </form>
         </div>
     </div>
 
-    <!-- Set Fee & Personal Number Modal -->
-    <div id="setFeeModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeSetFeeModal">&times;</span>
-            <h3 style="margin-top:0; color:#008060;">বুকিং ফি ও পেমেন্ট নম্বর সেট করুন</h3>
-            <form id="setFeeForm">
-                <input type="hidden" id="feeFirebaseKey">
+    <!-- Admin Set Price & Payment Number Modal -->
+    <div id="adminSetPriceModal" class="modal">
+        <div class="modal-content" style="max-width: 380px;">
+            <span class="close-btn" id="closeAdminSetPrice">&times;</span>
+            <h2>বুকিং ফি ও পেমেন্ট নম্বর সেট করুন</h2>
+            <form id="adminSetPriceForm">
+                <input type="hidden" id="priceOrderId">
                 
-                <label style="font-size: 12px; font-weight: bold;">বুকিং ফি (টাকা):</label>
-                <input type="number" id="customFeeInput" placeholder="যেমন: 150" required>
+                <label style="font-size: 13px; font-weight: bold;">বুকিং ফি বা অ্যামাউন্ট (টাকা):</label>
+                <input type="number" id="adminFeeAmount" placeholder="যেমন: 100" required>
 
-                <label style="font-size: 12px; font-weight: bold;">পার্সোনাল নম্বর (বিকাশ/নগদ/রকেট):</label>
-                <input type="text" id="adminPaymentNumber" placeholder="যেমন: 01700000000" required>
+                <label style="font-size: 13px; font-weight: bold;">পেমেন্ট মাধ্যম:</label>
+                <select id="adminPaymentGateway" required>
+                    <option value="bKash Personal">bKash Personal</option>
+                    <option value="Nagad Personal">Nagad Personal</option>
+                    <option value="Rocket Personal">Rocket Personal</option>
+                </select>
 
-                <button type="submit" style="width:100%; background:#f0ad4e; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer; font-weight:bold;">ফি ও নম্বর পাঠান</button>
+                <label style="font-size: 13px; font-weight: bold;">মার্চেন্ট/রিসিভ করার নম্বর:</label>
+                <input type="text" id="adminReceivePhone" placeholder="যেমন: 01800000000" required>
+
+                <button type="submit" class="btn-submit">সেট করুন ও কনফার্ম করুন</button>
             </form>
         </div>
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3><span class="brand-green">Sheba</span><span class="brand-red">Now</span></h3>
+            <p>আপনার প্রতিদিনের সেবায় আমরা সদা প্রস্তুত (শুধুমাত্র গাজীপুর)।</p>
+            <p class="en-ui">© 2026 <span class="brand-green">Sheba</span><span class="brand-red">Now</span>. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <!-- Firebase SDK Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getDatabase, ref, push, set, get, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD96Zb90WfRKmssz3eA9veyJxgZlihC0UI",
@@ -121,163 +341,556 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        document.getElementById("adminLoginForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            var user = document.getElementById("adminUser").value.trim();
-            var pass = document.getElementById("adminPass").value.trim();
-            var savedPass = localStorage.getItem("adminPassword") || "1234";
+        const FALLBACK_BANNER_URL = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80';
 
-            if (user === "admin" && pass === savedPass) {
-                document.getElementById("loginBox").style.display = "none";
-                document.getElementById("dashboard").style.display = "block";
-                renderAdminOrders();
-            } else {
-                alert("ভুল ইউজারনেম অথবা পাসওয়ার্ড!");
+        function splitAddressLocation(addressValue) {
+            const raw = String(addressValue || '').trim();
+            if (!raw) return { main: '', location: '' };
+
+            const match = raw.match(/^(.*?)(\s*\((?:Loc|Location)\s*:\s*.*?\))$/i);
+            if (match) {
+                return {
+                    main: match[1].trim(),
+                    location: match[2].trim()
+                };
             }
-        });
 
-        document.getElementById("logoutAdminBtn").addEventListener("click", () => location.reload());
-
-        var passModal = document.getElementById("passModal");
-        document.getElementById("openPassModalBtn").addEventListener("click", () => passModal.style.display = "flex");
-        document.getElementById("closePassModal").addEventListener("click", () => passModal.style.display = "none");
-
-        var setFeeModal = document.getElementById("setFeeModal");
-        document.getElementById("closeSetFeeModal").addEventListener("click", () => setFeeModal.style.display = "none");
-
-        document.getElementById("changePassForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            var currentPass = document.getElementById("currentPassInput").value.trim();
-            var newPass = document.getElementById("newPassInput").value.trim();
-            var activePassword = localStorage.getItem("adminPassword") || "1234";
-
-            if (currentPass !== activePassword) {
-                alert("বর্তমান পাসওয়ার্ডটি সঠিক নয়!");
-                return;
+            const matchShort = raw.match(/^(.*?)(\s*(?:Loc|Location)\s*:\s*.*)$/i);
+            if (matchShort) {
+                return {
+                    main: matchShort[1].trim(),
+                    location: matchShort[2].trim()
+                };
             }
-            localStorage.setItem("adminPassword", newPass);
-            alert("পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!");
-            passModal.style.display = "none";
-            document.getElementById("changePassForm").reset();
-        });
 
-        function renderAdminOrders() {
-            var tableBody = document.getElementById("adminOrderTableBody");
-            tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 20px;">লোড হচ্ছে...</td></tr>';
-            
-            const bookingsRef = ref(db, 'bookings');
-            get(bookingsRef).then((snapshot) => {
-                tableBody.innerHTML = "";
-                if (!snapshot.exists()) {
-                    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 20px;">কোনো বুকিং পাওয়া যায়নি।</td></tr>';
-                    return;
-                }
+            return { main: raw, location: '' };
+        }
 
-                let ordersArray = [];
-                snapshot.forEach((childSnapshot) => {
-                    ordersArray.push({
-                        firebaseKey: childSnapshot.key,
-                        ...childSnapshot.val()
-                    });
-                });
-
-                tableBody.innerHTML = ordersArray.reverse().map(function(o) {
-                    let imgs = o.images && o.images.length > 0 
-                        ? o.images.map(i => `<a href="${i}" target="_blank"><img src="${i}" class="img-thumb"></a>`).join('')
-                        : 'নাই';
-
-                    let payDetails = '<i style="color:#888;">ফি নির্ধারিত হয়নি</i>';
-                    if (o.paymentInfo) {
-                        payDetails = `<b style="color:#0275d8;">পেমেন্ট জমা হয়েছে!</b><br>নাম: ${o.paymentInfo.name}<br>নম্বর: ${o.paymentInfo.phone}<br>মাধ্যম: ${o.paymentInfo.method}<br>প্রেরক: ${o.paymentInfo.sender}<br><b>TrxID: ${o.paymentInfo.trxId}</b>`;
-                    } else if (o.bookingFee) {
-                        payDetails = `ফি: ৳${o.bookingFee}<br><small>নম্বর: ${o.paymentNumber}</small><br><b style="color:orange;">ইউজার পেমেন্টের অপেক্ষায়</b>`;
-                    }
-
-                    let statusText = o.status;
-                    if (o.status === "Pending" && o.paymentInfo) {
-                        statusText = "Pending (পেমেন্ট পর্যালোচনায়)";
-                    } else if (o.status === "Confirmed") {
-                        statusText = "Confirmed (টেকনিশিয়ানের অপেক্ষায়)";
-                    } else if (o.status === "Completed") {
-                        statusText = "Completed (সম্পন্ন)";
-                    }
-
-                    let actionButtons = "";
-                    if (o.status === "Pending") {
-                        if (!o.bookingFee) {
-                            actionButtons = `<button class="btn-setfee" onclick="openSetFeeModal('${o.firebaseKey}')">ফি ও নম্বর সেট করুন</button>`;
-                        } else if (o.paymentInfo) {
-                            actionButtons = `<button class="btn-confirm" onclick="approvePayment('${o.firebaseKey}')">Approve & Confirm</button>`;
-                        } else {
-                            actionButtons = `<small style="color:gray;">গ্রাহক পেমেন্ট দেননি</small>`;
-                        }
-                    }
-
-                    if (o.status === "Confirmed") {
-                        actionButtons += `<button class="btn-complete" style="margin-top:4px;" onclick="updateOrderStatus('${o.firebaseKey}', 'Completed')">Mark Completed</button>`;
-                    } else if (o.status === "Completed") {
-                        actionButtons = `<span style="color:green; font-weight:bold;">সম্পন্ন হয়েছে</span>`;
-                    }
-
-                    return `
-                        <tr>
-                            <td><b>#${o.id}</b><br><small>${o.date}</small></td>
-                            <td><b>${o.name}</b><br><a href="tel:${o.phone}">${o.phone}</a></td>
-                            <td><b>${o.service}</b><br><small>${o.problem}</small></td>
-                            <td>${imgs}</td>
-                            <td><small>${o.address}</small></td>
-                            <td>${payDetails}</td>
-                            <td><b style="color:${o.status==='Completed'?'#5cb85c':(o.status==='Confirmed'?'#0275d8':'#f0ad4e')}">${statusText}</b></td>
-                            <td>${actionButtons}</td>
-                        </tr>
-                    `;
-                }).join("");
-            }).catch((error) => {
-                tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red; padding: 20px;">ডেটা লোড করতে সমস্যা হয়েছে: ${error.message}</td></tr>`;
+        async function readFileAsDataUrl(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('Image read failed'));
+                reader.readAsDataURL(file);
             });
         }
 
-        window.openSetFeeModal = function(firebaseKey) {
-            document.getElementById("feeFirebaseKey").value = firebaseKey;
-            document.getElementById("customFeeInput").value = "150";
-            document.getElementById("adminPaymentNumber").value = "01700000000";
-            setFeeModal.style.display = "flex";
-        };
+        const SERVICE_IMAGE_CONFIG = [
+            { key: 'ac-servicing', label: 'এসি সার্ভিসিং' },
+            { key: 'home-cleaning', label: 'হোম ক্লিনিং' },
+            { key: 'home-transfer', label: 'বাড়ি ট্রান্সফার' },
+            { key: 'car-booking', label: 'গাড়ি বুকিং সার্ভিস' },
+            { key: 'travel-car', label: 'দূরপাল্লা গাড়ি' },
+            { key: 'beauty-care', label: 'বিউটি অ্যান্ড কেয়ার' },
+            { key: 'plumbing', label: 'প্লাম্বিং সার্ভিস' },
+            { key: 'laundry', label: 'লন্ড্রি সার্ভিস' },
+            { key: 'home-salon', label: 'হোম সেলুন' },
+            { key: 'ips-battery', label: 'আইপিএস ও ব্যাটারি' },
+            { key: 'lpg-gas', label: 'এলপিজি গ্যাস' },
+            { key: 'electrician', label: 'ইলেকট্রিক মিস্ত্রি' },
+            { key: 'home-tutor', label: 'হোম টিউটর' },
+            { key: 'maid-caregiver', label: 'বুয়া ও কেয়ারগিভার' },
+            { key: 'emergency-medicine', label: 'জরুরি ঔষধ সেবা' },
+            { key: 'ambulance', label: 'অ্যাম্বুলেন্স সেবা' }
+        ];
 
-        // অ্যাডমিন ফি এবং পার্সোনাল নম্বর সাবমিট করলে ফায়ারবেসে আপডেট হবে
-        document.getElementById("setFeeForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-            var firebaseKey = document.getElementById("feeFirebaseKey").value;
-            var customFee = document.getElementById("customFeeInput").value;
-            var payNumber = document.getElementById("adminPaymentNumber").value;
+        function renderServiceImageSettings() {
+            const container = document.getElementById('serviceImageSettingsList');
+            if (!container) return;
 
-            update(ref(db, 'bookings/' + firebaseKey), {
-                bookingFee: customFee,
-                paymentNumber: payNumber
-            }).then(() => {
-                alert("বুকিং ফি ও পেমেন্ট নম্বর সেট করা হয়েছে।");
-                setFeeModal.style.display = "none";
-                renderAdminOrders();
+            container.innerHTML = SERVICE_IMAGE_CONFIG.map(service => `
+                <div class="service-image-row">
+                    <span class="service-image-label">${service.label}</span>
+                    <div class="service-image-controls">
+                        <img class="service-image-preview" data-preview-key="${service.key}" alt="${service.label} preview" />
+                        <input type="file" accept="image/*" data-service-key="${service.key}" aria-label="${service.label} image upload">
+                        <button type="button" data-service-key="${service.key}" data-service-label="${service.label}">সেভ করুন</button>
+                        <button type="button" class="delete-btn" data-delete-key="${service.key}" data-delete-label="${service.label}">ডিলিট</button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.querySelectorAll('input[data-service-key]').forEach(input => {
+                input.addEventListener('change', (event) => {
+                    const serviceKey = input.dataset.serviceKey;
+                    const preview = container.querySelector(`img[data-preview-key="${serviceKey}"]`);
+                    const file = event.target.files && event.target.files[0];
+                    if (!file || !preview) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (loadEvent) => {
+                        preview.src = loadEvent.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                });
             });
+
+            container.querySelectorAll('button[data-service-key]').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const serviceKey = button.dataset.serviceKey;
+                    const serviceLabel = button.dataset.serviceLabel;
+                    const input = container.querySelector(`input[data-service-key="${serviceKey}"]`);
+                    const file = input && input.files ? input.files[0] : null;
+
+                    if (!file) {
+                        alert(`${serviceLabel} এর জন্য কমপক্ষে একটি ছবি নির্বাচন করুন।`);
+                        return;
+                    }
+
+                    try {
+                        const imageUrl = await readFileAsDataUrl(file);
+
+                        await set(ref(db, `siteSettings/serviceImages/${serviceKey}`), {
+                            imageUrl,
+                            updatedAt: new Date().toISOString(),
+                            label: serviceLabel
+                        });
+
+                        if (typeof window.applyServiceCardImages === 'function') {
+                            await window.applyServiceCardImages();
+                        }
+
+                        input.value = '';
+                        alert(`${serviceLabel} এর ছবি সফলভাবে সেভ হয়েছে।`);
+                    } catch (error) {
+                        console.error('Service card image save failed:', error);
+                        alert('ছবিটি আপলোড করা যায়নি। আবার চেষ্টা করুন।');
+                    }
+                });
+            });
+
+            container.querySelectorAll('button[data-delete-key]').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const serviceKey = button.dataset.deleteKey;
+                    const serviceLabel = button.dataset.deleteLabel;
+                    const preview = container.querySelector(`img[data-preview-key="${serviceKey}"]`);
+
+                    try {
+                        await remove(ref(db, `siteSettings/serviceImages/${serviceKey}`));
+                        if (preview) {
+                            preview.src = '';
+                            preview.style.display = 'none';
+                        }
+                        if (typeof window.applyServiceCardImages === 'function') {
+                            await window.applyServiceCardImages();
+                        }
+                        alert(`${serviceLabel} এর কাস্টম ছবি মুছে ফেলা হয়েছে।`);
+                    } catch (error) {
+                        console.error('Service image delete failed:', error);
+                        alert('ছবি ডিলিট করা যায়নি। আবার চেষ্টা করুন।');
+                    }
+                });
+            });
+
+            SERVICE_IMAGE_CONFIG.forEach((service) => {
+                const preview = container.querySelector(`img[data-preview-key="${service.key}"]`);
+                if (!preview) return;
+
+                const serviceImagesRef = ref(db, `siteSettings/serviceImages/${service.key}`);
+                get(serviceImagesRef).then((snapshot) => {
+                    if (snapshot.exists() && snapshot.val() && snapshot.val().imageUrl) {
+                        preview.src = snapshot.val().imageUrl;
+                        preview.style.display = 'block';
+                    }
+                }).catch((error) => {
+                    console.error('Service preview load failed:', error);
+                });
+            });
+        }
+
+        async function loadBannerPreview() {
+            const preview = document.getElementById("adminBannerPreview");
+            if (!preview) return;
+
+            try {
+                const bannerRef = ref(db, "siteSettings/banner");
+                const snapshot = await get(bannerRef);
+                const bannerData = snapshot.exists() ? snapshot.val() : null;
+                preview.src = bannerData && bannerData.imageUrl ? bannerData.imageUrl : FALLBACK_BANNER_URL;
+            } catch (error) {
+                console.error('Banner preview load failed:', error);
+                preview.src = FALLBACK_BANNER_URL;
+            }
+        }
+
+        async function uploadAndSaveBanner() {
+            const fileInput = document.getElementById("bannerUploadInput");
+            const files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
+
+            if (!files.length) {
+                alert("কমপক্ষে একটি ব্যানার ছবি নির্বাচন করুন।");
+                return;
+            }
+
+            try {
+                const downloadUrls = await Promise.all(files.map(file => readFileAsDataUrl(file)));
+                const firstImage = downloadUrls[0];
+
+                await set(ref(db, 'siteSettings/bannerImages'), downloadUrls);
+                await set(ref(db, 'siteSettings/banner'), {
+                    imageUrl: firstImage,
+                    updatedAt: new Date().toISOString(),
+                    fileName: files[0].name
+                });
+
+                const preview = document.getElementById("adminBannerPreview");
+                if (preview) preview.src = firstImage;
+
+                fileInput.value = '';
+                alert('সব ব্যানার ছবি আপলোড ও স্লাইডশো সেট করা হয়েছে।');
+            } catch (error) {
+                console.error('Banner upload failed:', error);
+                alert('ব্যানার আপলোড失败 হয়েছে। আবার চেষ্টা করুন।');
+            }
+        }
+
+        async function deleteBanner() {
+            try {
+                await remove(ref(db, 'siteSettings/banner'));
+                await remove(ref(db, 'siteSettings/bannerImages'));
+                const preview = document.getElementById('adminBannerPreview');
+                if (preview) preview.src = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80';
+                const bannerInput = document.getElementById('bannerUploadInput');
+                if (bannerInput) bannerInput.value = '';
+                alert('ব্যানার ছবি ডিলিট হয়েছে।');
+            } catch (error) {
+                console.error('Banner delete failed:', error);
+                alert('ব্যানার ডিলিট করা যায়নি। আবার চেষ্টা করুন।');
+            }
+        }
+
+        const bannerUploadInput = document.getElementById("bannerUploadInput");
+        const adminBannerPreview = document.getElementById("adminBannerPreview");
+
+        function handleBannerSelection() {
+            const file = bannerUploadInput && bannerUploadInput.files ? bannerUploadInput.files[0] : null;
+            if (!file || !adminBannerPreview) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                adminBannerPreview.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        if (bannerUploadInput) {
+            bannerUploadInput.addEventListener('change', handleBannerSelection);
+        }
+
+        const updateBannerBtn = document.getElementById("updateBannerBtn");
+        if (updateBannerBtn) {
+            updateBannerBtn.addEventListener("click", uploadAndSaveBanner);
+        }
+
+        const deleteBannerBtn = document.getElementById("deleteBannerBtn");
+        if (deleteBannerBtn) {
+            deleteBannerBtn.addEventListener("click", deleteBanner);
+        }
+
+        const adminLoginModal = document.getElementById("adminLoginModal");
+        const adminLoginForm = document.getElementById("adminLoginForm");
+        const adminPasswordInput = document.getElementById("adminPasswordInput");
+        const dashboardMenuToggle = document.getElementById("dashboardMenuToggle");
+        const dashboardDropdown = document.getElementById("dashboardDropdown");
+        const adminLogoutBtnFromMenu = document.getElementById("adminLogoutBtnFromMenu");
+
+        if (dashboardMenuToggle && dashboardDropdown) {
+            dashboardMenuToggle.addEventListener("click", () => {
+                const isOpen = dashboardDropdown.classList.contains("show");
+                dashboardDropdown.classList.toggle("show", !isOpen);
+                dashboardMenuToggle.setAttribute("aria-expanded", String(!isOpen));
+            });
+
+            document.addEventListener("click", (event) => {
+                if (!dashboardDropdown.contains(event.target) && !dashboardMenuToggle.contains(event.target)) {
+                    dashboardDropdown.classList.remove("show");
+                    dashboardMenuToggle.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
+
+        if (adminLogoutBtnFromMenu) {
+            adminLogoutBtnFromMenu.addEventListener("click", () => {
+                sessionStorage.removeItem("isAdminLoggedIn");
+                sessionStorage.removeItem("shebaNowAdminLoggedIn");
+                window.location.href = "index.html";
+            });
+        }
+
+        // Check if admin session is already active
+        if(sessionStorage.getItem("isAdminLoggedIn") === "true") {
+            adminLoginModal.style.display = "none";
+            renderServiceImageSettings();
+            loadAdminOrders();
+            loadBannerPreview();
+        }
+
+        adminLoginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const enteredPass = adminPasswordInput.value.trim();
+
+            const passRef = ref(db, "adminSettings/password");
+            const snapshot = await get(passRef);
+            const savedPassword = snapshot.exists() ? snapshot.val() : "1234";
+
+            if(enteredPass === savedPassword) {
+                sessionStorage.setItem("isAdminLoggedIn", "true");
+                adminLoginModal.style.display = "none";
+                adminPasswordInput.value = "";
+                renderServiceImageSettings();
+                loadAdminOrders();
+                loadBannerPreview();
+            } else {
+                alert("ভুল পাসওয়ার্ড!");
+            }
         });
 
-        // পেমেন্ট চেক করে এপ্রুভ ও কনফার্ম করা
-        window.approvePayment = function(firebaseKey) {
-            update(ref(db, 'bookings/' + firebaseKey), {
-                status: "Confirmed"
-            }).then(() => {
-                alert("পেমেন্ট কনফার্ম করা হয়েছে!");
-                renderAdminOrders();
-            });
-        };
+        // Admin Password Change Modal
+        const adminChangePassModal = document.getElementById("adminChangePassModal");
+        const changeAdminPassBtn = document.getElementById("changeAdminPassBtn");
+        const closeAdminPassModal = document.getElementById("closeAdminPassModal");
+        const adminChangePassForm = document.getElementById("adminChangePassForm");
 
-        window.updateOrderStatus = function(firebaseKey, newStatus) {
-            update(ref(db, 'bookings/' + firebaseKey), {
-                status: newStatus
-            }).then(() => {
-                renderAdminOrders();
+        changeAdminPassBtn.addEventListener("click", () => adminChangePassModal.style.display = "flex");
+        closeAdminPassModal.addEventListener("click", () => adminChangePassModal.style.display = "none");
+
+        adminChangePassForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const currentPassInput = document.getElementById("currentPassInput").value.trim();
+            const newPassInput = document.getElementById("newPassInput").value.trim();
+
+            const passRef = ref(db, "adminSettings/password");
+            const snapshot = await get(passRef);
+            const savedPassword = snapshot.exists() ? snapshot.val() : "1234";
+
+            if(currentPassInput !== savedPassword) {
+                alert("বর্তমান পাসওয়ার্ডটি সঠিক নয়!");
+                return;
+            }
+
+            await set(passRef, newPassInput);
+            alert("অ্যাডমিন পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে এবং সব ডিভাইসের জন্য আপডেট হয়েছে!");
+            adminChangePassModal.style.display = "none";
+            adminChangePassForm.reset();
+        });
+
+        // Admin Set Price Modal
+        const adminSetPriceModal = document.getElementById("adminSetPriceModal");
+        const closeAdminSetPrice = document.getElementById("closeAdminSetPrice");
+        const adminSetPriceForm = document.getElementById("adminSetPriceForm");
+
+        closeAdminSetPrice.addEventListener("click", () => adminSetPriceModal.style.display = "none");
+
+        window.openAdminSetPriceModal = function(orderId) {
+            document.getElementById("priceOrderId").value = orderId;
+            adminSetPriceModal.style.display = "flex";
+        }
+
+        adminSetPriceForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const orderId = document.getElementById("priceOrderId").value;
+            const fee = document.getElementById("adminFeeAmount").value;
+            const gateway = document.getElementById("adminPaymentGateway").value;
+            const phone = document.getElementById("adminReceivePhone").value;
+
+            try {
+                await update(ref(db, `orders/${orderId}`), {
+                    paymentFee: fee,
+                    paymentGateway: gateway,
+                    receivePhone: phone,
+                    paymentStatus: "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
+                });
+                alert("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
+                adminSetPriceModal.style.display = "none";
+                adminSetPriceForm.reset();
+                loadAdminOrders();
+            } catch(err) {
+                alert("ত্রুটি: " + err.message);
+            }
+        });
+
+        async function loadAdminOrders() {
+            const tbody = document.getElementById("adminOrdersTableBody");
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">লোড হচ্ছে...</td></tr>`;
+            
+            const ordersRef = ref(db, "orders");
+            const snapshot = await get(ordersRef);
+            if(snapshot.exists()) {
+                let adminOrders = [];
+                snapshot.forEach(childSnapshot => {
+                    adminOrders.push({ id: childSnapshot.key, ...childSnapshot.val() });
+                });
+
+                adminOrders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+                let html = "";
+                adminOrders.forEach(order => {
+                    const safeStatus = String(order.status || 'Pending (টেকনিশিয়ান পর্যালোচনায় আছে)');
+                    const safePaymentStatus = String(order.paymentStatus || 'ফি নির্ধারিত হয়নি');
+                    const displayOrderId = (order.customId || order.id || 'SB0000').toString();
+                    let paymentHtml = `<b>স্ট্যাটাস:</b> <span class="en-ui">${safePaymentStatus}</span><br>`;
+                    if(order.paymentFee) {
+                        paymentHtml += `ফি: <span class="en-ui">৳${order.paymentFee}</span><br>নম্বর: <span class="en-ui">${order.receivePhone || ''}</span><br>`;
+                    }
+                    if(order.paymentDetails) {
+                        paymentHtml += `<span class="en-ui" style="color:blue; text-transform:none;">TrxID: ${order.paymentDetails.trxId || ''} (${order.paymentDetails.senderPhone || ''})</span>`;
+                    }
+
+                    let adminImgHtml = "ছবি নেই";
+                    if(order.images && order.images.length > 0) {
+                        adminImgHtml = `<div style="display:flex; gap:4px;">`;
+                        order.images.forEach(img => {
+                            adminImgHtml += `<a href="${img}" target="_blank"><img src="${img}" style="width:35px; height:35px; object-fit:cover; border-radius:4px; border:1px solid #ccc;"></a>`;
+                        });
+                        adminImgHtml += `</div>`;
+                    }
+
+                    const fullAddress = (order.address || '').trim();
+                    const { main: addressMain, location: addressLocation } = splitAddressLocation(fullAddress);
+                    const addressCellHtml = addressLocation ? `<span class="en-ui">${addressMain || '—'}</span><span class="premium-bengali"> ${addressLocation}</span>` : `<span class="en-ui">${fullAddress || '—'}</span>`;
+                    const orderDateDisplay = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : (order.date || '');
+
+                    html += `
+                        <tr>
+                            <td><b><span class="en-ui">${displayOrderId}</span></b><br><small><span class="en-ui">${orderDateDisplay}</span></small></td>
+                            <td><b>${order.service || 'সেবা'}</b></td>
+                            <td style="font-family: 'Times New Roman', 'Noto Sans Bengali', serif; font-weight:700;">
+                                <span class="en-ui">${order.name || ''}</span><br>
+                                <a href="tel:${order.phone || ''}" style="color:#008060; font-weight:bold; text-decoration:none; font-family: 'Times New Roman', Times, serif;">${order.phone || ''}</a>
+                            </td>
+                            <td style="font-family: 'Times New Roman', 'Noto Sans Bengali', serif; font-weight:700;">
+                                ${addressCellHtml}<br>
+                                <small><span class="en-ui">${order.description || ''}</span></small>
+                            </td>
+                            <td>${adminImgHtml}</td>
+                            <td>${paymentHtml}</td>
+                            <td>
+                                <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding:4px; margin-bottom:5px; font-size:12px;">
+                                    <option value="Pending (টেকনিশিয়ান পর্যালোচনায় আছে)" ${safeStatus.includes('Pending') ? 'selected' : ''}>Pending</option>
+                                    <option value="Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" ${safeStatus.includes('Confirmed') ? 'selected' : ''}>Confirmed</option>
+                                    <option value="Completed (কাজ সম্পন্ন)" ${safeStatus.includes('Completed') ? 'selected' : ''}>Completed</option>
+                                </select>
+                                <br>
+                                ${!order.paymentFee ? `<button onclick="openAdminSetPriceModal('${order.id}')" style="background:#f0ad4e; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:12px; margin-bottom:3px;">ফি সেট করুন</button>` : ''}
+                                ${safePaymentStatus === 'পেমেন্ট রিভিউাধীন' ? `<button onclick="approvePayment('${order.id}')" style="background:green; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:12px; margin-bottom:3px;">পেমেন্ট অ্যাপ্রুভ</button>` : ''}
+                                <br>
+                                <button onclick="deleteAdminOrder('${order.id}')" style="background:#d9534f; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:12px;">ডিলিট</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            } else {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">কোনো অর্ডার নেই</td></tr>`;
+            }
+        }
+
+        window.updateOrderStatus = async function(orderId, status) {
+            await update(ref(db, `orders/${orderId}`), { status });
+            alert("স্ট্যাটাস আপডেট করা হয়েছে!");
+        }
+
+        window.approvePayment = async function(orderId) {
+            await update(ref(db, `orders/${orderId}`), { paymentStatus: "অনুমোদিত", status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" });
+            alert("পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
+            loadAdminOrders();
+        }
+
+        window.deleteAdminOrder = async function(orderId) {
+            if(confirm('আপনি কি নিশ্চিত অ্যাডমিন প্যানেল থেকে এই অর্ডারটি সরাতে চান?')) {
+                await remove(ref(db, `orders/${orderId}`));
+                alert("অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!");
+                loadAdminOrders();
+            }
+        }
+    </script>
+
+    <script>
+        (function () {
+            const pairs = {
+                'ভাষা': 'Language', 'অ্যাডমিন ড্যাশবোর্ড - বুকিং ম্যানেজমেন্ট': 'Admin Dashboard - Booking Management',
+                'অ্যাডমিন লগইন': 'Admin Login', 'অ্যাডমিন পাসওয়ার্ড লিখুন': 'Enter admin password', 'লগইন করুন': 'Log in',
+                'পাসওয়ার্ড পরিবর্তন করুন': 'Change Password', 'অ্যাডমিন পাসওয়ার্ড পরিবর্তন': 'Change Admin Password',
+                'বর্তমান পাসওয়ার্ড': 'Current password', 'নতুন পাসওয়ার্ড (কমপক্ষে ৪ সংখ্যা)': 'New password (at least 4 characters)',
+                'পাসওয়ার্ড আপডেট করুন': 'Update Password', 'হোম পেজ ডাইনামিক ব্যানার': 'Homepage Dynamic Banner',
+                'ব্যানার আপলোড ও সেভ করুন': 'Upload and Save Banner', 'ডিলিট করুন': 'Delete', 'সার্ভিস কার্ডের ছবি সেট করুন': 'Set Service Card Images',
+                'অর্ডার আইডি': 'Order ID', 'সেবার নাম': 'Service Name', 'গ্রাহকের নাম ও ফোন': 'Customer Name and Phone',
+                'ঠিকানা ও বিবরণ': 'Address and Details', 'ছবিসমূহ': 'Images', 'স্ট্যাটাস ও পেমেন্ট ইনফো': 'Status and Payment Info', 'অ্যাকশন': 'Actions',
+                'লোড হচ্ছে...': 'Loading...', 'কোনো অর্ডার নেই': 'No orders found', 'ছবি নেই': 'No image', 'পেমেন্টের অপেক্ষায়': 'Awaiting payment',
+                'ফি সেট করুন': 'Set Fee', 'পেমেন্ট অ্যাপ্রুভ': 'Approve Payment', 'ডিলিট': 'Delete', 'Pending': 'Pending', 'Confirmed': 'Confirmed', 'Completed': 'Completed',
+                'ফি নির্ধারিত হয়নি': 'Fee not set', 'ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)': 'Fee set (payment pending)', 'পেমেন্ট রিভিউাধীন': 'Payment under review',
+                'অনুমোদিত': 'Approved', 'সেবা প্রদানকারীর পর্যালোচনায় আছে': 'Under provider review', 'পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত': 'Payment and provider assigned',
+                'বুকিং ফি ও পেমেন্ট নম্বর সেট করুন': 'Set Booking Fee and Payment Number', 'বুকিং ফি বা অ্যামাউন্ট (টাকা):': 'Booking fee or amount (BDT):',
+                'পেমেন্ট মাধ্যম:': 'Payment method:', 'মার্চেন্ট/রিসিভ করার নম্বর:': 'Merchant/receiving number:', 'সেট করুন ও কনফার্ম করুন': 'Set and Confirm',
+                'ইউজার সাইটে ফিরে যান': 'Return to User Site', 'পেমেন্ট ও টেকনিশিয়ান নির্ধারিত': 'Payment and provider assigned', 'সব সেবা': 'All Services',
+                'অ্যাডমিন প্যানেল': 'Admin Panel', 'লগ আউট': 'Log out',
+                'আপনার প্রতিদিনের সেবায় আমরা সদা প্রস্তুত (শুধুমাত্র গাজীপুর)।': 'We are always ready to serve you every day (Gazipur only).'
+            };
+            const reversePairs = Object.fromEntries(Object.entries(pairs).map(([bengali, english]) => [english, bengali]));
+            let language = localStorage.getItem('shebaNowLanguage') || 'bn';
+            const sourceText = new WeakMap();
+            const renderedText = new WeakMap();
+            let translating = false;
+
+            function translate(value) {
+                const map = language === 'en' ? pairs : reversePairs;
+                return Object.entries(map).sort((a, b) => b[0].length - a[0].length)
+                    .reduce((text, [from, to]) => text.split(from).join(to), String(value || ''));
+            }
+
+            function translateNode(node) {
+                if (!node.parentElement || node.parentElement.closest('script, style')) return;
+                const current = node.nodeValue;
+                const source = !sourceText.has(node) || current !== renderedText.get(node)
+                    ? (language === 'en' ? translate(current) : current) : sourceText.get(node);
+                sourceText.set(node, source);
+                const next = translate(source);
+                if (current !== next) node.nodeValue = next;
+                renderedText.set(node, next);
+            }
+
+            function applyLanguage() {
+                translating = true;
+                document.documentElement.lang = language;
+                document.title = language === 'en' ? 'ShebaNow - Admin Panel' : 'ShebaNow - অ্যাডমিন প্যানেল';
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+                while (walker.nextNode()) translateNode(walker.currentNode);
+                document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach((field) => {
+                    if (!field.dataset.originalPlaceholder) field.dataset.originalPlaceholder = field.placeholder;
+                    field.placeholder = translate(field.dataset.originalPlaceholder);
+                });
+                const label = document.getElementById('adminLanguageToggleLabel');
+                if (label) label.textContent = language === 'en' ? 'Language' : 'ভাষা';
+                const adminBookingHeading = document.getElementById('adminBookingHeading');
+                if (adminBookingHeading) adminBookingHeading.textContent = language === 'en' ? 'Admin Dashboard - Booking Management' : 'অ্যাডমিন ড্যাশবোর্ড - বুকিং ম্যানেজমেন্ট';
+                const adminBannerHeading = document.getElementById('adminBannerHeading');
+                if (adminBannerHeading) adminBannerHeading.textContent = language === 'en' ? 'Homepage Dynamic Banner' : 'হোম পেজ ডাইনামিক ব্যানার';
+                translating = false;
+            }
+
+            const observer = new MutationObserver((mutations) => {
+                if (translating) return;
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'characterData') translateNode(mutation.target);
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === Node.TEXT_NODE) translateNode(node);
+                        else if (node.nodeType === Node.ELEMENT_NODE) {
+                            const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+                            while (walker.nextNode()) translateNode(walker.currentNode);
+                        }
+                    });
+                });
             });
-        };
+            observer.observe(document.body, { childList: true, characterData: true, subtree: true });
+            document.getElementById('adminLanguageToggle')?.addEventListener('click', (event) => {
+                event.stopPropagation();
+                language = language === 'bn' ? 'en' : 'bn';
+                localStorage.setItem('shebaNowLanguage', language);
+                applyLanguage();
+            });
+            applyLanguage();
+        }());
     </script>
 </body>
 </html>

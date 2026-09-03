@@ -1,56 +1,522 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShebaNow - আপনার প্রয়োজনীয় সকল সেবা এক জায়গায়</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Sheba<span style="color: #d9534f;">Now</span> - আপনার প্রয়োজনীয় সকল সেবা এক জায়গায়</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f9f9f9; color: #333; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 15px 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 24px; font-weight: bold; color: #333; cursor: pointer; }
-        .logo span { color: #008060; }
-        .search-box { display: flex; gap: 5px; }
-        .search-box input { padding: 8px 12px; width: 250px; border: 1px solid #ccc; border-radius: 4px; }
-        .search-box button { padding: 8px 15px; background: #008060; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .nav-links { display: flex; align-items: center; gap: 15px; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; }
-        .btn-login { background: #008060; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-logout { background: #d9534f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-        .user-profile { display: none; align-items: center; gap: 10px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Bengali', 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: #f9f9f9; color: #333; scroll-behavior: smooth; overflow-x: hidden; font-family: 'Noto Sans Bengali', 'Segoe UI', Tahoma, sans-serif; }
+        html[lang="bn"] *, html[lang="bn"] *::before, html[lang="bn"] *::after { font-family: 'Noto Sans Bengali', 'Segoe UI', Tahoma, sans-serif !important; }
+        html[lang="en"] *, html[lang="en"] *::before, html[lang="en"] *::after { font-family: 'Times New Roman', Times, serif !important; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 18px 4%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px; }
+        .logo { font-size: 32px; font-weight: 900; color: #008060; cursor: pointer; white-space: nowrap; letter-spacing: -0.04em; }
+        .logo span { color: #d9534f; }
+        
+        .search-box { display: flex; gap: 6px; flex-grow: 1; max-width: 450px; }
+        .search-box input { padding: 12px 15px; width: 100%; border: 1px solid #d7e3e0; border-radius: 8px; font-size: 15px; background: #f9fbfa; font-weight: 700; }
+        .search-box button { padding: 12px 20px; background: #008060; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 900; white-space: nowrap; }
+        
+        .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 900; cursor: pointer; font-size: 16px; }
+        
+        .location-container { position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 900; font-size: 16px; color: #008060; }
+        .location-icon-svg { width: 18px; height: 18px; fill: #008060; flex-shrink: 0; }
+        .location-popup { display: none; position: absolute; top: 40px; right: 0; background: #222; color: white; padding: 15px; border-radius: 8px; width: 280px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 200; font-size: 13px; text-align: left; }
+        .location-popup::before { content: ''; position: absolute; top: -6px; right: 20px; width: 12px; height: 12px; background: #222; transform: rotate(45deg); }
+        .location-popup p { margin-bottom: 10px; line-height: 1.4; color: #ddd; }
+        .btn-close-popup { background: #d9534f; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; float: right; font-size: 12px; }
 
-        .hero { background: linear-gradient(rgba(0,128,96,0.8), rgba(0,128,96,0.8)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; color: white; text-align: center; padding: 80px 20px; }
-        .hero h1 { font-size: 32px; margin-bottom: 10px; }
+        .map-search-wrap { margin-bottom: 12px; }
+        .map-search-input {
+            width: 100%; padding: 12px 14px; border: 1px solid rgba(0,128,96,0.25);
+            border-radius: 10px; font-size: 14px; font-weight: 700; color: #0d2d24; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+        }
+        #gazipurMap { width: 100%; height: 300px; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 28px rgba(0,0,0,0.08); border: 1px solid rgba(0,128,96,0.12); margin-bottom: 12px; }
+        .location-map-modal .city-modal-content { max-width: 560px; }
+        .map-action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+        .city-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
+        .city-modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 420px; text-align: center; position: relative; max-height: 85vh; overflow-y: auto; }
+        .city-option { background: #f1f1f1; padding: 10px 12px; margin: 6px 0; border-radius: 6px; cursor: pointer; font-weight: bold; color: #008060; border: 1px solid #ddd; transition: 0.2s; font-size: 13px; }
+        .city-option:hover { background: #eef9f5; border-color: #008060; }
+
+        .btn-login { background: #008060; color: white; border: none; padding: 11px 20px; border-radius: 8px; cursor: pointer; font-weight: 900; font-size: 15px; }
+        .btn-logout { background: #d9534f; color: white; border: none; padding: 7px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; }
+        .user-profile { display: none; align-items: center; gap: 8px; }
+
+        .profile-menu { position: relative; }
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #effcf7, #edf5f2);
+            color: #0a5d48;
+            border: 1px solid rgba(0,128,96,0.12);
+            border-radius: 999px;
+            padding: 10px 16px 10px 8px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 15px;
+            box-shadow: 0 8px 18px rgba(15, 155, 114, 0.08);
+        }
+        .profile-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0f9b72, #008060);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .profile-caret { font-size: 11px; opacity: 0.8; }
+        #userNameDisplay { font-size: 17px; color: #064f3d; }
+        .profile-caret { font-size: 15px; color: #064f3d; opacity: 1; font-weight: 900; }
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            min-width: 210px;
+            background: rgba(255,255,255,0.98);
+            border: 1px solid rgba(0,128,96,0.08);
+            border-radius: 14px;
+            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.14);
+            padding: 8px;
+            display: none;
+            z-index: 120;
+        }
+        .profile-dropdown.show { display: block; }
+        .profile-dropdown a,
+        .profile-dropdown button {
+            display: block;
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #1f2937;
+            text-align: left;
+            padding: 11px 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .profile-dropdown .bn-item {
+            font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", sans-serif;
+        }
+        .profile-dropdown .en-item {
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 0.02em;
+        }
+        .en-ui, .en-ui * {
+            font-family: "Times New Roman", Times, serif !important;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .premium-bengali, .premium-bengali * {
+            font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", sans-serif !important;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            line-height: 1.6;
+        }
+        .mixed-readability, .mixed-readability * {
+            font-family: "Noto Sans Bengali", "Times New Roman", serif !important;
+            font-weight: 700;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+            white-space: pre-wrap;
+        }
+        .order-detail-card, .order-detail-card * {
+            font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", sans-serif;
+        }
+        .order-detail-card .en-ui, .order-detail-card .en-ui * {
+            font-family: "Times New Roman", Times, serif !important;
+            font-weight: 700;
+        }
+        .order-detail-card p, .order-detail-card b, .order-detail-card small, .order-detail-card h3 {
+            font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", sans-serif;
+        }
+        .profile-dropdown a + a,
+        .profile-dropdown button {
+            margin-top: 4px;
+        }
+        .profile-dropdown a:hover,
+        .profile-dropdown button:hover {
+            background: #edfaf5;
+            color: #008060;
+        }
+        .profile-dropdown .logout-item { color: #d12d2d; }
+        .profile-dropdown .logout-item:hover { background: #fff4f4; color: #b42318; }
+        .language-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #1f2937;
+            text-align: left;
+            padding: 11px 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .language-toggle:hover { background: #edfaf5; color: #008060; }
+        .language-toggle-icon { font-size: 17px; color: #008060; font-family: "Segoe UI Symbol", "Noto Sans Bengali", sans-serif; }
+
+        .hero { background: linear-gradient(rgba(0,128,96,0.85), rgba(0,128,96,0.85)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; color: white; text-align: center; padding: 50px 15px; }
+        .hero h1 { font-size: 24px; margin-bottom: 8px; line-height: 1.4; }
         .hero h1 span { color: #ffeb3b; }
-        .hero p { font-size: 16px; }
+        .hero p { font-size: 14px; }
 
-        .services-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .services-container h2 { margin-bottom: 20px; font-size: 24px; color: #333; }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .service-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; }
-        .service-card .img-box { height: 120px; background: #eef9f5; color: #008060; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 6px; margin-bottom: 15px; font-size: 18px; }
-        .service-card h3 { margin-bottom: 8px; font-size: 18px; }
-        .service-card p { font-size: 14px; color: #666; margin-bottom: 15px; }
-        .btn-order { background: #008060; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        .dynamic-banner-shell { max-width: 1280px; margin: 18px auto 0; padding: 0 18px; }
+        .dynamic-banner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px 24px 0 0;
+            background: linear-gradient(135deg, #0d1b3d, #0f2e72, #08152b);
+            border: 3px solid rgba(255,255,255,0.14);
+            border-bottom: none;
+            box-shadow: 0 18px 40px rgba(10, 31, 64, 0.22);
+            width: 100%;
+            aspect-ratio: 16 / 5.2;
+            max-height: 340px;
+        }
+        .dynamic-banner img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform: scale(1.02);
+        }
+        .dynamic-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(6,18,36,0.74) 0%, rgba(7,21,38,0.28) 42%, rgba(7,21,38,0.16) 100%);
+            z-index: 1;
+        }
+        .dynamic-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.26)); pointer-events: none; z-index: 2; }
+        .banner-content {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 34px 42px;
+            color: white;
+            gap: 12px;
+        }
+        .banner-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.28);
+            color: #f3f9ff;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+        }
+        .banner-content h2 {
+            font-size: clamp(2rem, 3vw, 4rem);
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            max-width: 520px;
+            font-weight: 900;
+        }
+        .banner-content h2 span { color: #ffd75a; }
+        .banner-content p {
+            font-size: clamp(0.82rem, 1.2vw, 1.05rem);
+            color: rgba(255,255,255,0.94);
+            max-width: 540px;
+            font-weight: 600;
+        }
+        .banner-service-stack {
+            position: absolute;
+            right: 22px;
+            bottom: 18px;
+            z-index: 4;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            max-width: 46%;
+        }
+        .banner-service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            min-width: 88px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(4px);
+            border-radius: 14px;
+            padding: 8px 6px;
+            box-shadow: 0 8px 20px rgba(3,12,25,0.18);
+        }
+        .mini-thumb {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff, #dfeeff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: inset 0 0 0 1px rgba(19,45,74,0.12);
+        }
+        .banner-service-item span {
+            font-size: 12px;
+            font-weight: 800;
+            color: #edf7ff;
+            text-align: center;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+        .promo-strip {
+            position: relative;
+            background: linear-gradient(90deg, #0a8a63, #0f9d73);
+            margin-top: -1px;
+            padding: 18px 26px 20px;
+            border-radius: 0 0 20px 20px;
+            border: 3px solid rgba(255,255,255,0.14);
+            border-top: none;
+            box-shadow: 0 16px 30px rgba(11, 94, 72, 0.12);
+            clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%);
+        }
+        .promo-strip::before,
+        .promo-strip::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 34px;
+            height: 34px;
+            background: #0a8a63;
+        }
+        .promo-strip::before { left: 0; transform: skewX(-30deg); transform-origin: top left; }
+        .promo-strip::after { right: 0; transform: skewX(30deg); transform-origin: top right; }
+        .promo-copy {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            font-size: clamp(1rem, 2vw, 2.1rem);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+            line-height: 1.35;
+        }
+        .promo-copy strong { display: inline-block; background: rgba(255,255,255,0.12); padding: 0 10px; border-radius: 8px; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 100%; max-width: 480px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 22px; cursor: pointer; color: #aaa; }
-        .close-btn:hover { color: #000; }
-        .modal-content h2 { margin-bottom: 15px; font-size: 20px; color: #008060; }
-        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn-submit { background: #008060; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .services-container { max-width: 1200px; margin: 25px auto; padding: 0 15px; }
+        .services-container h2 { margin-bottom: 15px; font-size: 20px; color: #333; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        
+        .service-card { background: white; padding: 15px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,128,96,0.08); }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 22px rgba(12,70,55,0.12); }
+        
+        .service-card .img-box {
+            height: 120px;
+            background: linear-gradient(135deg, #f7fffb, #edf8f3);
+            color: #008060;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,128,96,0.08);
+        }
+        .service-card .img-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,128,96,0.04), rgba(15,155,114,0.10));
+            z-index: 1;
+        }
+        .service-card .img-box img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            z-index: 0;
+        }
+        .service-card .img-box .card-icon {
+            display: none;
+        }
+        .service-card h3 { margin-bottom: 6px; font-size: 18px; font-weight: 900; }
+        .service-card p { font-size: 14px; color: #666; margin-bottom: 12px; font-weight: 600; }
+        .btn-order { background: #008060; color: white; border: none; padding: 8px 14px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: 800; font-size: 14px; }
 
-        /* Admin Panel Styles */
-        #adminPanelContainer { display: none; max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; background: #008060; color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        /* Floating WhatsApp Widget Styles with Pre-filled Popup Menu */
+        .whatsapp-float-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; align-items: center; gap: 10px; }
+        
+        /* WhatsApp Service Options Menu Box */
+        .whatsapp-menu-box { display: none; position: absolute; bottom: 70px; right: 0; background: #ffffff; width: 280px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); padding: 12px; z-index: 10000; border: 1px solid #dcdcdc; text-align: left; }
+        .whatsapp-menu-header { font-size: 13px; font-weight: bold; color: #008060; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .whatsapp-menu-item { background: #f9f9f9; padding: 8px 10px; margin: 5px 0; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; color: #333; border: 1px solid #e5e5e5; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .whatsapp-menu-item:hover { background: #eef9f5; border-color: #008060; color: #008060; }
+        .whatsapp-menu-item span { color: #25d366; font-size: 14px; }
+
+        .whatsapp-chat-bubble { background: #ffffff; color: #333; padding: 8px 14px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1px solid #e0e0e0; transition: 0.2s; white-space: nowrap; }
+        .whatsapp-chat-bubble:hover { background: #f0f0f0; }
+        .whatsapp-icon-btn { width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: pointer; transition: transform 0.3s; }
+        .whatsapp-icon-btn:hover { transform: scale(1.1); }
+        .whatsapp-icon-btn svg { width: 28px; height: 28px; fill: white; }
+        
+        .wa-status-tooltip { display: none; position: absolute; bottom: 65px; right: 0; background: #222; color: #fff; padding: 10px 14px; border-radius: 6px; font-size: 12px; width: 220px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10000; line-height: 1.4; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 450px; position: relative; max-height: 90vh; overflow-y: auto; }
+        
+        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 20px; cursor: pointer; color: #d9534f; font-weight: bold; }
+        .close-btn:hover { color: #a94442; }
+
+        .modal-content h2 { margin-bottom: 12px; font-size: 18px; color: #008060; }
+        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 9px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
+        .btn-submit { background: #008060; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 14px; }
+
+        .image-upload-container { display: flex; gap: 8px; margin-bottom: 10px; }
+        .img-upload-box { width: 70px; height: 70px; border: 2px dashed #008060; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #eef9f5; position: relative; overflow: hidden; font-size: 20px; color: #008060; }
+        .img-upload-box input { position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2; }
+        .img-upload-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
+        .remove-img-btn { position: absolute; top: 2px; right: 2px; background: #d9534f; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 3; font-weight: bold; }
+        .booking-date-row { display: flex; align-items: stretch; gap: 8px; margin-bottom: 10px; }
+        .booking-date-row input { flex: 1; min-width: 0; margin-bottom: 0; font-family: inherit; }
+        .clear-date-btn { flex: 0 0 auto; padding: 9px 12px; border: 1px solid #d9534f; border-radius: 4px; background: #fff5f5; color: #b42318; cursor: pointer; font-size: 13px; font-weight: 700; }
+        .clear-date-btn:hover { background: #d9534f; color: #fff; }
+
+        #adminPanelContainer { display: none; max-width: 1300px; margin: 20px auto; padding: 0 15px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; background: #008060; color: white; padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .admin-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .admin-table th, .admin-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+        .admin-table th, .admin-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 12px; vertical-align: middle; }
         .admin-table th { background: #f1f1f1; color: #333; }
+        .admin-table .en-ui, .admin-table .en-ui * { font-family: "Times New Roman", Times, serif !important; font-weight: 700; letter-spacing: 0.01em; }
+        .admin-table td a { font-family: "Times New Roman", Times, serif !important; }
 
-        footer { background: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 50px; }
-        footer h3 { color: white; margin-bottom: 8px; }
-        footer p { font-size: 13px; margin: 4px 0; }
+        footer { background: #222; color: #aaa; text-align: center; padding: 25px 15px; margin-top: 40px; }
+        footer h3 { color: white; margin-bottom: 8px; font-size: 28px; font-weight: 900; letter-spacing: -0.04em; }
+        footer h3 .brand-green { color: #008060; }
+        footer h3 .brand-red { color: #d9534f; }
+        footer p { font-size: 16px; margin: 8px 0; line-height: 1.6; font-weight: 700; color: #e5e5e5; }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 10px 15px; justify-content: center; }
+            .search-box { max-width: 100%; order: 3; width: 100%; }
+            .logo { order: 1; }
+            .nav-links { order: 2; gap: 8px; }
+            .location-container {
+                max-width: calc(100vw - 120px);
+                padding: 7px 10px;
+                border-radius: 999px;
+            }
+            .selected-location-text {
+                max-width: 155px;
+                font-size: 13px;
+                line-height: 1.3;
+            }
+            .location-popup {
+                position: fixed;
+                top: 72px;
+                right: 12px;
+                left: auto;
+                width: min(82vw, 300px);
+                max-width: calc(100vw - 18px);
+                z-index: 2500;
+            }
+            .location-popup::before {
+                right: 24px;
+            }
+            .location-popup p {
+                font-size: 12px;
+                word-break: break-word;
+            }
+            .profile-menu {
+                position: static;
+            }
+            .profile-dropdown {
+                position: fixed;
+                top: 70px;
+                right: 12px;
+                width: min(78vw, 230px);
+                max-width: calc(100vw - 18px);
+                min-width: 0;
+            }
+            .profile-dropdown a,
+            .profile-dropdown button {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+            .dynamic-banner-shell { padding: 0 12px; }
+            .dynamic-banner {
+                border-radius: 18px 18px 0 0;
+                aspect-ratio: 4 / 3.2;
+                max-height: 210px;
+                border-width: 2px;
+                border-bottom: none;
+            }
+            .banner-content {
+                padding: 18px 18px;
+                justify-content: flex-end;
+            }
+            .banner-content h2 {
+                max-width: 250px;
+                font-size: 2rem;
+            }
+            .banner-content p {
+                max-width: 260px;
+                font-size: 0.72rem;
+            }
+            .banner-service-stack {
+                right: 10px;
+                bottom: 10px;
+                max-width: 55%;
+                gap: 6px;
+            }
+            .banner-service-item {
+                min-width: 66px;
+                padding: 6px 4px;
+            }
+            .mini-thumb {
+                width: 26px;
+                height: 26px;
+                font-size: 14px;
+            }
+            .promo-strip {
+                padding: 14px 14px 16px;
+                clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+            }
+            .promo-strip::before,
+            .promo-strip::after {
+                width: 22px;
+                height: 22px;
+            }
+            .hero { padding: 35px 15px; }
+            .hero h1 { font-size: 20px; }
+            .services-container { margin: 15px auto; }
+        }
     </style>
 </head>
 <body>
@@ -62,62 +528,273 @@
             <button id="searchBtn">খুঁজুন</button>
         </div>
         <nav class="nav-links">
-            <a id="navAllServices" href="#">সব সেবা</a>
-            <a id="adminNavBtn" style="color: #d9534f; font-weight: bold; cursor: pointer;">অ্যাডমিন প্যানেল</a>
+            <div class="location-container" id="locationContainer">
+                <svg class="location-icon-svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span id="selectedLocationText" class="selected-location-text">গাজীপুর (কোনাবাড়ি)</span>
+                <div class="location-popup" id="locationPopup">
+                    <p><b>আপনার ডেলিভারি ঠিকানা সেট করুন</b><br>আমাদের সার্ভিস শুধু গাজীপুর এলাকার জন্য। আপনার সঠিক এলাকা নির্বাচন করুন।</p>
+                    <button class="btn-close-popup" id="closePopupBtn">বন্ধ করুন</button>
+                </div>
+            </div>
+            
+            <a id="navAllServices">সব সেবা</a>
             <button id="loginBtnNav" class="btn-login">লগইন</button>
-            <div id="userProfile" class="user-profile">
-                <span id="userNameDisplay"></span>
-                <button id="myOrdersBtn" style="background: #008060; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">আমার বুকিং</button>
-                <button id="logoutBtn" class="btn-logout">লগ-আউট</button>
+            <div id="userProfile" class="user-profile profile-menu">
+                <button type="button" id="profileTrigger" class="profile-trigger" aria-expanded="false">
+                    <span class="profile-avatar" id="profileAvatar">U</span>
+                    <span id="userNameDisplay">User</span>
+                    <span class="profile-caret">▾</span>
+                </button>
+                <div id="profileDropdown" class="profile-dropdown">
+                    <a href="admin.html" class="en-item">Admin Panel</a>
+                    <a href="index.html" id="profileAllServices" class="bn-item">সব সেবা</a>
+                    <button type="button" id="myOrdersBtn" class="bn-item">আমার বুকিং</button>
+                    <button type="button" id="languageToggle" class="language-toggle bn-item" aria-label="ভাষা পরিবর্তন">
+                        <span class="language-toggle-icon" aria-hidden="true">文</span>
+                        <span id="languageToggleLabel">ভাষা / Language</span>
+                    </button>
+                    <button type="button" id="logoutBtn" class="logout-item en-item">Log out</button>
+                </div>
             </div>
         </nav>
     </header>
 
-    <!-- User Main View -->
+    <div id="cityModal" class="city-modal">
+        <div class="city-modal-content location-map-modal">
+            <span class="close-btn" id="closeCityModal">&times;</span>
+            <h2 style="color: #008060; margin-bottom: 15px;">আপনার সঠিক এলাকা নির্বাচন করুন</h2>
+
+            <div class="map-search-wrap">
+                <input id="gazipurLocationSearch" class="map-search-input" type="text" placeholder="ঠিকানা লিখুন, যেমন: গাজীপুর কোনাবাড়ি, টঙ্গী, শ্রীপুর...">
+            </div>
+            <div id="gazipurMap" aria-label="Gazipur map"></div>
+
+            <div class="map-action-row">
+                <div class="city-option" onclick="detectCurrentLocationSmart()">আমার বর্তমান অবস্থান</div>
+                <div class="city-option" onclick="openGazipurAreas()">গাজীপুরের এলাকা</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="areaModal" class="city-modal">
+        <div class="city-modal-content">
+            <span class="close-btn" id="closeAreaModal">&times;</span>
+            <h2 style="color: #008060; margin-bottom: 15px;" id="areaModalTitle">গাজীপুরের লোকাল এলাকা নির্বাচন করুন</h2>
+            <div id="areaListContainer">
+                <div class="city-option" onclick="setFinalLocation('কোনাবাড়ি (Konabari)')">কোনাবাড়ি (Konabari)</div>
+                <div class="city-option" onclick="setFinalLocation('টঙ্গী (Tongi)')">টঙ্গী (Tongi)</div>
+                <div class="city-option" onclick="setFinalLocation('জয়দেবপুর (Joydebpur)')">জয়দেবপুর (Joydebpur)</div>
+                <div class="city-option" onclick="setFinalLocation('বোর্ডবাজার (Boardbazar)')">বোর্ডবাজার (Boardbazar)</div>
+                <div class="city-option" onclick="setFinalLocation('চান্দনা চৌরাস্তা (Chandana Chowrasta)')">চান্দনা চৌরাস্তা</div>
+                <div class="city-option" onclick="setFinalLocation('কাশিমপুর (Kasimpur)')">কাশিমপুর (Kasimpur)</div>
+                <div class="city-option" onclick="setFinalLocation('কালিয়াকৈর (Kaliakair)')">কালিয়াকৈর (Kaliakair)</div>
+                <div class="city-option" onclick="setFinalLocation('শ্রীপুর (Sreepur)')">শ্রীপুর (Sreepur)</div>
+                <div class="city-option" onclick="setFinalLocation('সদর গাজীপুর (Sadar Gazipur)')">সদর গাজীপুর</div>
+            </div>
+        </div>
+    </div>
+
     <div id="userMainView">
+        <section class="dynamic-banner-shell">
+            <div class="dynamic-banner">
+                <img id="dynamicBannerImage" alt="Sheba banner" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80">
+                <div class="banner-content">
+                    <div class="banner-badge">24/7 home service</div>
+                    <h2>ঘরে বসে <span>সেবা নিন</span></h2>
+                    <p>AC • Cleaning • Plumbing • Beauty • Repair • Electronics • Care</p>
+                </div>
+            </div>
+            <div class="promo-strip">
+                <div class="promo-copy">আপনার প্রয়োজনীয় যেকোনো সেবা পেতে <strong>ShebaNow</strong> এর পাশে থাকুন</div>
+            </div>
+        </section>
+
         <section class="hero">
-            <h1>আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে <span>ShebaNow</span></h1>
-            <p>এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস</p>
+            <h1>আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে <span style="color: #008060; background: #fff; padding: 0 6px; border-radius: 4px;">Sheba<span style="color: #d9534f;">Now</span></span></h1>
+            <p>এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস (শুধুমাত্র গাজীপুর)</p>
         </section>
 
         <section class="services-container" id="servicesSection">
-            <h2>জনপ্রিয় সেবাসমূহ</h2>
+            <h2>জনপ্রিয় সেবাসমূহ (গাজীপুর এর জন্য প্রযোজ্য)</h2>
             <div class="services-grid" id="servicesGrid">
-                <div class="service-card" data-name="এসি সার্ভিসিং ac servicing">
-                    <div class="img-box">এসি সার্ভিসিং</div>
+                <div class="service-card" data-name="এসি সার্ভিসিং ac servicing" onclick="triggerBooking('এসি সার্ভিসিং')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80" alt="এসি সার্ভিসিং">
+                    </div>
                     <h3>এসি সার্ভিসিং</h3>
                     <p>দ্রুত এবং বিশ্বস্ত মেরামত সেবা</p>
-                    <button class="btn-order" data-service="এসি সার্ভিসিং">বুক করুন</button>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('এসি সার্ভিসিং')">বুক করুন</button>
                 </div>
-                <div class="service-card" data-name="হোম ক্লিনিং home cleaning">
-                    <div class="img-box">হোম ক্লিনিং</div>
+                <div class="service-card" data-name="হোম ক্লিনিং home cleaning" onclick="triggerBooking('হোম ক্লিনিং')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80" alt="হোম ক্লিনিং">
+                    </div>
                     <h3>হোম ক্লিনিং</h3>
                     <p>বাড়ি কিংবা অফিসের নিখুঁত পরিষ্কার</p>
-                    <button class="btn-order" data-service="হোম ক্লিনিং">বুক করুন</button>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('হোম ক্লিনিং')">বুক করুন</button>
                 </div>
-                <div class="service-card" data-name="বিউটি অ্যান্ড কেয়ার beauty care salon">
-                    <div class="img-box">বিউটি কেয়ার</div>
+                <div class="service-card" data-name="বাড়ি ট্রান্সফার পরিষেবা house shifting" onclick="triggerBooking('বাড়ি ট্রান্সফার পরিষেবা')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=900&q=80" alt="বাড়ি ট্রান্সফার">
+                    </div>
+                    <h3>বাড়ি ট্রান্সফার</h3>
+                    <p>দ্রুত, নিরাপদ ও পারদর্শী হাউস শিফটিং সেবা</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('বাড়ি ট্রান্সফার পরিষেবা')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="গাড়ি বুকিং সার্ভিস car booking" onclick="triggerBooking('গাড়ি বুকিং সার্ভিস')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=80" alt="গাড়ি বুকিং">
+                    </div>
+                    <h3>একটি গাড়ি বুক করুন</h3>
+                    <p>দরদাম ও ফিটনেস অনুযায়ী সাশ্রয়ী ভাড়া</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('গাড়ি বুকিং সার্ভিস')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="দূরপাল্লা/দীর্ঘপথ গাড়ি travel car" onclick="triggerBooking('দূরপাল্লা/দীর্ঘপথ গাড়ি')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80" alt="ট্রাভেল গাড়ি">
+                    </div>
+                    <h3>দর্পণ/দীর্ঘপথ গাড়ি</h3>
+                    <p>মসৃণ ভ্রমণের জন্য নির্ভরযোগ্য ট্রাভেল সেবা</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('দূরপাল্লা/দীর্ঘপথ গাড়ি')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="বিউটি অ্যান্ড কেয়ার beauty care salon" onclick="triggerBooking('বিউটি অ্যান্ড কেয়ার')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80" alt="বিউটি অ্যান্ড কেয়ার">
+                    </div>
                     <h3>বিউটি অ্যান্ড কেয়ার</h3>
-                    <p>ঘরে বসেই পার্লার সার্ভিস নিন</p>
-                    <button class="btn-order" data-service="বিউটি অ্যান্ড কেয়ার">বুক করুন</button>
+                    <p>ঘরে বসেই পার্লার সেবা নিন</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('বিউটি অ্যান্ড কেয়ার')">বুক করুন</button>
                 </div>
-                <div class="service-card" data-name="প্লাম্বিং সার্ভিস plumbing">
-                    <div class="img-box">প্লাম্বিং সার্ভিস</div>
+                <div class="service-card" data-name="প্লাম্বিং সার্ভিস plumbing" onclick="triggerBooking('প্লাম্বিং সার্ভিস')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=900&q=80" alt="প্লাম্বিং সার্ভিস">
+                    </div>
                     <h3>প্লাম্বিং সার্ভিস</h3>
-                    <p>অভিজ্ঞ টেকনিশিয়ান দ্বারা কাজ</p>
-                    <button class="btn-order" data-service="প্লাম্বিং সার্ভিস">বুক করুন</button>
+                    <p>অভিজ্ঞ টেকনিশিয়ান দ্বারা নিখুঁত কাজ</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('প্লাম্বিং সার্ভিস')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="লন্ড্রি সার্ভিস laundry pick and delivery" onclick="triggerBooking('লন্ড্রি সার্ভিস (পিক অ্যান্ড ডেলিভারি)')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=900&q=80" alt="লন্ড্রি সার্ভিস">
+                    </div>
+                    <h3>লন্ড্রি সার্ভিস</h3>
+                    <p>ঘরে বসেই আয়রন ও ওয়াশ সেবা</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('লন্ড্রি সার্ভিস (পিক অ্যান্ড ডেলিভারি)')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="হোম সেলুন salon men kids grooming" onclick="triggerBooking('হোম সেলুন (পুরুষ ও শিশু)')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=900&q=80" alt="হোম সেলুন">
+                    </div>
+                    <h3>হোম সেলুন</h3>
+                    <p>প্রফেশনাল হেয়ারকাট ও গ্রুমিং</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('হোম সেলুন (পুরুষ ও শিশু)')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="আইপিএস ও ব্যাটারি সার্ভিস ips battery service" onclick="triggerBooking('আইপিএস ও ব্যাটারি সার্ভিস')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=80" alt="আইপিএস ও ব্যাটারি">
+                    </div>
+                    <h3>আইপিএস ও ব্যাটারি</h3>
+                    <p>বিরামহীন বিদ্যুতের নির্ভরযোগ্য সমাধান</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('আইপিএস ও ব্যাটারি সার্ভিস')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="এলপিজি গ্যাস ও চুলা সার্ভিসিং lpg gas stove repair" onclick="triggerBooking('এলপিজি গ্যাস ও চুলা সার্ভিসিং')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80" alt="এলপিজি গ্যাস">
+                    </div>
+                    <h3>এলপিজি গ্যাস</h3>
+                    <p>নিরাপদ সিলিন্ডার ও দ্রুত চুলা মেরামত</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('এলপিজি গ্যাস ও চুলা সার্ভিসিং')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="ইলেকট্রিক মিস্ত্রি electrician wiring" onclick="triggerBooking('ইলেকট্রিক মিস্ত্রি')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=900&q=80" alt="ইলেকট্রিক মিস্ত্রি">
+                    </div>
+                    <h3>ইলেকট্রিক মিস্ত্রি</h3>
+                    <p>নিরাপদ ও দক্ষ ওয়্যারিং সেবা</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('ইলেকট্রিক মিস্ত্রি')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="হোম টিউটর home tutor education" onclick="triggerBooking('হোম টিউটর')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="হোম টিউটর">
+                    </div>
+                    <h3>হোম টিউটর</h3>
+                    <p>অভিজ্ঞ শিক্ষক দ্বারা যত্নশীল পড়াশোনা</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('হোম টিউটর')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="বিশ্বস্ত বুয়া ও কেয়ারগিভার maid caregiver" onclick="triggerBooking('বিশ্বস্ত বুয়া ও কেয়ারগিভার')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80" alt="বুয়া ও কেয়ারগিভার">
+                    </div>
+                    <h3>বুয়া ও কেয়ারগিভার</h3>
+                    <p>কাজের জন্য সৎ ও দায়িত্বশীল সাহায্যকারী</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('বিশ্বস্ত বুয়া ও কেয়ারগিভার')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="জরুরি ঔষধ সেবা emergency medicine" onclick="triggerBooking('জরুরি ঔষধ সেবা')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80" alt="ঔষধ সেবা">
+                    </div>
+                    <h3>জরুরি ঔষধ সেবা</h3>
+                    <p>ঘরে বসেই ১০% ছাড়ে জেনুইন মেডিসিন</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('জরুরি ঔষধ সেবা')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="অ্যাম্বুলেন্স সেবা ambulance" onclick="triggerBooking('অ্যাম্বুলেন্স সেবা')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=80" alt="অ্যাম্বুলেন্স">
+                    </div>
+                    <h3>অ্যাম্বুলেন্স সেবা</h3>
+                    <p>জরুরি মুহূর্তে দ্রুত ও নিরাপদ পরিবহন</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('অ্যাম্বুলেন্স সেবা')">বুক করুন</button>
+                </div>
+                <div class="service-card" data-name="ফ্রেশ মিল্ক fresh milk milk" onclick="triggerBooking('ফ্রেশ মিল্ক')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=900&q=80" alt="ফ্রেশ মিল্ক">
+                    </div>
+                    <h3>ফ্রেশ মিল্ক</h3>
+                    <p>বিশুদ্ধতার সাথে কোনো আপস নয়—একেবারে ফ্রেশ মিল্ক!</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('ফ্রেশ মিল্ক')">বুক করুন</button>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Admin Panel View (Hidden by default) -->
+    <!-- Floating WhatsApp Widget with Pre-filled Service Options Menu -->
+    <div class="whatsapp-float-container">
+        <div class="wa-status-tooltip" id="waStatusTooltip">Off today, Open tomorrow (8:00 AM - 10:00 PM)</div>
+        
+        <!-- Home Service Pre-filled Options Menu Box -->
+        <div class="whatsapp-menu-box" id="whatsappMenuBox">
+            <div class="whatsapp-menu-header">
+                <span>কোন সেবাটি নিতে চান?</span>
+                <span style="cursor: pointer; color: #d9534f; font-weight: bold;" onclick="toggleWhatsAppMenu(event)">✕</span>
+            </div>
+            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমি এসি সার্ভিসিং সম্পর্কে বিস্তারিত জানতে চাই।')">
+                এসি সার্ভিসিং করাতে চাই <span>💬</span>
+            </div>
+            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমি হোম ক্লিনিং সার্ভিস নিতে চাই।')">
+                হোম ক্লিনিং সার্ভিস চাই <span>💬</span>
+            </div>
+            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, প্লাম্বিং বা ইলেকট্রিক কাজ সম্পর্কে জানতে চাই।')">
+                প্লাম্বিং বা ইলেকট্রিক কাজ <span>💬</span>
+            </div>
+            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আপনাদের অন্যান্য সার্ভিস সম্পর্কে জানতে চাই।')">
+                অন্যান্য সার্ভিস সম্পর্কে জিজ্ঞাসা <span>💬</span>
+            </div>
+        </div>
+
+        <div class="whatsapp-chat-bubble" onclick="toggleWhatsAppMenu(event)">
+            👋 Chat with us
+        </div>
+        <div class="whatsapp-icon-btn" onclick="toggleWhatsAppMenu(event)" title="Chat with us">
+            <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        </div>
+    </div>
+
     <div id="adminPanelContainer">
         <div class="admin-header">
-            <h2>অ্যাডমিন ড্যাশবোর্ড - বুকিং ম্যানেজমেন্ট</h2>
-            <div style="display: flex; gap: 10px;">
-                <button id="changeAdminPassBtn" style="background: #f0ad4e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">পাসওয়ার্ড পরিবর্তন করুন</button>
-                <button id="backToUserBtn" style="background: white; color: #008060; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">ইউজার সাইটে ফিরুন</button>
+            <h2>অ্যাডমিন ড্যাশবোর্ড - বুকিং ম্যানেজমেন্ট (গাজীপুর)</h2>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button id="changeAdminPassBtn" style="background: #f0ad4e; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px;">পাসওয়ার্ড পরিবর্তন</button>
+                <button id="backToUserBtn" style="background: white; color: #008060; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px;">ইউজার সাইটে ফিরুন</button>
             </div>
         </div>
         <div style="overflow-x: auto;">
@@ -127,24 +804,23 @@
                         <th>অর্ডার আইডি</th>
                         <th>সেবার নাম</th>
                         <th>গ্রাহকের নাম ও ফোন</th>
-                        <th>ঠিকানা ও সমস্যা</th>
-                        <th>স্ট্যাটাস ও ফি</th>
+                        <th>ঠিকানা ও বিবরণ</th>
+                        <th>ছবিসমূহ</th>
+                        <th>স্ট্যাটাস ও পেমেন্ট ইনফো</th>
                         <th>অ্যাকশন</th>
                     </tr>
                 </thead>
                 <tbody id="adminOrdersTableBody">
-                    <tr><td colspan="6" style="text-align: center;">লোড হচ্ছে...</td></tr>
+                    <tr><td colspan="7" style="text-align: center;">লোড হচ্ছে...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Admin Login Modal -->
     <div id="adminLoginModal" class="modal">
-        <div class="modal-content" style="max-width: 350px;">
+        <div class="modal-content" style="max-width: 330px;">
             <span class="close-btn" id="closeAdminLogin">&times;</span>
             <h2>অ্যাডমিন লগইন</h2>
-            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">ডিফল্ট পাসওয়ার্ড: <b>1234</b></p>
             <form id="adminLoginForm">
                 <input type="password" id="adminPasswordInput" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required>
                 <button type="submit" class="btn-submit">লগইন করুন</button>
@@ -152,11 +828,10 @@
         </div>
     </div>
 
-    <!-- Admin Password Change Modal -->
     <div id="adminChangePassModal" class="modal">
-        <div class="modal-content" style="max-width: 350px;">
+        <div class="modal-content" style="max-width: 330px;">
             <span class="close-btn" id="closeAdminPassModal">&times;</span>
-            <h2>অ্যাডমিন পাসওয়ার্ড পরিবর্তন</h2>
+            <h2>পাসওয়ার্ড পরিবর্তন</h2>
             <form id="adminChangePassForm">
                 <input type="password" id="currentPassInput" placeholder="বর্তমান পাসওয়ার্ড" required>
                 <input type="password" id="newPassInput" placeholder="নতুন পাসওয়ার্ড (কমপক্ষে ৪ সংখ্যা)" required>
@@ -165,7 +840,31 @@
         </div>
     </div>
 
-    <!-- Booking Modal -->
+    <div id="adminSetPriceModal" class="modal">
+        <div class="modal-content" style="max-width: 350px;">
+            <span class="close-btn" id="closeAdminSetPrice">&times;</span>
+            <h2>বুকিং ফি ও পেমেন্ট নম্বর সেট করুন</h2>
+            <form id="adminSetPriceForm">
+                <input type="hidden" id="priceOrderId">
+                
+                <label style="font-size: 12px; font-weight: bold;">বুকিং ফি বা অ্যামাউন্ট (টাকা):</label>
+                <input type="number" id="adminFeeAmount" placeholder="যেমন: 100" required>
+
+                <label style="font-size: 12px; font-weight: bold;">পেমেন্ট মাধ্যম:</label>
+                <select id="adminPaymentGateway" required>
+                    <option value="bKash Personal">bKash Personal</option>
+                    <option value="Nagad Personal">Nagad Personal</option>
+                    <option value="Rocket Personal">Rocket Personal</option>
+                </select>
+
+                <label style="font-size: 12px; font-weight: bold;">মার্চেন্ট/রিসিভ করার নম্বর:</label>
+                <input type="text" id="adminReceivePhone" placeholder="যেমন: 01800000000" required>
+
+                <button type="submit" class="btn-submit">সেট করুন ও কনফার্ম করুন</button>
+            </form>
+        </div>
+    </div>
+
     <div id="bookingModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" id="closeBooking">&times;</span>
@@ -174,63 +873,83 @@
                 <input type="hidden" id="selectedService">
                 <input type="text" id="clientName" placeholder="আপনার নাম" required>
                 <input type="tel" id="clientPhone" placeholder="মোবাইল নম্বর" required>
-                <input type="text" id="clientAddress" placeholder="আপনার সম্পূর্ণ ঠিকানা" required>
+                <input type="text" id="clientAddress" placeholder="আপনার সম্পূর্ণ ঠিকানা (গাজীপুরের ভেতর)" required>
                 <textarea id="problemDescription" placeholder="আপনার সমস্যা বা কাজের বিবরণ বিস্তারিত লিখুন..." rows="3" required></textarea>
-                <label style="display:block; margin-bottom: 5px; font-weight: bold; font-size: 13px;">সমস্যার ছবি (ঐচ্ছিক, সর্বোচ্চ ৩টি):</label>
-                <input type="file" id="problemImages" accept="image/*" multiple style="padding: 6px; border: 1px dashed #008060; background: #fafafa; margin-bottom:10px;">
-                <div id="imagePreviewContainer" style="display: flex; gap: 10px; margin-bottom: 10px;"></div>
-                <input type="date" id="bookingDate" required>
+                <label for="bookingDate" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">বুকিংয়ের তারিখ</label>
+                <div class="booking-date-row">
+                    <input type="date" id="bookingDate" required>
+                    <button type="button" id="clearBookingDate" class="clear-date-btn">তারিখ পরিষ্কার</button>
+                </div>
+                
+                <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">সমস্যার ছবি যোগ করুন (ঐচ্ছিক - সর্বোচ্চ ৫টি):</label>
+                <div class="image-upload-container">
+                    <div class="img-upload-box" id="box1">
+                        <span id="plus1">+</span>
+                        <input type="file" id="file1" accept="image/*" onchange="previewImage(event, 1)">
+                        <img id="preview1" style="display:none;">
+                        <button type="button" id="removeBtn1" class="remove-img-btn" style="display:none;" onclick="removeImage(1, event)">✕</button>
+                    </div>
+                    <div class="img-upload-box" id="box2">
+                        <span id="plus2">+</span>
+                        <input type="file" id="file2" accept="image/*" onchange="previewImage(event, 2)">
+                        <img id="preview2" style="display:none;">
+                        <button type="button" id="removeBtn2" class="remove-img-btn" style="display:none;" onclick="removeImage(2, event)">✕</button>
+                    </div>
+                    <div class="img-upload-box" id="box3">
+                        <span id="plus3">+</span>
+                        <input type="file" id="file3" accept="image/*" onchange="previewImage(event, 3)">
+                        <img id="preview3" style="display:none;">
+                        <button type="button" id="removeBtn3" class="remove-img-btn" style="display:none;" onclick="removeImage(3, event)">✕</button>
+                    </div>
+                    <div class="img-upload-box" id="box4">
+                        <span id="plus4">+</span>
+                        <input type="file" id="file4" accept="image/*" onchange="previewImage(event, 4)">
+                        <img id="preview4" style="display:none;">
+                        <button type="button" id="removeBtn4" class="remove-img-btn" style="display:none;" onclick="removeImage(4, event)">✕</button>
+                    </div>
+                    <div class="img-upload-box" id="box5">
+                        <span id="plus5">+</span>
+                        <input type="file" id="file5" accept="image/*" onchange="previewImage(event, 5)">
+                        <img id="preview5" style="display:none;">
+                        <button type="button" id="removeBtn5" class="remove-img-btn" style="display:none;" onclick="removeImage(5, event)">✕</button>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-submit">বুকিং কনফার্ম করুন</button>
             </form>
         </div>
     </div>
 
-    <!-- User Payment Modal -->
     <div id="userPaymentModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" id="closeUserPayment">&times;</span>
             <h2>পেমেন্ট ইনফরমেশন প্রদান করুন</h2>
-            <div id="paymentInstructionsBox" style="background: #eef9f5; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px; color: #008060; border: 1px solid #cce8dc;"></div>
+            <div id="userPaymentInstructionBox" style="background: #eef9f5; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 12px; color: #008060; border: 1px solid #cce8dc;"></div>
 
             <form id="userPaymentForm">
                 <input type="hidden" id="payOrderId">
                 
-                <label style="font-size: 13px; font-weight: bold;">আপনার নাম:</label>
-                <input type="text" id="payUserName" placeholder="নাম লিখুন" required>
+                <label style="font-size: 12px; font-weight: bold;">যে নম্বর থেকে টাকা পাঠিয়েছেন:</label>
+                <input type="text" id="senderPhone" placeholder="যেমন: 01811111111" required>
 
-                <label style="font-size: 13px; font-weight: bold;">মোবাইল নম্বর:</label>
-                <input type="tel" id="payUserPhone" placeholder="মোবাইল নম্বর" required>
-
-                <label style="font-size: 13px; font-weight: bold;">পেমেন্ট মাধ্যম:</label>
-                <select id="selectedGateway" required>
-                    <option value="bKash Personal">bKash Personal</option>
-                    <option value="Nagad Personal">Nagad Personal</option>
-                    <option value="Rocket Personal">Rocket Personal</option>
-                </select>
-
-                <label style="font-size: 13px; font-weight: bold;">আপনার পার্সোনাল নম্বর (যেখান থেকে টাকা পাঠিয়েছেন):</label>
-                <input type="text" id="senderPhone" placeholder="যেমন: 01800000000" required>
-
-                <label style="font-size: 13px; font-weight: bold;">ট্রানজেকশন আইডি (TrxID):</label>
-                <input type="text" id="clientTrxId" placeholder="যেমন: 9H87G6F5" required style="text-transform: uppercase;">
+                <label style="font-size: 12px; font-weight: bold;">ট্রানজেকশন আইডি (TrxID):</label>
+                <input type="text" id="clientTrxId" placeholder="যেমন: 9H87G6F5" required style="text-transform: none;">
 
                 <button type="submit" class="btn-submit" style="background: #0275d8;">পেমেন্ট সাবমিট করুন</button>
             </form>
         </div>
     </div>
 
-    <!-- My Orders Modal -->
     <div id="ordersModal" class="modal">
-        <div class="modal-content" style="max-width: 580px;">
+        <div class="modal-content" style="max-width: 500px;">
             <span class="close-btn" id="closeOrders">&times;</span>
-            <h2>আমার বুকিং তালিকা</h2>
-            <div id="ordersList" style="margin-top: 15px; max-height: 380px; overflow-y: auto;"></div>
+            <h2 style="font-size: 28px; font-weight: 900; color: #0b5c46;">আমার বুকিং তালিকা</h2>
+            <div id="ordersList" style="margin-top: 12px; max-height: 350px; overflow-y: auto; font-size: 14px; font-weight: 700;"></div>
         </div>
     </div>
 
-    <!-- Login/Register Modal -->
     <div id="loginModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 350px;">
             <span class="close-btn" id="closeLogin">&times;</span>
             <h2 id="loginTitle">লগইন করুন</h2>
             <form id="authForm">
@@ -241,7 +960,7 @@
                 <input type="password" id="authPassInput" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট)" required>
                 <button type="submit" class="btn-submit" id="authSubmitBtn">লগইন</button>
             </form>
-            <p style="margin-top: 15px; text-align: center; font-size: 14px;">
+            <p style="margin-top: 12px; text-align: center; font-size: 13px;">
                 <span id="toggleAuthText">নতুন অ্যাকাউন্ট খুলতে চান?</span>
                 <a href="#" id="toggleAuthLink" style="color: #008060; font-weight: bold; text-decoration: none;">রেজিস্ট্রেশন করুন</a>
             </p>
@@ -250,13 +969,90 @@
 
     <footer>
         <div class="footer-content">
-            <h3>ShebaNow</h3>
-            <p>আপনার প্রতিদিনের সেবায় আমরা সদা প্রস্তুত।</p>
-            <p>© 2026 ShebaNow. All Rights Reserved.</p>
+            <h3><span class="brand-green">Sheba</span><span class="brand-red">Now</span></h3>
+            <p>আপনার প্রতিদিনের সেবায় আমরা সদা প্রস্তুত (শুধুমাত্র গাজীপুর).</p>
+            <p>© 2026 <span class="brand-green">Sheba</span><span class="brand-red">Now</span>. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Firebase SDK Scripts -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzqvReJoGQdOigth3KdBrCKDNFCvHWitY&libraries=places&callback=initGazipurMap" async defer></script>
+
+    <script>
+        window.initGazipurMap = function () {
+            const mapContainer = document.getElementById("gazipurMap");
+            if (!mapContainer) return;
+
+            const defaultCenter = { lat: 24.0104, lng: 90.4185 };
+            const map = new google.maps.Map(mapContainer, {
+                center: defaultCenter,
+                zoom: 12,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+                zoomControl: true,
+                gestureHandling: "greedy"
+            });
+
+            const marker = new google.maps.Marker({
+                position: defaultCenter,
+                map: map,
+                title: "গাজীপুর কোনাবাড়ি",
+                animation: google.maps.Animation.DROP
+            });
+
+            window.gazipurMapInstance = map;
+            window.currentGazipurMarker = marker;
+
+            const input = document.getElementById("gazipurLocationSearch");
+            if (input) {
+                const autocomplete = new google.maps.places.Autocomplete(input, {
+                    types: ["address"],
+                    componentRestrictions: { country: "bd" },
+                    fields: ["formatted_address", "geometry", "name"]
+                });
+
+                autocomplete.bindTo("bounds", map);
+                autocomplete.addListener("place_changed", () => {
+                    const place = autocomplete.getPlace();
+                    if (!place.geometry || !place.geometry.location) {
+                        return;
+                    }
+
+                    const placeLocation = place.geometry.location;
+                    map.setCenter(placeLocation);
+                    map.setZoom(15);
+                    marker.setPosition(placeLocation);
+                    marker.setTitle(place.name || place.formatted_address || "Selected location");
+
+                    const addressText = place.formatted_address || place.name || "গাজীপুর";
+                    const selectedText = document.getElementById("selectedLocationText");
+                    if (selectedText) {
+                        selectedText.textContent = addressText;
+                    }
+                    input.value = addressText;
+                });
+            }
+
+            map.addListener("click", (event) => {
+                marker.setPosition(event.latLng);
+                map.panTo(event.latLng);
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ location: event.latLng }, (results, status) => {
+                    if (status === "OK" && results[0]) {
+                        const clickedAddress = results[0].formatted_address || "গাজীপুর";
+                        const selectedText = document.getElementById("selectedLocationText");
+                        if (selectedText) {
+                            selectedText.textContent = clickedAddress;
+                        }
+                        if (input) {
+                            input.value = clickedAddress;
+                        }
+                    }
+                });
+            });
+        };
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -276,70 +1072,410 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // UI & Navigation Elements
+        const GOOGLE_MAPS_API_KEY = "AIzaSyDzqvReJoGQdOigth3KdBrCKDNFCvHWitY";
+        const FALLBACK_BANNER_URL = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80';
+        const DEFAULT_BANNER_IMAGES = [
+            'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80',
+            'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1600&q=80',
+            'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1600&q=80'
+        ];
+        const DEFAULT_LOCATION_TEXT = 'গাজীপুর (কোনাবাড়ি)';
+        const SERVICE_IMAGE_CONFIG = [
+            { key: 'ac-servicing', matchers: ['এসি সার্ভিসিং', 'ac servicing', 'ac service'] },
+            { key: 'home-cleaning', matchers: ['হোম ক্লিনিং', 'home cleaning', 'cleaning'] },
+            { key: 'home-transfer', matchers: ['বাড়ি ট্রান্সফার', 'house shifting', 'home transfer', 'ট্রান্সফার'] },
+            { key: 'car-booking', matchers: ['গাড়ি বুকিং', 'car booking', 'গাড়ি বুক করুন'] },
+            { key: 'travel-car', matchers: ['দূরপাল্লা', 'দীর্ঘপথ', 'travel car', 'দর্পণ'] },
+            { key: 'beauty-care', matchers: ['বিউটি অ্যান্ড কেয়ার', 'beauty care', 'beauty'] },
+            { key: 'plumbing', matchers: ['প্লাম্বিং', 'plumbing'] },
+            { key: 'laundry', matchers: ['লন্ড্রি', 'laundry', 'washing'] },
+            { key: 'home-salon', matchers: ['হোম সেলুন', 'home salon', 'গ্রুমিং'] },
+            { key: 'ips-battery', matchers: ['আইপিএস', 'ব্যাটারি', 'ips battery'] },
+            { key: 'lpg-gas', matchers: ['এলপিজি', 'lpg gas', 'গ্যাস'] },
+            { key: 'electrician', matchers: ['ইলেকট্রিক', 'electrician', 'মিস্ত্রি'] },
+            { key: 'home-tutor', matchers: ['হোম টিউটর', 'home tutor', 'টিউটর'] },
+            { key: 'maid-caregiver', matchers: ['বুয়া', 'কেয়ারগিভার', 'maid', 'caregiver'] },
+            { key: 'emergency-medicine', matchers: ['ঔষধ', 'medicine', 'মেডিসিন'] },
+            { key: 'ambulance', matchers: ['অ্যাম্বুলেন্স', 'ambulance'] },
+            { key: 'fresh-milk', matchers: ['ফ্রেশ মিল্ক', 'fresh milk', 'milk'] }
+        ];
+
+        function normalizeServiceKey(value) {
+            return String(value || '')
+                .toLowerCase()
+                .replace(/&/g, ' and ')
+                .replace(/[^a-z0-9\u0980-\u09ff\s-]+/g, ' ')
+                .trim()
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        }
+
+        function resolveServiceImageKey(card) {
+            const rawText = `${card.getAttribute('data-name') || ''} ${card.querySelector('h3')?.textContent || ''}`.toLowerCase();
+            const match = SERVICE_IMAGE_CONFIG.find(({ matchers }) => matchers.some((matcher) => rawText.includes(String(matcher).toLowerCase())));
+            if (match) return match.key;
+            return normalizeServiceKey(card.getAttribute('data-name') || card.querySelector('h3')?.textContent || 'service');
+        }
+
+        function storeDefaultServiceImages() {
+            document.querySelectorAll('.service-card img').forEach((img) => {
+                if (!img.dataset.defaultUrl) {
+                    img.dataset.defaultUrl = img.src;
+                }
+            });
+        }
+
+        window.applyServiceCardImages = async function() {
+            const serviceImagesRef = ref(db, 'siteSettings/serviceImages');
+            try {
+                const snapshot = await get(serviceImagesRef);
+                const customImages = snapshot.exists() ? snapshot.val() : {};
+
+                document.querySelectorAll('.service-card').forEach((card) => {
+                    const img = card.querySelector('img');
+                    if (!img) return;
+                    const key = resolveServiceImageKey(card);
+                    const customUrl = customImages[key] && customImages[key].imageUrl ? customImages[key].imageUrl : null;
+                    img.src = customUrl || img.dataset.defaultUrl || img.src;
+                });
+            } catch (error) {
+                console.error('Service image load failed:', error);
+            }
+        };
+
+        let bannerImages = [...DEFAULT_BANNER_IMAGES];
+        let bannerCurrentIndex = 0;
+        let bannerRotateTimer = null;
+
+        function setLocationText(locationValue) {
+            selectedLocationText.innerText = `গাজীপুর (${locationValue})`;
+        }
+
+        function startBannerRotation() {
+            const bannerImage = document.getElementById('dynamicBannerImage');
+            if (!bannerImage || bannerImages.length <= 1) return;
+
+            if (bannerRotateTimer) clearInterval(bannerRotateTimer);
+
+            bannerRotateTimer = setInterval(() => {
+                bannerCurrentIndex = (bannerCurrentIndex + 1) % bannerImages.length;
+                bannerImage.src = bannerImages[bannerCurrentIndex];
+            }, 5000);
+        }
+
+        function normalizeBannerList(bannerData) {
+            if (!bannerData) return DEFAULT_BANNER_IMAGES;
+
+            if (Array.isArray(bannerData)) {
+                const list = bannerData
+                    .map((item) => typeof item === 'string' ? item : item && item.imageUrl)
+                    .filter(Boolean);
+                return list.length ? list : DEFAULT_BANNER_IMAGES;
+            }
+
+            if (Array.isArray(bannerData.images)) {
+                const list = bannerData.images
+                    .map((item) => typeof item === 'string' ? item : item && item.imageUrl)
+                    .filter(Boolean);
+                return list.length ? list : DEFAULT_BANNER_IMAGES;
+            }
+
+            if (bannerData.imageUrl) return [bannerData.imageUrl];
+            return DEFAULT_BANNER_IMAGES;
+        }
+
+        async function loadDynamicBanner() {
+            const bannerImage = document.getElementById('dynamicBannerImage');
+            if (!bannerImage) return;
+
+            try {
+                const bannerRef = ref(db, 'siteSettings/bannerImages');
+                const snapshot = await get(bannerRef);
+                const bannerData = snapshot.exists() ? snapshot.val() : null;
+                let resolvedImages = normalizeBannerList(bannerData);
+
+                if (!resolvedImages.length) {
+                    const legacyRef = ref(db, 'siteSettings/banner');
+                    const legacySnapshot = await get(legacyRef);
+                    const legacyData = legacySnapshot.exists() ? legacySnapshot.val() : null;
+                    resolvedImages = normalizeBannerList(legacyData);
+                }
+
+                bannerImages = resolvedImages;
+                bannerCurrentIndex = 0;
+                bannerImage.src = bannerImages[0];
+                startBannerRotation();
+            } catch (error) {
+                console.error('Banner fetch error:', error);
+                bannerImages = [...DEFAULT_BANNER_IMAGES];
+                bannerCurrentIndex = 0;
+                bannerImage.src = bannerImages[0];
+                startBannerRotation();
+            }
+        }
+
+        storeDefaultServiceImages();
+        loadDynamicBanner();
+        window.applyServiceCardImages();
+
+        // Toggle Pre-filled Service Options Menu (Like your Screenshot)
+        window.toggleWhatsAppMenu = function(e) {
+            e.stopPropagation();
+            const menuBox = document.getElementById("whatsappMenuBox");
+            const tooltip = document.getElementById("waStatusTooltip");
+            tooltip.style.display = "none"; // hide offline tooltip if open
+            
+            if (menuBox.style.display === "block") {
+                menuBox.style.display = "none";
+            } else {
+                menuBox.style.display = "block";
+            }
+        }
+
+        // Send Pre-filled Message to WhatsApp (Time Schedule checked: 8 AM to 10 PM)
+        window.sendWhatsAppPreFilled = function(messageText) {
+            const now = new Date();
+            const currentHour = now.getHours();
+            
+            if (currentHour >= 8 && currentHour < 22) {
+                const phoneNumber = "8801577707450";
+                const encodedMsg = encodeURIComponent(messageText);
+                window.open(`https://wa.me/${phoneNumber}?text=${encodedMsg}`, '_blank');
+                document.getElementById("whatsappMenuBox").style.display = "none";
+            } else {
+                document.getElementById("whatsappMenuBox").style.display = "none";
+                const tooltip = document.getElementById("waStatusTooltip");
+                tooltip.style.display = "block";
+                setTimeout(() => {
+                    tooltip.style.display = "none";
+                }, 4000);
+            }
+        }
+
+        // Close menu when clicking outside
+        window.addEventListener("click", () => {
+            const menuBox = document.getElementById("whatsappMenuBox");
+            if (menuBox) menuBox.style.display = "none";
+        });
+
+        const locationContainer = document.getElementById("locationContainer");
+        const locationPopup = document.getElementById("locationPopup");
+        const closePopupBtn = document.getElementById("closePopupBtn");
+        const cityModal = document.getElementById("cityModal");
+        const closeCityModal = document.getElementById("closeCityModal");
+        const areaModal = document.getElementById("areaModal");
+        const closeAreaModal = document.getElementById("closeAreaModal");
+        const selectedLocationText = document.getElementById("selectedLocationText");
+
+        locationContainer.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if(locationPopup.style.display === "block") {
+                locationPopup.style.display = "none";
+                cityModal.style.display = "flex";
+            } else {
+                locationPopup.style.display = "block";
+            }
+        });
+
+        closePopupBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            locationPopup.style.display = "none";
+            cityModal.style.display = "flex";
+        });
+
+        closeCityModal.addEventListener("click", () => {
+            cityModal.style.display = "none";
+        });
+
+        closeAreaModal.addEventListener("click", () => {
+            areaModal.style.display = "none";
+        });
+
+        window.openGazipurAreas = function() {
+            cityModal.style.display = "none";
+            areaModal.style.display = "flex";
+        }
+
+        window.detectCurrentLocationSmart = function() {
+            cityModal.style.display = "none";
+            if (!navigator.geolocation) {
+                alert("আপনার ব্রাউজার জিওলোকেশন সমর্থন করে না।");
+                return;
+            }
+
+            alert("আপনার জিপিএস স্যাটেলাইট ও ম্যাপ থেকে সঠিক লোকেশন ট্র্যাক করা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...");
+
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                try {
+                    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${GOOGLE_MAPS_API_KEY}`;
+                    const response = await fetch(geocodeUrl);
+                    const data = await response.json();
+
+                    if (data.status === "OK" && data.results && data.results.length > 0) {
+                        const formattedAddress = (data.results[0].formatted_address || "").trim();
+                        const input = document.getElementById("gazipurLocationSearch");
+                        if (input) {
+                            input.value = formattedAddress || "গাজীপুর";
+                        }
+
+                        if (formattedAddress) {
+                            selectedLocationText.innerText = formattedAddress;
+
+                            if (window.gazipurMapInstance && window.currentGazipurMarker) {
+                                const exactLocation = new google.maps.LatLng(lat, lon);
+                                window.gazipurMapInstance.setCenter(exactLocation);
+                                window.gazipurMapInstance.setZoom(16);
+                                window.currentGazipurMarker.setPosition(exactLocation);
+                                window.currentGazipurMarker.setTitle(formattedAddress);
+                            }
+
+                            alert(`সফল! আপনার সঠিক বর্তমান অবস্থান: ${formattedAddress}`);
+                            return;
+                        }
+                    }
+
+                    selectedLocationText.innerText = DEFAULT_LOCATION_TEXT;
+                    alert("সঠিক লোকেশন নাম পাওয়া যায়নি, তাই ডিফল্টভাবে 'গাজীপুর (কোনাবাড়ি)' সেট করা হলো।");
+                } catch (error) {
+                    console.error("Location geocode failed:", error);
+                    selectedLocationText.innerText = DEFAULT_LOCATION_TEXT;
+                    alert("ম্যাপ সার্ভার কানেক্ট করতে সমস্যা হয়েছে। 'গাজীপুর (কোনাবাড়ি)' সিলেক্ট করা হলো।");
+                }
+            }, (error) => {
+                console.error("Location permission error:", error);
+                alert("লোকেশন পারমিশন দেওয়া হয়নি। দয়া করে ম্যানুয়ালি তালিকা থেকে আপনার এলাকা বেছে নিন।");
+                areaModal.style.display = "flex";
+            }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+        }
+
+        window.setFinalLocation = function(locationName) {
+            selectedLocationText.innerText = `গাজীপুর (${locationName})`;
+            areaModal.style.display = "none";
+        }
+
         const userMainView = document.getElementById("userMainView");
         const adminPanelContainer = document.getElementById("adminPanelContainer");
-        const adminNavBtn = document.getElementById("adminNavBtn");
         const backToUserBtn = document.getElementById("backToUserBtn");
         const adminLoginModal = document.getElementById("adminLoginModal");
         const closeAdminLogin = document.getElementById("closeAdminLogin");
         const adminLoginForm = document.getElementById("adminLoginForm");
         const adminPasswordInput = document.getElementById("adminPasswordInput");
 
-        // Admin Password Change Elements
-        const adminChangePassModal = document.getElementById("adminChangePassModal");
-        const changeAdminPassBtn = document.getElementById("changeAdminPassBtn");
-        const closeAdminPassModal = document.getElementById("closeAdminPassModal");
-        const adminChangePassForm = document.getElementById("adminChangePassForm");
+        let uploadedImages = { 1: null, 2: null, 3: null, 4: null, 5: null };
 
-        // Navigation click handlers
-        adminNavBtn.addEventListener("click", () => {
-            if(sessionStorage.getItem("isAdminLoggedIn") === "true") {
-                userMainView.style.display = "none";
-                adminPanelContainer.style.display = "block";
-                loadAdminOrders();
-            } else {
-                adminLoginModal.style.display = "flex";
+        function generateOrderId() {
+            const chars = "0123456789";
+            let result = "SB";
+            for (let i = 0; i < 4; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        window.previewImage = function(event, index) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.getElementById(`preview${index}`);
+                    imgElement.src = e.target.result;
+                    imgElement.style.display = "block";
+                    document.getElementById(`plus${index}`).style.display = "none";
+                    document.getElementById(`removeBtn${index}`).style.display = "flex";
+                    uploadedImages[index] = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.removeImage = function(index, e) {
+            e.stopPropagation();
+            uploadedImages[index] = null;
+            document.getElementById(`preview${index}`).src = "";
+            document.getElementById(`preview${index}`).style.display = "none";
+            document.getElementById(`plus${index}`).style.display = "block";
+            document.getElementById(`removeBtn${index}`).style.display = "none";
+            document.getElementById(`file${index}`).value = "";
+        }
+
+        const navAllServices = document.getElementById("navAllServices");
+        navAllServices.addEventListener("click", (e) => {
+            e.preventDefault();
+            if(adminPanelContainer.style.display === "block") {
+                adminPanelContainer.style.display = "none";
+                userMainView.style.display = "block";
+            }
+            const servicesSection = document.getElementById("servicesSection");
+            if(servicesSection) {
+                servicesSection.scrollIntoView({ behavior: 'smooth' });
             }
         });
 
+        const searchInput = document.getElementById("searchInput");
+        const searchBtn = document.getElementById("searchBtn");
+
+        function filterServices() {
+            const query = searchInput.value.toLowerCase().trim();
+            const cards = document.querySelectorAll(".service-card");
+            cards.forEach(card => {
+                const keywords = card.getAttribute("data-name").toLowerCase();
+                const title = card.querySelector("h3").innerText.toLowerCase();
+                const desc = card.querySelector("p").innerText.toLowerCase();
+                if(keywords.includes(query) || title.includes(query) || desc.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+        searchBtn.addEventListener("click", filterServices);
+        searchInput.addEventListener("input", filterServices);
+
         closeAdminLogin.addEventListener("click", () => adminLoginModal.style.display = "none");
+        
         backToUserBtn.addEventListener("click", () => {
             adminPanelContainer.style.display = "none";
             userMainView.style.display = "block";
         });
 
-        // Admin Password Change Modal Controls
-        changeAdminPassBtn.addEventListener("click", () => {
-            adminChangePassModal.style.display = "flex";
-        });
-        closeAdminPassModal.addEventListener("click", () => {
-            adminChangePassModal.style.display = "none";
-        });
+        const adminChangePassModal = document.getElementById("adminChangePassModal");
+        const changeAdminPassBtn = document.getElementById("changeAdminPassBtn");
+        const closeAdminPassModal = document.getElementById("closeAdminPassModal");
+        const adminChangePassForm = document.getElementById("adminChangePassForm");
 
-        // Handle Admin Password Update
-        adminChangePassForm.addEventListener("submit", (e) => {
+        changeAdminPassBtn.addEventListener("click", () => adminChangePassModal.style.display = "flex");
+        closeAdminPassModal.addEventListener("click", () => adminChangePassModal.style.display = "none");
+
+        adminChangePassForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const currentPassInput = document.getElementById("currentPassInput").value.trim();
             const newPassInput = document.getElementById("newPassInput").value.trim();
-            const savedPassword = localStorage.getItem("adminPassword") || "1234";
+
+            const passRef = ref(db, "adminSettings/password");
+            const snapshot = await get(passRef);
+            const savedPassword = snapshot.exists() ? snapshot.val() : "1234";
 
             if(currentPassInput !== savedPassword) {
                 alert("বর্তমান পাসওয়ার্ডটি সঠিক নয়!");
                 return;
             }
 
-            localStorage.setItem("adminPassword", newPassInput);
+            await set(passRef, newPassInput);
             alert("অ্যাডমিন পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!");
             adminChangePassModal.style.display = "none";
             adminChangePassForm.reset();
         });
 
-        // Admin Login Handle
-        adminLoginForm.addEventListener("submit", (e) => {
+        adminLoginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const enteredPass = adminPasswordInput.value.trim();
-            const savedPassword = localStorage.getItem("adminPassword") || "1234";
+
+            const passRef = ref(db, "adminSettings/password");
+            const snapshot = await get(passRef);
+            const savedPassword = snapshot.exists() ? snapshot.val() : "1234";
 
             if(enteredPass === savedPassword) {
                 sessionStorage.setItem("isAdminLoggedIn", "true");
@@ -353,389 +1489,429 @@
             }
         });
 
-        // All Services Scroll
-        document.getElementById("navAllServices").addEventListener("click", () => {
-            adminPanelContainer.style.display = "none";
-            userMainView.style.display = "block";
-            document.getElementById("servicesSection").scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.getElementById("siteLogo").addEventListener("click", () => {
-            adminPanelContainer.style.display = "none";
-            userMainView.style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Search functionality
-        document.getElementById("searchBtn").addEventListener("click", () => {
-            const query = document.getElementById("searchInput").value.toLowerCase().trim();
-            const cards = document.querySelectorAll(".service-card");
-            let found = false;
-            cards.forEach(card => {
-                const name = card.getAttribute("data-name");
-                if(name.includes(query)) {
-                    card.style.display = "block";
-                    found = true;
-                } else {
-                    card.style.display = "none";
-                }
-            });
-            document.getElementById("servicesSection").scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // User Booking Modal Controls
         const bookingModal = document.getElementById("bookingModal");
         const closeBooking = document.getElementById("closeBooking");
-        document.querySelectorAll(".btn-order").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const serviceName = btn.getAttribute("data-service");
-                document.getElementById("selectedService").value = serviceName;
-                document.getElementById("displayServiceName").innerText = serviceName + " বুকিং ফর্ম";
-                bookingModal.style.display = "flex";
-            });
-        });
-        closeBooking.addEventListener("click", () => bookingModal.style.display = "none");
+        const displayServiceName = document.getElementById("displayServiceName");
+        const orderForm = document.getElementById("orderForm");
 
-        // Image Preview Handler
-        document.getElementById("problemImages").addEventListener("change", function(event) {
-            const previewContainer = document.getElementById("imagePreviewContainer");
-            previewContainer.innerHTML = "";
-            const files = event.target.files;
-            if(files.length > 3) {
-                alert("সর্বোচ্চ ৩টি ছবি আপলোড করতে পারবেন।");
-                event.target.value = "";
+        window.triggerBooking = function(serviceName) {
+            if(!auth.currentUser) {
+                alert("বুকিং করতে হলে আগে লগইন করতে হবে!");
+                document.getElementById("loginModal").style.display = "flex";
                 return;
             }
-            for(let i = 0; i < files.length; i++) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.style.width = "50px";
-                    img.style.height = "50px";
-                    img.style.objectFit = "cover";
-                    img.style.borderRadius = "4px";
-                    previewContainer.appendChild(img);
-                }
-                reader.readAsDataURL(files[i]);
+            document.getElementById("selectedService").value = serviceName;
+            displayServiceName.innerText = `${serviceName} বুকিং ফর্ম (গাজীপুর)`;
+            
+            uploadedImages = { 1: null, 2: null, 3: null, 4: null, 5: null };
+            for(let i=1; i<=5; i++) {
+                document.getElementById(`preview${i}`).style.display = "none";
+                document.getElementById(`preview${i}`).src = "";
+                document.getElementById(`plus${i}`).style.display = "block";
+                document.getElementById(`removeBtn${i}`).style.display = "none";
+                document.getElementById(`file${i}`).value = "";
             }
+            bookingModal.style.display = "flex";
+            window.translatePage?.();
+        }
+
+        closeBooking.addEventListener("click", () => bookingModal.style.display = "none");
+        document.getElementById("clearBookingDate").addEventListener("click", () => {
+            const bookingDate = document.getElementById("bookingDate");
+            bookingDate.value = "";
         });
 
-        // Submit Order to Firebase
-        document.getElementById("orderForm").addEventListener("submit", (e) => {
+        orderForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const service = document.getElementById("selectedService").value;
             const name = document.getElementById("clientName").value;
             const phone = document.getElementById("clientPhone").value;
             const address = document.getElementById("clientAddress").value;
-            const problem = document.getElementById("problemDescription").value;
+            const description = document.getElementById("problemDescription").value;
             const date = document.getElementById("bookingDate").value;
-            const fileInput = document.getElementById("problemImages");
+            const customOrderId = generateOrderId();
 
-            const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
-
-            let imagesArray = [];
-            const files = fileInput.files;
-
-            if(files.length > 0) {
-                let processedFiles = 0;
-                for(let i = 0; i < files.length; i++) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagesArray.push(e.target.result);
-                        processedFiles++;
-                        if(processedFiles === files.length) {
-                            saveOrderToDB(orderId, service, name, phone, address, problem, date, imagesArray);
-                        }
-                    }
-                    reader.readAsDataURL(files[i]);
+            const finalImages = [];
+            for(let i=1; i<=5; i++) {
+                if(uploadedImages[i]) {
+                    finalImages.push(uploadedImages[i]);
                 }
-            } else {
-                saveOrderToDB(orderId, service, name, phone, address, problem, date, []);
+            }
+
+            const orderData = {
+                customId: customOrderId,
+                userId: auth.currentUser.uid,
+                userEmail: auth.currentUser.email,
+                service,
+                name,
+                phone,
+                address,
+                description,
+                date,
+                images: finalImages,
+                status: "Pending (সেবা প্রদানকারীর পর্যালোচনায় আছে)",
+                paymentFee: null,
+                paymentGateway: null,
+                receivePhone: null,
+                paymentStatus: "ফি নির্ধারিত হয়নি",
+                paymentDetails: null,
+                createdAt: Date.now()
+            };
+
+            try {
+                const newOrderRef = push(ref(db, "orders"));
+                await set(newOrderRef, orderData);
+                alert("আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে!");
+                bookingModal.style.display = "none";
+                orderForm.reset();
+            } catch (error) {
+                alert("ত্রুটি: " + error.message);
             }
         });
 
-        function saveOrderToDB(orderId, service, name, phone, address, problem, date, imagesArray) {
-            const bookingsRef = ref(db, 'bookings');
-            const newBookingRef = push(bookingsRef);
-            set(newBookingRef, {
-                id: orderId,
-                service: service,
-                name: name,
-                phone: phone,
-                address: address,
-                problem: problem,
-                date: date,
-                images: imagesArray,
-                status: "Pending",
-                userId: auth.currentUser ? auth.currentUser.uid : "guest"
-            }).then(() => {
-                alert("আপনার বুকিং সফলভাবে সাবমিট হয়েছে! অর্ডার আইডি: " + orderId);
-                bookingModal.style.display = "none";
-                document.getElementById("orderForm").reset();
-                document.getElementById("imagePreviewContainer").innerHTML = "";
-            }).catch((error) => {
-                alert("ত্রুটি: " + error.message);
-            });
+        function splitAddressLocation(addressValue) {
+            const raw = (addressValue || '').trim();
+            if (!raw) return { main: '', location: '' };
+
+            const match = raw.match(/^(.*?)(\s*\((?:Loc|Location)\s*:\s*.*?\))$/i);
+            if (match) {
+                return {
+                    main: match[1].trim(),
+                    location: match[2].trim()
+                };
+            }
+
+            const matchShort = raw.match(/^(.*?)(\s*(?:Loc|Location)\s*:\s*.*)$/i);
+            if (matchShort) {
+                return {
+                    main: matchShort[1].trim(),
+                    location: matchShort[2].trim()
+                };
+            }
+
+            return { main: raw, location: '' };
         }
 
-        // Global Payment Function
-        window.openPaymentModal = function(orderId, fee, adminNumber) {
-            document.getElementById("payOrderId").value = orderId;
-            const currentUser = auth.currentUser;
-            document.getElementById("payUserName").value = currentUser ? (currentUser.displayName || "") : "";
-            document.getElementById("payUserPhone").value = currentUser ? (currentUser.email || "") : "";
+        const myOrdersBtn = document.getElementById("myOrdersBtn");
+        const ordersModal = document.getElementById("ordersModal");
+        const closeOrders = document.getElementById("closeOrders");
+        const ordersList = document.getElementById("ordersList");
 
-            document.getElementById("paymentInstructionsBox").innerHTML = `
-                বুকিং ফি: <b>৳${fee}</b><br>
-                দয়া করে অ্যাডমিনের নিচের পার্সোনাল নম্বরে সেন্ড মনি করুন:<br>
-                <b style="font-size: 15px; color:#d9534f;">${adminNumber}</b>
-            `;
-            document.getElementById("userPaymentModal").style.display = "flex";
-        };
+        myOrdersBtn.addEventListener("click", async () => {
+            if(!auth.currentUser) return;
+            ordersModal.style.display = "flex";
+            ordersList.innerHTML = "<p>লোড হচ্ছে...</p>";
 
-        document.getElementById("closeUserPayment").addEventListener("click", () => {
-            document.getElementById("userPaymentModal").style.display = "none";
+            const ordersRef = ref(db, "orders");
+            const snapshot = await get(ordersRef);
+            if(snapshot.exists()) {
+                let userOrders = [];
+                snapshot.forEach(childSnapshot => {
+                    const order = childSnapshot.val();
+                    if(order.userId === auth.currentUser.uid) {
+                        userOrders.push({ id: childSnapshot.key, ...order });
+                    }
+                });
+
+                userOrders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+                let html = "";
+                userOrders.forEach(order => {
+                    const displayOrderId = (order.customId || order.id || 'SB0000').toString();
+                    let imgHtml = "";
+                    if(order.images && order.images.length > 0) {
+                        imgHtml = `<div style="display:flex; gap:5px; margin:5px 0;">`;
+                        order.images.forEach(img => {
+                            imgHtml += `<img src="${img}" style="width:35px; height:35px; object-fit:cover; border-radius:4px; border:1px solid #ccc;">`;
+                        });
+                        imgHtml += `</div>`;
+                    }
+
+                    const fullAddress = (order.address || '').trim();
+                    const { main: addressMain, location: addressLocation } = splitAddressLocation(fullAddress);
+                    const addressHtml = `<span class="en-ui">${addressMain || fullAddress || '—'}</span>`;
+                    const bookingDisplay = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : (order.date || '');
+
+                    html += `
+                        <div class="order-detail-card" style="background:#fff; border:1px solid #ddd; padding:14px; border-radius:8px; margin-bottom:10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                            <h3 class="premium-bengali" style="color:#008060; font-size:18px; font-weight:900; margin-bottom:6px;">${order.service}</h3>
+                            <p class="premium-bengali" style="font-size:14px; color:#555; font-weight:700;"><b>আইডি:</b> <span class="en-ui">${displayOrderId}</span> | <b>তারিখ:</b> <span class="en-ui">${bookingDisplay}</span></p>
+                            <p class="premium-bengali" style="font-size:14px; color:#555; margin-bottom:6px; font-weight:700;"><b>ঠিকানা:</b> ${addressHtml}</p>
+                            <p class="premium-bengali" style="font-size:14px; color:#555; margin-bottom:8px; font-weight:700;"><b>বিবরণ:</b> <span class="en-ui">${order.description || '—'}</span></p>
+                            ${imgHtml}
+                            <hr style="border:0; border-top:1px solid #eee; margin:8px 0;">
+                            <p class="premium-bengali" style="font-size:14px; font-weight:800;"><b>স্ট্যাটাস:</b> <span class="en-ui" style="color: #d9534f; font-weight:900;">${(order.status || '').replace('টেকনিশিয়ান পর্যালোচনায় আছে', 'সেবা প্রদানকারীর পর্যালোচনায় আছে').replace('পেমেন্ট ও টেকনিশিয়ান নির্ধারিত', 'পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত')}</span></p>
+                            ${order.paymentFee ? `<p class="premium-bengali" style="font-size:14px; margin-top:5px; font-weight:700;"><b>পেমেন্ট মাধ্যম:</b> <span class="en-ui">${order.paymentGateway}</span> (<span class="en-ui">${order.receivePhone}</span>)<br><b>বুকিং ফি:</b> <span class="en-ui">৳${order.paymentFee}</span></p>` : ''}
+                            <p class="premium-bengali" style="font-size:14px; margin-top:5px; font-weight:700;"><b>পেমেন্ট স্ট্যাটাস:</b> <span class="en-ui" style="font-weight:900; color:${order.paymentStatus === 'অনুমোদিত' ? 'green' : 'orange'};">${order.paymentStatus}</span></p>
+                            
+                            ${order.paymentFee && order.paymentStatus === 'ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)' ? `<button class="premium-bengali" onclick="openUserPaymentModal('${order.id}', '${order.paymentGateway}', '${order.receivePhone}', '${order.paymentFee}')" style="background:#0275d8; color:white; border:none; padding:7px 12px; border-radius:6px; margin-top:8px; cursor:pointer; font-weight:900; font-size:13px; font-family: 'Times New Roman', Times, serif;">পেমেন্ট করুন</button>` : ''}
+                        </div>
+                    `;
+                });
+                ordersList.innerHTML = html || "<p>কোনো বুকিং পাওয়া যায়নি।</p>";
+            } else {
+                ordersList.innerHTML = "<p>কোনো বুকিং পাওয়া যায়নি।</p>";
+            }
+            window.translatePage?.();
         });
 
-        document.getElementById("userPaymentForm").addEventListener("submit", (e) => {
+        closeOrders.addEventListener("click", () => ordersModal.style.display = "none");
+
+        const userPaymentModal = document.getElementById("userPaymentModal");
+        const closeUserPayment = document.getElementById("closeUserPayment");
+        const userPaymentForm = document.getElementById("userPaymentForm");
+        const userPaymentInstructionBox = document.getElementById("userPaymentInstructionBox");
+
+        window.openUserPaymentModal = function(orderId, gateway, phone, fee) {
+            document.getElementById("payOrderId").value = orderId;
+            userPaymentInstructionBox.innerHTML = `দয়া করে নিচের নম্বরে <b>৳${fee}</b> টাকা সেন্ড মানি করুন:<br><b>${gateway}: ${phone}</b>`;
+            ordersModal.style.display = "none";
+            userPaymentModal.style.display = "flex";
+        }
+
+        closeUserPayment.addEventListener("click", () => userPaymentModal.style.display = "none");
+
+        userPaymentForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const orderId = document.getElementById("payOrderId").value;
-            const name = document.getElementById("payUserName").value;
-            const phone = document.getElementById("payUserPhone").value;
-            const method = document.getElementById("selectedGateway").value;
-            const sender = document.getElementById("senderPhone").value;
-            const trxId = document.getElementById("clientTrxId").value.toUpperCase();
+            const senderPhone = document.getElementById("senderPhone").value;
+            const trxId = document.getElementById("clientTrxId").value;
 
-            const paymentInfo = { name, phone, method, sender, trxId };
+            const paymentInfo = {
+                senderPhone,
+                trxId,
+                submittedAt: new Date().toISOString()
+            };
 
-            const bookingsRef = ref(db, 'bookings');
-            get(bookingsRef).then((snapshot) => {
-                if(snapshot.exists()) {
-                    snapshot.forEach((childSnapshot) => {
-                        if(childSnapshot.val().id === orderId) {
-                            update(ref(db, 'bookings/' + childSnapshot.key), {
-                                paymentInfo: paymentInfo
-                            }).then(() => {
-                                alert("পেমেন্ট তথ্য সফলভাবে পাঠানো হয়েছে! অ্যাডমিন যাচাই করে কনফার্ম করবেন।");
-                                document.getElementById("userPaymentModal").style.display = "none";
-                                document.getElementById("userPaymentForm").reset();
-                            });
-                        }
-                    });
-                }
-            });
+            try {
+                await update(ref(db, `orders/${orderId}`), {
+                    paymentStatus: "পেমেন্ট রিভিউাধীন",
+                    paymentDetails: paymentInfo
+                });
+                alert("পেমেন্ট তথ্য সফলভাবে জমা দেওয়া হয়েছে!");
+                userPaymentModal.style.display = "none";
+                userPaymentForm.reset();
+            } catch(err) {
+                alert("ত্রুটি: " + err.message);
+            }
         });
 
-        // Admin Actions
-        window.setBookingFee = function(orderId) {
-            const fee = prompt("বুকিং ফি (টাকা) লিখুন:");
-            const number = prompt("অ্যাডমিনের পেমেন্ট নম্বর (যেমন: 017xxxxxxxx) লিখুন:");
-            if(!fee || !number) return;
+        const adminSetPriceModal = document.getElementById("adminSetPriceModal");
+        const closeAdminSetPrice = document.getElementById("closeAdminSetPrice");
+        const adminSetPriceForm = document.getElementById("adminSetPriceForm");
 
-            updateBookingByOrderKey(orderId, {
-                bookingFee: fee,
-                paymentNumber: number
-            }, "বুকিং ফি সফলভাবে সেট করা হয়েছে!");
-        };
+        closeAdminSetPrice.addEventListener("click", () => adminSetPriceModal.style.display = "none");
 
-        window.confirmOrder = function(orderId) {
-            updateBookingByOrderKey(orderId, { status: "Confirmed" }, "অর্ডার কনফার্ম করা হয়েছে!");
-        };
-
-        window.completeOrder = function(orderId) {
-            updateBookingByOrderKey(orderId, { status: "Completed" }, "অর্ডার সম্পন্ন হিসেবে মার্ক করা হয়েছে!");
-        };
-
-        window.deleteOrder = function(orderId) {
-            if(confirm("আপনি কি নিশ্চিতভাবে এই অর্ডারটি ডিলিট করতে চান?")) {
-                const bookingsRef = ref(db, 'bookings');
-                get(bookingsRef).then((snapshot) => {
-                    if (snapshot.exists()) {
-                        snapshot.forEach((childSnapshot) => {
-                            if (childSnapshot.val().id === orderId) {
-                                remove(ref(db, 'bookings/' + childSnapshot.key)).then(() => {
-                                    alert("অর্ডার সফলভাবে ডিলিট করা হয়েছে!");
-                                    loadAdminOrders();
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        };
-
-        function updateBookingByOrderKey(orderId, updateData, successMsg) {
-            const bookingsRef = ref(db, 'bookings');
-            get(bookingsRef).then((snapshot) => {
-                if (snapshot.exists()) {
-                    snapshot.forEach((childSnapshot) => {
-                        if (childSnapshot.val().id === orderId) {
-                            update(ref(db, 'bookings/' + childSnapshot.key), updateData).then(() => {
-                                alert(successMsg);
-                                loadAdminOrders();
-                            });
-                        }
-                    });
-                }
-            });
+        window.openAdminSetPriceModal = function(orderId) {
+            document.getElementById("priceOrderId").value = orderId;
+            adminSetPriceModal.style.display = "flex";
         }
 
-        function loadAdminOrders() {
-            const adminOrdersTableBody = document.getElementById("adminOrdersTableBody");
-            adminOrdersTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">লোড হচ্ছে...</td></tr>`;
-            
-            const bookingsRef = ref(db, 'bookings');
-            get(bookingsRef).then((snapshot) => {
-                adminOrdersTableBody.innerHTML = "";
-                if (!snapshot.exists()) {
-                    adminOrdersTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color:#777;">কোনো বুকিং পাওয়া যায়নি।</td></tr>`;
-                    return;
-                }
+        adminSetPriceForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const orderId = document.getElementById("priceOrderId").value;
+            const fee = document.getElementById("adminFeeAmount").value;
+            const gateway = document.getElementById("adminPaymentGateway").value;
+            const phone = document.getElementById("adminReceivePhone").value;
 
-                let allOrders = [];
-                snapshot.forEach((childSnapshot) => {
-                    allOrders.push(childSnapshot.val());
+            try {
+                await update(ref(db, `orders/${orderId}`), {
+                    paymentFee: fee,
+                    paymentGateway: gateway,
+                    receivePhone: phone,
+                    paymentStatus: "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
+                });
+                alert("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
+                adminSetPriceModal.style.display = "none";
+                adminSetPriceForm.reset();
+                loadAdminOrders();
+            } catch(err) {
+                alert("ত্রুটি: " + err.message);
+            }
+        });
+
+        async function loadAdminOrders() {
+            const tbody = document.getElementById("adminOrdersTableBody");
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">লোড হচ্ছে...</td></tr>`;
+            
+            const ordersRef = ref(db, "orders");
+            const snapshot = await get(ordersRef);
+            if(snapshot.exists()) {
+                let adminOrders = [];
+                snapshot.forEach(childSnapshot => {
+                    adminOrders.push({ id: childSnapshot.key, ...childSnapshot.val() });
                 });
 
-                adminOrdersTableBody.innerHTML = allOrders.reverse().map(o => {
-                    let paymentHtml = "নেই";
-                    if(o.paymentInfo) {
-                        paymentHtml = `<b style="color:#0275d8;">মেথড:</b> ${o.paymentInfo.method}<br><b style="color:#0275d8;">সেন্ডার:</b> ${o.paymentInfo.sender}<br><b style="color:#d9534f;">TrxID:</b> ${o.paymentInfo.trxId}`;
+                adminOrders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+                let html = "";
+                adminOrders.forEach(order => {
+                    const displayOrderId = (order.customId || order.id || 'SB0000').toString();
+                    let paymentHtml = `<b class="premium-bengali">স্ট্যাটাস:</b> <span class="en-ui">${order.paymentStatus}</span><br>`;
+                    if(order.paymentFee) {
+                        paymentHtml += `<span class="premium-bengali">ফি:</span> <span class="en-ui">৳${order.paymentFee}</span><br><span class="premium-bengali">নম্বর:</span> <span class="en-ui">${order.receivePhone}</span><br>`;
+                    }
+                    if(order.paymentDetails) {
+                        paymentHtml += `<span class="en-ui" style="color:blue;">TrxID: ${order.paymentDetails.trxId} (${order.paymentDetails.senderPhone})</span>`;
                     }
 
-                    let imagesHtml = "";
-                    if(o.images && o.images.length > 0) {
-                        imagesHtml = `<div style="display:flex; gap:5px; margin-top:5px;">` + o.images.map(img => `<a href="${img}" target="_blank"><img src="${img}" style="width:30px; height:30px; object-fit:cover; border-radius:3px; border:1px solid #ccc;"></a>`).join("") + `</div>`;
+                    let adminImgHtml = "ছবি নেই";
+                    if(order.images && order.images.length > 0) {
+                        adminImgHtml = `<div style="display:flex; gap:3px;">`;
+                        order.images.forEach(img => {
+                            adminImgHtml += `<a href="${img}" target="_blank"><img src="${img}" style="width:30px; height:30px; object-fit:cover; border-radius:3px; border:1px solid #ccc;"></a>`;
+                        });
+                        adminImgHtml += `</div>`;
                     }
 
-                    let statusFeeHtml = `<b>স্ট্যাটাস:</b> <span style="color: ${o.status==='Completed'?'green':(o.status==='Confirmed'?'#0275d8':'orange')}">${o.status}</span><br>`;
-                    if(o.bookingFee) {
-                        statusFeeHtml += `<b>ফি:</b> ৳${o.bookingFee}<br><b>নম্বর:</b> ${o.paymentNumber}`;
-                    } else {
-                        statusFeeHtml += `<span style="color:red; font-size:12px;">ফি নির্ধারিত হয়নি</span>`;
-                    }
+                    const fullAddress = (order.address || '').trim();
+                    const { main: addressMain, location: addressLocation } = splitAddressLocation(fullAddress);
+                    const addressCellHtml = `<span class="en-ui">${addressMain || fullAddress || '—'}</span>`;
+                    const orderDateDisplay = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : (order.date || '');
 
-                    let actionBtns = `<button onclick="setBookingFee('${o.id}')" style="background:#f0ad4e; color:white; border:none; padding:5px 8px; border-radius:3px; cursor:pointer; margin-bottom:3px; width:100%; font-size:12px;">ফি সেট করুন</button>`;
-                    
-                    if(o.bookingFee && !o.paymentInfo && o.status === "Pending") {
-                        actionBtns = `<span style="font-size:11px; color:#555;">পেমেন্টের অপেক্ষায়</span>`;
-                    } else if(o.paymentInfo && o.status === "Pending") {
-                        actionBtns = `<button onclick="confirmOrder('${o.id}')" style="background:#0275d8; color:white; border:none; padding:5px 8px; border-radius:3px; cursor:pointer; margin-bottom:3px; width:100%; font-size:12px;">পেমেন্ট কনফার্ম</button>`;
-                    }
-
-                    if(o.status === "Confirmed") {
-                        actionBtns = `<button onclick="completeOrder('${o.id}')" style="background:#5cb85c; color:white; border:none; padding:5px 8px; border-radius:3px; cursor:pointer; margin-bottom:3px; width:100%; font-size:12px;">সম্পন্ন করুন</button>`;
-                    } else if(o.status === "Completed") {
-                        actionBtns = `<span style="color:green; font-weight:bold; font-size:12px;">কাজ শেষ</span>`;
-                    }
-
-                    actionBtns += `<button onclick="deleteOrder('${o.id}')" style="background:#d9534f; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; margin-top:3px; width:100%; font-size:11px;">ডিলিট</button>`;
-
-                    let payButtonForUserHtml = "";
-                    if(o.bookingFee && !o.paymentInfo) {
-                        payButtonForUserHtml = `<br><button onclick="openPaymentModal('${o.id}', '${o.bookingFee}', '${o.paymentNumber}')" style="background:#0275d8; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px; margin-top:4px;">পেমেন্ট করুন</button>`;
-                    }
-
-                    return `
+                    html += `
                         <tr>
-                            <td><b>${o.id}</b><br><small style="color:#777;">${o.date}</small></td>
-                            <td><b>${o.service}</b></td>
-                            <td><b>${o.name}</b><br><a href="tel:${o.phone}">${o.phone}</a></td>
-                            <td>${o.address}<br><small style="color:#555;">সমস্যা: ${o.problem}</small>${imagesHtml}</td>
-                            <td>${statusFeeHtml}<hr style="border:0; border-top:1px solid #ddd; margin:4px 0;"><b>পেমেন্ট:</b><br>${paymentHtml} ${payButtonForUserHtml}</td>
-                            <td>${actionBtns}</td>
+                            <td><b><span class="en-ui">${displayOrderId}</span></b><br><small><span class="en-ui">${orderDateDisplay}</span></small></td>
+                            <td><b>${order.service}</b></td>
+                            <td style="font-family: 'Times New Roman', 'Noto Sans Bengali', serif; font-weight:700;">
+                                <span class="en-ui">${order.name || ''}</span><br>
+                                <a href="tel:${order.phone}" style="color:#008060; font-weight:bold; text-decoration:none; font-family: 'Times New Roman', Times, serif;">${order.phone}</a>
+                            </td>
+                            <td style="font-family: 'Times New Roman', 'Noto Sans Bengali', serif; font-weight:700;">
+                                ${addressCellHtml}<br>
+                                <small><span class="en-ui">${order.description || ''}</span></small>
+                            </td>
+                            <td>${adminImgHtml}</td>
+                            <td>${paymentHtml}</td>
+                            <td>
+                                <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding:3px; margin-bottom:4px; font-size:11px;">
+                                    <option value="Pending (সেবা প্রদানকারীর পর্যালোচনায় আছে)" ${order.status.includes('Pending') ? 'selected' : ''}>Pending</option>
+                                    <option value="Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" ${order.status.includes('Confirmed') ? 'selected' : ''}>Confirmed</option>
+                                    <option value="Completed (কাজ সম্পন্ন)" ${order.status.includes('Completed') ? 'selected' : ''}>Completed</option>
+                                </select>
+                                <br>
+                                ${!order.paymentFee ? `<button onclick="openAdminSetPriceModal('${order.id}')" style="background:#f0ad4e; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px; margin-bottom:2px;">ফি সেট</button>` : ''}
+                                ${order.paymentStatus === 'পেমেন্ট রিভিউাধীন' ? `<button onclick="approvePayment('${order.id}')" style="background:green; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px; margin-bottom:2px;">অ্যাপ্রুভ</button>` : ''}
+                                <br>
+                                <button onclick="deleteAdminOrder('${order.id}')" style="background:#d9534f; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px;">ডিলিট</button>
+                            </td>
                         </tr>
                     `;
-                }).join("");
-            });
+                });
+                tbody.innerHTML = html;
+            } else {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">কোনো অর্ডার নেই</td></tr>`;
+            }
         }
 
-        // User Auth & Header State management
-        const loginModal = document.getElementById("loginModal");
-        const closeLogin = document.getElementById("closeLogin");
+        window.updateOrderStatus = async function(orderId, status) {
+            await update(ref(db, `orders/${orderId}`), { status });
+            alert("স্ট্যাটাস আপডেট করা হয়েছে!");
+        }
+
+        window.approvePayment = async function(orderId) {
+            await update(ref(db, `orders/${orderId}`), { paymentStatus: "অনুমোদিত", status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" });
+            alert("পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
+            loadAdminOrders();
+        }
+
+        window.deleteAdminOrder = async function(orderId) {
+            if(confirm('আপনি কি নিশ্চিত অ্যাডমিন প্যানেল থেকে এই অর্ডারটি সরাতে চান?')) {
+                await remove(ref(db, `orders/${orderId}`));
+                alert("অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!");
+                loadAdminOrders();
+            }
+        }
+
         const loginBtnNav = document.getElementById("loginBtnNav");
         const userProfile = document.getElementById("userProfile");
         const userNameDisplay = document.getElementById("userNameDisplay");
+        const profileTrigger = document.getElementById("profileTrigger");
+        const profileDropdown = document.getElementById("profileDropdown");
+        const profileAvatar = document.getElementById("profileAvatar");
         const logoutBtn = document.getElementById("logoutBtn");
+        const loginModal = document.getElementById("loginModal");
+        const closeLogin = document.getElementById("closeLogin");
         const authForm = document.getElementById("authForm");
-        const authEmailInput = document.getElementById("authEmailInput");
-        const authPassInput = document.getElementById("authPassInput");
-        const authNameInput = document.getElementById("authNameInput");
-        const nameFieldContainer = document.getElementById("nameFieldContainer");
-        const loginTitle = document.getElementById("loginTitle");
-        const authSubmitBtn = document.getElementById("authSubmitBtn");
-        const toggleAuthText = document.getElementById("toggleAuthText");
         const toggleAuthLink = document.getElementById("toggleAuthLink");
+        const toggleAuthText = document.getElementById("toggleAuthText");
+        const loginTitle = document.getElementById("loginTitle");
+        const nameFieldContainer = document.getElementById("nameFieldContainer");
+        const authSubmitBtn = document.getElementById("authSubmitBtn");
 
-        let isSignUpMode = false;
+        let isRegistering = false;
 
         loginBtnNav.addEventListener("click", () => {
-            isSignUpMode = false;
+            isRegistering = false;
             updateAuthModalUI();
             loginModal.style.display = "flex";
         });
+
         closeLogin.addEventListener("click", () => loginModal.style.display = "none");
 
         toggleAuthLink.addEventListener("click", (e) => {
             e.preventDefault();
-            isSignUpMode = !isSignUpMode;
+            isRegistering = !isRegistering;
             updateAuthModalUI();
         });
 
         function updateAuthModalUI() {
-            if(isSignUpMode) {
+            if(isRegistering) {
                 loginTitle.innerText = "রেজিস্ট্রেশন করুন";
-                authSubmitBtn.innerText = "রেজিস্ট্রেশন";
                 nameFieldContainer.style.display = "block";
-                authNameInput.required = true;
-                toggleAuthText.innerText = "ইতিমধ্যে অ্যাকাউন্ট আছে?";
+                authSubmitBtn.innerText = "রেজিস্ট্রেশন";
+                toggleAuthText.innerText = "আগেই অ্যাকাউন্ট আছে?";
                 toggleAuthLink.innerText = "লগইন করুন";
             } else {
                 loginTitle.innerText = "লগইন করুন";
-                authSubmitBtn.innerText = "লগইন";
                 nameFieldContainer.style.display = "none";
-                authNameInput.required = false;
+                authSubmitBtn.innerText = "লগইন";
                 toggleAuthText.innerText = "নতুন অ্যাকাউন্ট খুলতে চান?";
                 toggleAuthLink.innerText = "রেজিস্ট্রেশন করুন";
             }
         }
 
-        authForm.addEventListener("submit", (e) => {
+        authForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const email = authEmailInput.value;
-            const pass = authPassInput.value;
-            const name = authNameInput.value;
+            const email = document.getElementById("authEmailInput").value;
+            const password = document.getElementById("authPassInput").value;
+            const name = document.getElementById("authNameInput")?.value || "";
 
-            if(isSignUpMode) {
-                createUserWithEmailAndPassword(auth, email, pass)
-                .then((userCredential) => {
-                    return updateProfile(userCredential.user, { displayName: name });
-                })
-                .then(() => {
-                    alert("সফলভাবে অ্যাকাউন্ট তৈরি হয়েছে!");
-                    loginModal.style.display = "none";
-                    authForm.reset();
-                })
-                .catch((error) => {
-                    alert("ত্রুটি: " + error.message);
-                });
-            } else {
-                signInWithEmailAndPassword(auth, email, pass)
-                .then(() => {
+            try {
+                if(isRegistering) {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    await updateProfile(userCredential.user, { displayName: name });
+                    alert("সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে!");
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
                     alert("সফলভাবে লগইন হয়েছে!");
-                    loginModal.style.display = "none";
-                    authForm.reset();
-                })
-                .catch((error) => {
-                    alert("লগইন ব্যর্থ হয়েছে: " + error.message);
-                });
+                }
+                loginModal.style.display = "none";
+                authForm.reset();
+            } catch (error) {
+                alert("ত্রুটি: " + error.message);
             }
         });
 
+        if (profileTrigger && profileDropdown) {
+            profileTrigger.addEventListener("click", () => {
+                const isOpen = profileDropdown.classList.contains("show");
+                profileDropdown.classList.toggle("show", !isOpen);
+                profileTrigger.setAttribute("aria-expanded", String(!isOpen));
+            });
+
+            document.addEventListener("click", (event) => {
+                if (!profileDropdown.contains(event.target) && !profileTrigger.contains(event.target)) {
+                    profileDropdown.classList.remove("show");
+                    profileTrigger.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
+
         logoutBtn.addEventListener("click", () => {
             signOut(auth).then(() => {
-                alert("লগ-আউট সফল হয়েছে।");
+                profileDropdown.classList.remove("show");
+                alert("লগ-আউট সফল হয়েছে!");
             });
         });
 
@@ -743,61 +1919,141 @@
             if (user) {
                 loginBtnNav.style.display = "none";
                 userProfile.style.display = "flex";
-                userNameDisplay.innerText = user.displayName || user.email;
+                const displayName = user.displayName || user.email.split('@')[0];
+                userNameDisplay.innerText = displayName;
+                profileAvatar.innerText = (displayName || 'U').charAt(0).toUpperCase();
             } else {
                 loginBtnNav.style.display = "block";
                 userProfile.style.display = "none";
+                profileDropdown.classList.remove("show");
             }
         });
+    </script>
 
-        // My Orders Modal
-        const ordersModal = document.getElementById("ordersModal");
-        const closeOrders = document.getElementById("closeOrders");
-        document.getElementById("myOrdersBtn").addEventListener("click", () => {
-            const user = auth.currentUser;
-            if(!user) {
-                alert("দয়া করে প্রথমে লগইন করুন।");
-                return;
+    <script>
+        (function () {
+            const languagePairs = {
+                'ভাষা / Language': 'Language / ভাষা', 'সব সেবা': 'All Services', 'আমার বুকিং': 'My Bookings',
+                'লগইন': 'Log in', 'লগইন করুন': 'Log in', 'রেজিস্ট্রেশন করুন': 'Register', 'রেজিস্ট্রেশন': 'Register',
+                'নতুন অ্যাকাউন্ট খুলতে চান?': 'Create a new account?', 'আগেই অ্যাকাউন্ট আছে?': 'Already have an account?',
+                'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? যেমন: AC, ক্লিনিং...': 'What service are you looking for? e.g. AC, cleaning...',
+                'গাজীপুর (কোনাবাড়ি)': 'Gazipur (Konabari)', 'জনপ্রিয় সেবাসমূহ (গাজীপুর এর জন্য প্রযোজ্য)': 'Popular Services (Available in Gazipur)',
+                'আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে': 'ShebaNow is here for all your service needs',
+                'ঘরে বসে': 'At-home', 'সেবা নিন': 'Get service', 'আপনার প্রয়োজনীয় যেকোনো সেবা পেতে': 'For any service you need', 'এর পাশে থাকুন': 'stay with',
+                'এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস (শুধুমাত্র গাজীপুর)': 'Book your desired service from home with one click (Gazipur only)',
+                'বুক করুন': 'Book Now', 'দ্রুত এবং বিশ্বস্ত মেরামত সেবা': 'Fast and reliable repair service',
+                'বাড়ি কিংবা অফিসের নিখুঁত পরিষ্কার': 'Thorough home or office cleaning', 'দ্রুত, নিরাপদ ও পারদর্শী হাউস শিফটিং সেবা': 'Fast, safe and professional house shifting',
+                'দরদাম ও ফিটনেস অনুযায়ী সাশ্রয়ী ভাড়া': 'Affordable rent based on negotiation and fitness', 'মসৃণ ভ্রমণের জন্য নির্ভরযোগ্য ট্রাভেল সেবা': 'Reliable travel service for a smooth journey',
+                'ঘরে বসেই পার্লার সেবা নিন': 'Get salon services at home', 'অভিজ্ঞ টেকনিশিয়ান দ্বারা নিখুঁত কাজ': 'Expert service by experienced professionals',
+                'ঘরে বসেই আয়রন ও ওয়াশ সেবা': 'Ironing and washing service at home', 'প্রফেশনাল হেয়ারকাট ও গ্রুমিং': 'Professional haircut and grooming',
+                'বিরামহীন বিদ্যুতের নির্ভরযোগ্য সমাধান': 'Reliable solution for uninterrupted power', 'নিরাপদ সিলিন্ডার ও দ্রুত চুলা মেরামত': 'Safe cylinders and fast stove repair',
+                'নিরাপদ ও দক্ষ ওয়্যারিং সেবা': 'Safe and skilled wiring service', 'অভিজ্ঞ শিক্ষক দ্বারা যত্নশীল পড়াশোনা': 'Caring education from experienced tutors',
+                'কাজের জন্য সৎ ও দায়িত্বশীল সাহায্যকারী': 'Honest and responsible helpers for your work', 'ঘরে বসেই ১০% ছাড়ে জেনুইন মেডিসিন': 'Genuine medicine delivered at home with 10% off',
+                'জরুরি মুহূর্তে দ্রুত ও নিরাপদ পরিবহন': 'Fast and safe emergency transport', 'বিশুদ্ধতার সাথে কোনো আপস নয়—একেবারে ফ্রেশ মিল্ক!': 'No compromise on purity—fresh milk, every time!',
+                'আপনার সঠিক এলাকা নির্বাচন করুন': 'Choose your exact area', 'আপনার বর্তমান অবস্থান': 'My Current Location', 'গাজীপুরের এলাকা': 'Gazipur Areas',
+                'আপনার ডেলিভারি ঠিকানা সেট করুন': 'Set your delivery address', 'আমাদের সার্ভিস শুধু গাজীপুর এলাকার জন্য। আপনার সঠিক এলাকা নির্বাচন করুন।': 'Our service is available only in Gazipur. Choose your exact area.',
+                'গাজীপুর কোনাবাড়ি, টঙ্গী, শ্রীপুর...': 'Gazipur Konabari, Tongi, Sreepur...', 'বন্ধ করুন': 'Close',
+                'কোন সেবাটি নিতে চান?': 'Which service do you need?', 'এসি সার্ভিসিং করাতে চাই': 'I want AC servicing', 'হোম ক্লিনিং সার্ভিস চাই': 'I want home cleaning',
+                'প্লাম্বিং বা ইলেকট্রিক কাজ': 'Plumbing or electrical work', 'অন্যান্য সার্ভিস সম্পর্কে জিজ্ঞাসা': 'Ask about other services', 'Chat with us': 'Chat with us',
+                'আপনার নাম': 'Your Name', 'মোবাইল নম্বর': 'Mobile Number', 'আপনার সম্পূর্ণ ঠিকানা (গাজীপুরের ভেতর)': 'Full address (within Gazipur)',
+                'আপনার সমস্যা বা কাজের বিবরণ বিস্তারিত লিখুন...': 'Describe your problem or service details...', 'বুকিংয়ের তারিখ': 'Booking Date', 'তারিখ পরিষ্কার': 'Clear Date', 'সমস্যার ছবি যোগ করুন (ঐচ্ছিক - সর্বোচ্চ ৩টি):': 'Add problem images (optional - up to 3):', 'সমস্যার ছবি যোগ করুন (ঐচ্ছিক - সর্বোচ্চ ৫টি):': 'Add problem images (optional - up to 5):',
+                'বুকিং কনফার্ম করুন': 'Confirm Booking', 'বুকিং ফর্ম': 'Booking Form', 'পেমেন্ট ইনফরমেশন প্রদান করুন': 'Provide Payment Information', 'পেমেন্ট করুন': 'Make Payment',
+                'আমার বুকিং তালিকা': 'My Booking List', 'স্ট্যাটাস:': 'Status:', 'ঠিকানা:': 'Address:', 'বিবরণ:': 'Details:', 'তারিখ:': 'Date:', 'আইডি:': 'ID:',
+                'পেমেন্ট স্ট্যাটাস:': 'Payment Status:', 'পেমেন্ট মাধ্যম:': 'Payment Method:', 'বুকিং ফি:': 'Booking Fee:', 'ফি নির্ধারিত হয়নি': 'Fee not set',
+                'ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)': 'Fee set (payment pending)', 'পেমেন্ট রিভিউাধীন': 'Payment under review', 'অনুমোদিত': 'Approved',
+                'সেবা প্রদানকারীর পর্যালোচনায় আছে': 'Under provider review', 'পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত': 'Payment and provider assigned',
+                'কোনো বুকিং পাওয়া যায়নি।': 'No bookings found.', 'লোড হচ্ছে...': 'Loading...', 'সফলভাবে লগইন হয়েছে!': 'Logged in successfully!',
+                'লগ-আউট সফল হয়েছে!': 'Logged out successfully!', 'অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!': 'The order was deleted from the admin panel!',
+                'পেমেন্ট তথ্য সফলভাবে জমা দেওয়া হয়েছে!': 'Payment information submitted successfully!', 'ত্রুটি:': 'Error:', 'বন্ধ করুন': 'Close',
+                'Pending': 'Pending', 'Confirmed': 'Confirmed', 'Completed': 'Completed', 'Admin Panel': 'Admin Panel', 'Log out': 'Log out',
+                'বিস্তারিত জানতে চাই': 'I want to know more details', 'শুধুমাত্র গাজীপুর': 'Gazipur only',
+                'আপনার প্রতিদিনের সেবায় আমরা সদা প্রস্তুত (শুধুমাত্র গাজীপুর).': 'We are always ready to serve you every day (Gazipur only).',
+                'গাজীপুর)': 'Gazipur)', 'গাজীপুরের লোকাল এলাকা নির্বাচন করুন': 'Choose a local area in Gazipur', 'সদর গাজীপুর': 'Gazipur Sadar',
+                'কোনাবাড়ি (Konabari)': 'Konabari (Konabari)', 'টঙ্গী (Tongi)': 'Tongi (Tongi)', 'জয়দেবপুর (Joydebpur)': 'Joydebpur (Joydebpur)',
+                'বোর্ডবাজার (Boardbazar)': 'Boardbazar (Boardbazar)', 'চান্দনা চৌরাস্তা (Chandana Chowrasta)': 'Chandana Chowrasta (Chandana Chowrasta)',
+                'কাশিমপুর (Kasimpur)': 'Kasimpur (Kasimpur)', 'কালিয়াকৈর (Kaliakair)': 'Kaliakair (Kaliakair)', 'শ্রীপুর (Sreepur)': 'Sreepur (Sreepur)'
+            };
+            const servicePairs = {
+                'এসি সার্ভিসিং': 'AC Servicing', 'হোম ক্লিনিং': 'Home Cleaning', 'বাড়ি ট্রান্সফার': 'House Shifting', 'গাড়ি বুকিং সার্ভিস': 'Car Booking Service',
+                'একটি গাড়ি বুক করুন': 'Book a Car', 'দূরপাল্লা/দীর্ঘপথ গাড়ি': 'Long-distance Travel Car', 'দর্পণ/দীর্ঘপথ গাড়ি': 'Long-distance Travel Car',
+                'বিউটি অ্যান্ড কেয়ার': 'Beauty and Care', 'প্লাম্বিং সার্ভিস': 'Plumbing Service', 'লন্ড্রি সার্ভিস': 'Laundry Service', 'হোম সেলুন': 'Home Salon',
+                'আইপিএস ও ব্যাটারি': 'IPS and Battery', 'এলপিজি গ্যাস': 'LPG Gas', 'ইলেকট্রিক মিস্ত্রি': 'Electrician', 'হোম টিউটর': 'Home Tutor',
+                'বুয়া ও কেয়ারগিভার': 'Maid and Caregiver', 'জরুরি ঔষধ সেবা': 'Emergency Medicine', 'অ্যাম্বুলেন্স সেবা': 'Ambulance Service', 'ফ্রেশ মিল্ক': 'Fresh Milk'
+            };
+            Object.assign(languagePairs, servicePairs);
+            const englishToBengali = Object.fromEntries(Object.entries(languagePairs).map(([bengali, english]) => [english, bengali]));
+            let currentLanguage = localStorage.getItem('shebaNowLanguage') || 'bn';
+            const originalText = new WeakMap();
+            const lastRenderedText = new WeakMap();
+            let isTranslating = false;
+
+            function replaceLanguageText(value) {
+                const pairs = currentLanguage === 'en' ? languagePairs : englishToBengali;
+                return Object.entries(pairs).sort((first, second) => second[0].length - first[0].length)
+                    .reduce((text, [from, to]) => text.split(from).join(to), String(value || ''));
             }
-            ordersModal.style.display = "flex";
-            loadUserOrders(user.email);
-        });
-        closeOrders.addEventListener("click", () => ordersModal.style.display = "none");
 
-        function loadUserOrders(userEmail) {
-            const ordersList = document.getElementById("ordersList");
-            ordersList.innerHTML = "লোড হচ্ছে...";
-            const bookingsRef = ref(db, 'bookings');
-            get(bookingsRef).then((snapshot) => {
-                ordersList.innerHTML = "";
-                if(!snapshot.exists()) {
-                    ordersList.innerHTML = "<p>আপনার কোনো বুকিং নেই।</p>";
-                    return;
-                }
-                let myOrders = [];
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if(data.phone === userEmail || data.userId === auth.currentUser.uid) {
-                        myOrders.push(data);
-                    }
+            function translateTextNode(node) {
+                if (!node.parentElement || node.parentElement.closest('script, style')) return;
+                const currentText = node.nodeValue;
+                const sourceText = !originalText.has(node) || currentText !== lastRenderedText.get(node)
+                    ? (currentLanguage === 'en' ? replaceLanguageText(currentText) : currentText)
+                    : originalText.get(node);
+                originalText.set(node, sourceText);
+                const renderedText = replaceLanguageText(sourceText);
+                if (currentText !== renderedText) node.nodeValue = renderedText;
+                lastRenderedText.set(node, renderedText);
+            }
+
+            function translatePage() {
+                isTranslating = true;
+                document.documentElement.lang = currentLanguage === 'en' ? 'en' : 'bn';
+                document.title = currentLanguage === 'en' ? 'ShebaNow - All services in one place' : 'ShebaNow - আপনার প্রয়োজনীয় সকল সেবা এক জায়গায়';
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+                while (walker.nextNode()) translateTextNode(walker.currentNode);
+                document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach((field) => {
+                    if (!field.dataset.originalPlaceholder) field.dataset.originalPlaceholder = field.placeholder;
+                    field.placeholder = replaceLanguageText(field.dataset.originalPlaceholder);
                 });
+                const languageLabel = document.getElementById('languageToggleLabel');
+                if (languageLabel) languageLabel.textContent = currentLanguage === 'en' ? 'Language' : 'ভাষা';
+                const languageToggle = document.getElementById('languageToggle');
+                if (languageToggle) languageToggle.setAttribute('aria-label', currentLanguage === 'en' ? 'Change language' : 'ভাষা পরিবর্তন');
+                const profileAllServices = document.getElementById('profileAllServices');
+                if (profileAllServices) profileAllServices.textContent = currentLanguage === 'en' ? 'All Services' : 'সব সেবা';
+                const myOrdersLabel = document.getElementById('myOrdersBtn');
+                if (myOrdersLabel) myOrdersLabel.textContent = currentLanguage === 'en' ? 'My Bookings' : 'আমার বুকিং';
+                const logoutLabel = document.getElementById('logoutBtn');
+                if (logoutLabel) logoutLabel.textContent = currentLanguage === 'en' ? 'Log out' : 'লগ আউট';
+                isTranslating = false;
+            }
 
-                if(myOrders.length === 0) {
-                    ordersList.innerHTML = "<p>আপনার কোনো বুকিং পাওয়া যায়নি।</p>";
-                    return;
-                }
-
-                ordersList.innerHTML = myOrders.reverse().map(o => `
-                    <div style="background:#f9f9f9; border:1px solid #ddd; padding:12px; border-radius:6px; margin-bottom:10px;">
-                        <b>অর্ডার আইডি:</b> ${o.id}<br>
-                        <b>সেবা:</b> ${o.service}<br>
-                        <b>সমস্যা:</b> ${o.problem}<br>
-                        <b>স্ট্যাটাস:</b> <span style="color:${o.status==='Completed'?'green':(o.status==='Confirmed'?'#0275d8':'orange')}; font-weight:bold;">${o.status}</span><br>
-                        ${o.bookingFee ? `<b>বুকিং ফি:</b> ৳${o.bookingFee} (নম্বর: ${o.paymentNumber})` : `<span style="color:red; font-size:12px;">অ্যাডমিন এখনও ফি সেট করেননি</span>`}
-                    </div>
-                `).join("");
+            const observer = new MutationObserver((mutations) => {
+                if (isTranslating) return;
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'characterData') {
+                        translateTextNode(mutation.target);
+                        return;
+                    }
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === Node.TEXT_NODE) translateTextNode(node);
+                        else if (node.nodeType === Node.ELEMENT_NODE) {
+                            const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+                            while (walker.nextNode()) translateTextNode(walker.currentNode);
+                        }
+                    });
+                });
             });
-        }
+            observer.observe(document.body, { childList: true, characterData: true, subtree: true });
+            window.translatePage = translatePage;
+            document.getElementById('languageToggle')?.addEventListener('click', (event) => {
+                event.stopPropagation();
+                currentLanguage = currentLanguage === 'bn' ? 'en' : 'bn';
+                localStorage.setItem('shebaNowLanguage', currentLanguage);
+                translatePage();
+            });
+            translatePage();
+        }());
     </script>
 </body>
 </html>
