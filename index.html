@@ -382,7 +382,8 @@
 
         .whatsapp-chat-bubble { background: #ffffff; color: #333; padding: 8px 14px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1px solid #e0e0e0; transition: 0.2s; white-space: nowrap; }
         .whatsapp-chat-bubble:hover { background: #f0f0f0; }
-        .whatsapp-icon-btn { width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: pointer; transition: transform 0.3s; }
+        .whatsapp-icon-btn { width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: grab; touch-action: none; transition: transform 0.3s; }
+        .whatsapp-icon-btn:active { cursor: grabbing; }
         .whatsapp-icon-btn:hover { transform: scale(1.1); }
         .whatsapp-icon-btn svg { width: 28px; height: 28px; fill: white; }
         
@@ -1173,6 +1174,13 @@
                 return list.length ? list : DEFAULT_BANNER_IMAGES;
             }
 
+            if (typeof bannerData === 'object') {
+                const list = Object.values(bannerData)
+                    .map((item) => typeof item === 'string' ? item : item && item.imageUrl)
+                    .filter(Boolean);
+                if (list.length) return list;
+            }
+
             if (Array.isArray(bannerData.images)) {
                 const list = bannerData.images
                     .map((item) => typeof item === 'string' ? item : item && item.imageUrl)
@@ -1232,25 +1240,91 @@
             }
         }
 
-        // Send Pre-filled Message to WhatsApp (Time Schedule checked: 8 AM to 10 PM)
+        // Open WhatsApp with the selected pre-filled message.
         window.sendWhatsAppPreFilled = function(messageText) {
-            const now = new Date();
-            const currentHour = now.getHours();
-            
-            if (currentHour >= 8 && currentHour < 22) {
-                const phoneNumber = "8801577707450";
-                const encodedMsg = encodeURIComponent(messageText);
-                window.open(`https://wa.me/${phoneNumber}?text=${encodedMsg}`, '_blank');
-                document.getElementById("whatsappMenuBox").style.display = "none";
-            } else {
-                document.getElementById("whatsappMenuBox").style.display = "none";
-                const tooltip = document.getElementById("waStatusTooltip");
-                tooltip.style.display = "block";
-                setTimeout(() => {
-                    tooltip.style.display = "none";
-                }, 4000);
-            }
+            const phoneNumber = "8801577707450";
+            const encodedMsg = encodeURIComponent(messageText);
+            const whatsappWindow = window.open(`https://wa.me/${phoneNumber}?text=${encodedMsg}`, '_blank');
+            const menuBox = document.getElementById("whatsappMenuBox");
+            const tooltip = document.getElementById("waStatusTooltip");
+
+            if (menuBox) menuBox.style.display = "none";
+            if (!tooltip) return;
+
+            tooltip.textContent = whatsappWindow
+                ? "Message window opened. Please tap Send in WhatsApp."
+                : "Please allow pop-ups to open WhatsApp and send your message.";
+            tooltip.style.display = "block";
+            setTimeout(() => {
+                tooltip.style.display = "none";
+            }, 5000);
         }
+
+        function initializeWhatsAppDrag() {
+            const widget = document.querySelector('.whatsapp-float-container');
+            const icon = document.querySelector('.whatsapp-icon-btn');
+            if (!widget || !icon) return;
+
+            const savedPosition = localStorage.getItem('shebaNowWhatsAppPosition');
+            if (savedPosition) {
+                try {
+                    const position = JSON.parse(savedPosition);
+                    widget.style.left = `${position.left}px`;
+                    widget.style.top = `${position.top}px`;
+                    widget.style.right = 'auto';
+                    widget.style.bottom = 'auto';
+                } catch (error) {
+                    localStorage.removeItem('shebaNowWhatsAppPosition');
+                }
+            }
+
+            let pointerStart = null;
+            let widgetStart = null;
+            let wasDragged = false;
+
+            icon.addEventListener('pointerdown', (event) => {
+                pointerStart = { x: event.clientX, y: event.clientY };
+                const bounds = widget.getBoundingClientRect();
+                widgetStart = { left: bounds.left, top: bounds.top };
+                wasDragged = false;
+                icon.setPointerCapture(event.pointerId);
+            });
+
+            icon.addEventListener('pointermove', (event) => {
+                if (!pointerStart || !widgetStart) return;
+                const deltaX = event.clientX - pointerStart.x;
+                const deltaY = event.clientY - pointerStart.y;
+                if (Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) return;
+
+                wasDragged = true;
+                const maxLeft = window.innerWidth - widget.offsetWidth;
+                const maxTop = window.innerHeight - widget.offsetHeight;
+                const left = Math.max(0, Math.min(maxLeft, widgetStart.left + deltaX));
+                const top = Math.max(0, Math.min(maxTop, widgetStart.top + deltaY));
+                widget.style.left = `${left}px`;
+                widget.style.top = `${top}px`;
+                widget.style.right = 'auto';
+                widget.style.bottom = 'auto';
+            });
+
+            icon.addEventListener('pointerup', () => {
+                if (wasDragged) {
+                    const bounds = widget.getBoundingClientRect();
+                    localStorage.setItem('shebaNowWhatsAppPosition', JSON.stringify({ left: bounds.left, top: bounds.top }));
+                }
+                pointerStart = null;
+                widgetStart = null;
+            });
+
+            icon.addEventListener('click', (event) => {
+                if (!wasDragged) return;
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                wasDragged = false;
+            }, true);
+        }
+
+        initializeWhatsAppDrag();
 
         // Close menu when clicking outside
         window.addEventListener("click", () => {
@@ -1598,6 +1672,8 @@
         const ordersList = document.getElementById("ordersList");
 
         myOrdersBtn.addEventListener("click", async () => {
+            profileDropdown.classList.remove("show");
+            profileTrigger.setAttribute("aria-expanded", "false");
             if(!auth.currentUser) return;
             ordersModal.style.display = "flex";
             ordersList.innerHTML = "<p>লোড হচ্ছে...</p>";
@@ -2048,6 +2124,8 @@
             window.translatePage = translatePage;
             document.getElementById('languageToggle')?.addEventListener('click', (event) => {
                 event.stopPropagation();
+                profileDropdown?.classList.remove('show');
+                profileTrigger?.setAttribute('aria-expanded', 'false');
                 currentLanguage = currentLanguage === 'bn' ? 'en' : 'bn';
                 localStorage.setItem('shebaNowLanguage', currentLanguage);
                 translatePage();

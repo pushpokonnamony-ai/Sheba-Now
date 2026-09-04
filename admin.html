@@ -327,6 +327,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getDatabase, ref, push, set, get, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD96Zb90WfRKmssz3eA9veyJxgZlihC0UI",
@@ -340,6 +341,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const storage = getStorage(app);
 
         const FALLBACK_BANNER_URL = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80';
 
@@ -439,7 +441,12 @@
                     }
 
                     try {
-                        const imageUrl = await readFileAsDataUrl(file);
+                        const imagePath = `service-images/${serviceKey}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+                        const uploadedFile = await uploadBytes(storageRef(storage, imagePath), file, {
+                            contentType: file.type || 'image/jpeg',
+                            cacheControl: 'public,max-age=31536000,immutable'
+                        });
+                        const imageUrl = await getDownloadURL(uploadedFile.ref);
 
                         await set(ref(db, `siteSettings/serviceImages/${serviceKey}`), {
                             imageUrl,
@@ -525,9 +532,17 @@
 
             try {
                 const downloadUrls = await Promise.all(files.map(file => readFileAsDataUrl(file)));
-                const firstImage = downloadUrls[0];
+                const existingSnapshot = await get(ref(db, 'siteSettings/bannerImages'));
+                const existingData = existingSnapshot.exists() ? existingSnapshot.val() : [];
+                const existingImages = Array.isArray(existingData)
+                    ? existingData.filter(Boolean)
+                    : Object.values(existingData || {})
+                        .map((item) => typeof item === 'string' ? item : item && item.imageUrl)
+                        .filter(Boolean);
+                const allImages = [...new Set([...downloadUrls, ...existingImages])];
+                const firstImage = allImages[0];
 
-                await set(ref(db, 'siteSettings/bannerImages'), downloadUrls);
+                await set(ref(db, 'siteSettings/bannerImages'), allImages);
                 await set(ref(db, 'siteSettings/banner'), {
                     imageUrl: firstImage,
                     updatedAt: new Date().toISOString(),
