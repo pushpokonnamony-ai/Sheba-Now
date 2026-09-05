@@ -46,8 +46,8 @@
         .logo span { color: #d9534f; }
         
         .search-box { display: flex; flex: 0 1 230px; min-width: 140px; max-width: 260px; gap: 5px; }
-        .search-box input { padding: 10px 12px; width: 100%; border: 1px solid #d7e3e0; border-radius: 8px; font-size: 14px; background: #f9fbfa; font-weight: 700; text-align: center; }
-        .search-box button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 13px; background: linear-gradient(135deg, #0b9a72, #087f5b); color: white; border: 1px solid rgba(255,255,255,0.22); border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 900; white-space: nowrap; box-shadow: 0 7px 16px rgba(8,127,91,0.18), inset 0 1px 0 rgba(255,255,255,0.2); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .search-box input { flex: 1 1 auto; min-width: 0; padding: 10px 12px; width: 100%; border: 1px solid #d7e3e0; border-radius: 8px; font-size: 14px; background: #f9fbfa; font-weight: 700; text-align: center; }
+        .search-box button { display: inline-flex; flex: 0 0 46px; align-items: center; justify-content: center; gap: 5px; min-width: 46px; min-height: 40px; padding: 10px 8px; background: linear-gradient(135deg, #0b9a72, #087f5b); color: white; border: 1px solid rgba(255,255,255,0.22); border-radius: 12px; cursor: pointer; font-size: 0; font-weight: 900; white-space: nowrap; box-shadow: 0 7px 16px rgba(8,127,91,0.18), inset 0 1px 0 rgba(255,255,255,0.2); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .search-box button:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(8,127,91,0.25), inset 0 1px 0 rgba(255,255,255,0.24); }
         .search-box button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
         
@@ -695,7 +695,7 @@
         @media (min-width: 769px) and (max-width: 1040px) {
             .navbar { padding-left: 18px; padding-right: 18px; gap: 6px; }
             .logo { font-size: 27px; }
-            .search-box, .nav-links > .search-box { flex-basis: 190px; min-width: 140px; max-width: 190px; }
+            .search-box, .nav-links > .search-box { flex: 0 0 240px; min-width: 240px; max-width: 240px; }
             .nav-links { gap: 7px; }
             .nav-links a, .location-container, #userNameDisplay { font-size: 13px; }
             .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -704,7 +704,8 @@
         @media (min-width: 769px) {
             body { overflow-x: hidden; }
             .navbar { width: 100%; min-width: 0; overflow: visible; }
-            .navbar > .search-box, .nav-links > .search-box { flex: 0 1 230px; min-width: 150px; max-width: 230px; }
+            .navbar > .search-box, .nav-links > .search-box { flex: 0 0 300px; min-width: 300px; max-width: 300px; }
+            #searchInput::placeholder { font-size: 12px; }
             .nav-links { flex: 0 0 auto; }
             .nav-links > * { flex: 0 0 auto; }
         }
@@ -712,7 +713,8 @@
         @media (min-width: 769px) and (max-width: 900px) {
             .navbar { padding-left: 12px; padding-right: 12px; gap: 5px; }
             .logo { font-size: 25px; }
-            .navbar > .search-box { flex-basis: 175px; min-width: 145px; max-width: 175px; }
+            .navbar > .search-box { flex: 0 0 220px; min-width: 220px; max-width: 220px; }
+            #searchInput::placeholder { font-size: 10px; }
             .nav-links { gap: 7px; }
             .nav-links a, .btn-login, .profile-trigger, #userNameDisplay { font-size: 11px; }
             .btn-login { padding-left: 7px; padding-right: 7px; }
@@ -1416,22 +1418,32 @@
                 `).join("");
         }
 
-        function deleteNotification(notificationId) {
+        async function deleteNotification(notificationId) {
             deletedNotificationIds.add(notificationId);
             unreadNotificationIds.delete(notificationId);
             localStorage.setItem("shebaNowDeletedNotifications", JSON.stringify([...deletedNotificationIds]));
+            const notificationIndex = notificationItems.findIndex((item) => item.id === notificationId);
+            if (notificationIndex !== -1) notificationItems.splice(notificationIndex, 1);
             renderNotificationCenter();
 
-            const user = auth.currentUser;
-            if (user) {
-                update(ref(db, `users/${user.uid}/deletedNotifications`), {
-                    [notificationId]: { deletedAt: new Date().toISOString() }
-                }).catch((error) => {
-                    deletedNotificationIds.delete(notificationId);
-                    localStorage.setItem("shebaNowDeletedNotifications", JSON.stringify([...deletedNotificationIds]));
-                    renderNotificationCenter();
-                    console.error("Notification delete sync failed:", error);
-                });
+            try {
+                await remove(ref(db, `notifications/${notificationId}`));
+            } catch (error) {
+                const user = auth.currentUser;
+                if (user) {
+                    try {
+                        await update(ref(db, `users/${user.uid}/deletedNotifications`), {
+                            [notificationId]: { deletedAt: new Date().toISOString() }
+                        });
+                        console.warn("Global notification delete was denied; saved user-wide deletion state.", error);
+                        return;
+                    } catch (fallbackError) {
+                        console.error("Notification delete sync failed:", fallbackError);
+                    }
+                }
+                deletedNotificationIds.delete(notificationId);
+                localStorage.setItem("shebaNowDeletedNotifications", JSON.stringify([...deletedNotificationIds]));
+                renderNotificationCenter();
             }
         }
 
