@@ -189,6 +189,39 @@
         .admin-table td a { font-family: "Times New Roman", Times, serif !important; }
         .admin-table select, .admin-table button { font-family: "Times New Roman", Times, serif !important; font-weight: 700; }
         .admin-table .premium-bengali { font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", sans-serif !important; font-weight: 700; }
+        .admin-map-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; padding: 5px 8px; border: 1px solid rgba(8, 127, 91, 0.18); border-radius: 7px; background: #effbf6; color: #087f5b !important; font-size: 11px; font-weight: 800; text-decoration: none !important; white-space: nowrap; }
+        .admin-map-link:hover { background: #dff7eb; }
+        .admin-map-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .admin-location-details { display: block; margin-top: 4px; color: #526660; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
+        .admin-location-label { display: block; margin-top: 5px; color: #087f5b; font-size: 11px; font-weight: 900; }
+
+        .offer-admin-card { position: relative; overflow: hidden; background: linear-gradient(135deg, #f2fffa 0%, #ffffff 58%, #fff9ed 100%); border-color: rgba(15, 155, 114, 0.16); }
+        .offer-admin-card::after { content: ''; position: absolute; width: 180px; height: 180px; top: -90px; right: -55px; border-radius: 50%; background: rgba(244, 159, 26, 0.12); pointer-events: none; }
+        .offer-card-heading { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+        .offer-card-heading h3 { margin-bottom: 5px; color: #075f48; font-size: 20px; }
+        .offer-card-heading p { color: #60736e; font-size: 12px; line-height: 1.6; }
+        .offer-card-icon { position: relative; z-index: 1; display: grid; place-items: center; width: 48px; height: 48px; flex: 0 0 48px; border-radius: 15px; color: #fff; background: linear-gradient(145deg, #0f9b72, #087f5b); box-shadow: 0 10px 20px rgba(15, 155, 114, 0.24); }
+        .offer-card-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        #offerNotificationForm { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        #offerNotificationForm textarea { grid-column: 1 / -1; resize: vertical; min-height: 92px; }
+        #offerNotificationForm input, #offerNotificationForm textarea { width: 100%; margin: 0; padding: 13px 14px; border: 1px solid #dceae5; border-radius: 11px; outline: none; background: rgba(255,255,255,0.86); color: #18352e; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        #offerNotificationForm input::placeholder, #offerNotificationForm textarea::placeholder { color: #8a9b96; }
+        #offerNotificationForm input:focus, #offerNotificationForm textarea:focus { border-color: #0f9b72; box-shadow: 0 0 0 4px rgba(15, 155, 114, 0.11); }
+        .offer-image-upload { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) 74px; align-items: center; gap: 12px; padding: 12px; border: 1px dashed #b8dcd0; border-radius: 12px; background: rgba(255,255,255,0.62); }
+        .offer-image-upload label { display: block; color: #356258; font-size: 12px; font-weight: 800; }
+        .offer-image-upload small { display: block; margin-top: 3px; color: #82938e; font-size: 11px; font-weight: 500; }
+        .offer-image-upload input[type="file"] { margin-top: 8px !important; padding: 8px !important; background: #fff !important; font-size: 12px; }
+        .offer-image-preview { width: 74px; height: 74px; display: none; object-fit: cover; border-radius: 13px; border: 1px solid #cfe5dc; background: #edf8f3; }
+        #offerNotificationForm .btn-submit { grid-column: 1 / -1; width: 100%; padding: 13px 18px; border-radius: 11px; background: linear-gradient(135deg, #087f5b, #0f9b72); box-shadow: 0 10px 18px rgba(8, 127, 91, 0.18); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        #offerNotificationForm .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 14px 24px rgba(8, 127, 91, 0.24); }
+        #offerNotificationMessage { position: relative; z-index: 1; }
+
+        @media (max-width: 640px) {
+            #offerNotificationForm { grid-template-columns: 1fr; }
+            #offerNotificationForm textarea, #offerNotificationForm .btn-submit { grid-column: auto; }
+            .offer-image-upload { grid-column: auto; }
+            .offer-card-heading h3 { font-size: 17px; }
+        }
 
         footer { background: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 50px; }
         footer h3 { color: white; margin-bottom: 8px; font-size: 28px; font-weight: 900; letter-spacing: -0.04em; }
@@ -237,6 +270,33 @@
                 <button type="button" id="updateBannerBtn">ব্যানার আপলোড ও সেভ করুন</button>
                 <button type="button" id="deleteBannerBtn" class="delete-btn">ডিলিট করুন</button>
             </div>
+        </div>
+
+        <div class="banner-admin-card offer-admin-card">
+            <div class="offer-card-heading">
+                <div>
+                    <h3>অফার ও নোটিফিকেশন পাঠান</h3>
+                    <p>নতুন অফারটি সব ইউজারের notification center-এ premium card হিসেবে পৌঁছে যাবে।</p>
+                </div>
+                <span class="offer-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+                </span>
+            </div>
+            <form id="offerNotificationForm">
+                <input type="text" id="offerTitleInput" placeholder="অফারের Title" required>
+                <textarea id="offerBodyInput" placeholder="অফারের Body" rows="3" required></textarea>
+                <input type="url" id="offerImageUrlInput" placeholder="Image URL (ঐচ্ছিক)">
+                <div class="offer-image-upload">
+                    <div>
+                        <label for="offerImageFileInput">অফারের ছবি সরাসরি আপলোড করুন</label>
+                        <small>ছবিটি automatic ৮০০ × ৮০০px notification-ready size-এ তৈরি হবে।</small>
+                        <input type="file" id="offerImageFileInput" accept="image/jpeg,image/png,image/webp" aria-label="অফারের ছবি আপলোড করুন">
+                    </div>
+                    <img id="offerImagePreview" class="offer-image-preview" alt="অফারের ছবির preview">
+                </div>
+                <button type="submit" class="btn-submit">সব ইউজারকে অফার পাঠান</button>
+            </form>
+            <p id="offerNotificationMessage" style="margin-top: 10px; font-size: 13px;" role="status"></p>
         </div>
 
         <div class="service-image-admin-card">
@@ -305,10 +365,11 @@
                     <option value="bKash Personal">bKash Personal</option>
                     <option value="Nagad Personal">Nagad Personal</option>
                     <option value="Rocket Personal">Rocket Personal</option>
+                    <option value="Cash On Delivery">Cash On Delivery</option>
                 </select>
 
                 <label style="font-size: 13px; font-weight: bold;">মার্চেন্ট/রিসিভ করার নম্বর:</label>
-                <input type="text" id="adminReceivePhone" placeholder="যেমন: 01800000000" required>
+                <input type="text" id="adminReceivePhone" placeholder="যেমন: 01800000000">
 
                 <button type="submit" class="btn-submit">সেট করুন ও কনফার্ম করুন</button>
             </form>
@@ -344,6 +405,92 @@
         const storage = getStorage(app);
 
         const FALLBACK_BANNER_URL = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80';
+
+        async function saveOfferNotification({ title, body, image }) {
+            const notificationRef = push(ref(db, "notifications"));
+            await set(notificationRef, {
+                title,
+                body,
+                image: image || null,
+                type: "offer",
+                createdAt: new Date().toISOString(),
+                status: "published"
+            });
+        }
+
+        const offerNotificationForm = document.getElementById("offerNotificationForm");
+        const offerNotificationMessage = document.getElementById("offerNotificationMessage");
+        const offerImageFileInput = document.getElementById("offerImageFileInput");
+        const offerImagePreview = document.getElementById("offerImagePreview");
+
+        function resizeOfferImage(file) {
+            return new Promise((resolve, reject) => {
+                const image = new Image();
+                const objectUrl = URL.createObjectURL(file);
+                image.onload = () => {
+                    const size = 800;
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+                    const cropSize = Math.min(image.naturalWidth, image.naturalHeight);
+                    const cropX = (image.naturalWidth - cropSize) / 2;
+                    const cropY = (image.naturalHeight - cropSize) / 2;
+                    canvas.width = size;
+                    canvas.height = size;
+                    context.drawImage(image, cropX, cropY, cropSize, cropSize, 0, 0, size, size);
+                    URL.revokeObjectURL(objectUrl);
+                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("ছবিটি প্রস্তুত করা যায়নি")), "image/jpeg", 0.86);
+                };
+                image.onerror = () => {
+                    URL.revokeObjectURL(objectUrl);
+                    reject(new Error("ছবিটি পড়া যায়নি"));
+                };
+                image.src = objectUrl;
+            });
+        }
+
+        offerImageFileInput?.addEventListener("change", () => {
+            const file = offerImageFileInput.files?.[0];
+            if (!file || !offerImagePreview) return;
+            offerImagePreview.src = URL.createObjectURL(file);
+            offerImagePreview.style.display = "block";
+        });
+
+        offerNotificationForm?.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const title = document.getElementById("offerTitleInput").value.trim();
+            const body = document.getElementById("offerBodyInput").value.trim();
+            const imageUrl = document.getElementById("offerImageUrlInput").value.trim();
+            const imageFile = offerImageFileInput?.files?.[0];
+
+            try {
+                const submitButton = offerNotificationForm.querySelector("button[type='submit']");
+                submitButton.disabled = true;
+                offerNotificationMessage.style.color = "#087f5b";
+                offerNotificationMessage.textContent = imageFile ? "ছবিটি প্রস্তুত করে upload করা হচ্ছে..." : "অফারটি Firebase Database-এ সেভ করা হচ্ছে...";
+                let image = imageUrl;
+                if (imageFile) {
+                    const resizedImage = await resizeOfferImage(imageFile);
+                    const imagePath = `offer-images/${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9._-]/g, "-")}.jpg`;
+                    const uploadedFile = await uploadBytes(storageRef(storage, imagePath), resizedImage, {
+                        contentType: "image/jpeg",
+                        cacheControl: "public,max-age=31536000,immutable"
+                    });
+                    image = await getDownloadURL(uploadedFile.ref);
+                }
+                await saveOfferNotification({ title, body, image });
+                offerNotificationMessage.textContent = "অফারটি সফলভাবে সেভ হয়েছে।";
+                offerNotificationForm.reset();
+                if (offerImagePreview) {
+                    offerImagePreview.removeAttribute("src");
+                    offerImagePreview.style.display = "none";
+                }
+            } catch (error) {
+                offerNotificationMessage.style.color = "#b42318";
+                offerNotificationMessage.textContent = `অফার পাঠানো যায়নি: ${error.message}`;
+            } finally {
+                offerNotificationForm.querySelector("button[type='submit']").disabled = false;
+            }
+        });
 
         function splitAddressLocation(addressValue) {
             const raw = String(addressValue || '').trim();
@@ -710,12 +857,19 @@
             const gateway = document.getElementById("adminPaymentGateway").value;
             const phone = document.getElementById("adminReceivePhone").value;
 
+            if (gateway !== "Cash On Delivery" && !phone.trim()) {
+                alert("অনলাইন পেমেন্টের জন্য রিসিভ করার নম্বর দিন।");
+                return;
+            }
+
             try {
                 await update(ref(db, `orders/${orderId}`), {
                     paymentFee: fee,
                     paymentGateway: gateway,
                     receivePhone: phone,
-                    paymentStatus: "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
+                    paymentStatus: gateway === "Cash On Delivery"
+                        ? "COD অনুমোদনের অপেক্ষায়"
+                        : "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
                 });
                 alert("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
                 adminSetPriceModal.style.display = "none";
@@ -747,7 +901,7 @@
                     const displayOrderId = (order.customId || order.id || 'SB0000').toString();
                     let paymentHtml = `<b>স্ট্যাটাস:</b> <span class="en-ui">${safePaymentStatus}</span><br>`;
                     if(order.paymentFee) {
-                        paymentHtml += `ফি: <span class="en-ui">৳${order.paymentFee}</span><br>নম্বর: <span class="en-ui">${order.receivePhone || ''}</span><br>`;
+                        paymentHtml += `ফি: <span class="en-ui">৳${order.paymentFee}</span><br>মাধ্যম: <span class="en-ui">${order.paymentGateway || ''}</span>${order.paymentGateway !== 'Cash On Delivery' ? `<br>নম্বর: <span class="en-ui">${order.receivePhone || ''}</span>` : ''}<br>`;
                     }
                     if(order.paymentDetails) {
                         paymentHtml += `<span class="en-ui" style="color:blue; text-transform:none;">TrxID: ${order.paymentDetails.trxId || ''} (${order.paymentDetails.senderPhone || ''})</span>`;
@@ -762,9 +916,17 @@
                         adminImgHtml += `</div>`;
                     }
 
-                    const fullAddress = (order.address || '').trim();
+                    const locationData = order.location || {};
+                    const customerAddress = String(order.customerAddress || order.address || '').trim();
+                    const fullAddress = String(locationData.fullAddress || '').trim();
+                    const latitude = Number(locationData.latitude ?? order.latitude);
+                    const longitude = Number(locationData.longitude ?? order.longitude);
+                    const shortLocation = String(locationData.shortName || '').trim();
                     const { main: addressMain, location: addressLocation } = splitAddressLocation(fullAddress);
-                    const addressCellHtml = addressLocation ? `<span class="en-ui">${addressMain || '—'}</span><span class="premium-bengali"> ${addressLocation}</span>` : `<span class="en-ui">${fullAddress || '—'}</span>`;
+                    const mapLink = Number.isFinite(latitude) && Number.isFinite(longitude)
+                        ? `<a class="admin-map-link" href="https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}" target="_blank" rel="noopener" aria-label="লোকেশনের Google Maps খুলুন"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>ম্যাপে দেখুন</a>`
+                        : '';
+                    const addressCellHtml = `<b class="admin-location-label">User address</b><span class="admin-location-details">${customerAddress || '—'}</span>${fullAddress ? `<b class="admin-location-label">Selected map location</b><span class="admin-location-details">${shortLocation || addressMain || '—'}<br>${fullAddress}</span>` : ''}${mapLink}${Number.isFinite(latitude) && Number.isFinite(longitude) ? `<small class="admin-location-details">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</small>` : ''}`;
                     const orderDateDisplay = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : (order.date || '');
 
                     html += `
@@ -789,7 +951,7 @@
                                 </select>
                                 <br>
                                 ${!order.paymentFee ? `<button onclick="openAdminSetPriceModal('${order.id}')" style="background:#f0ad4e; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:12px; margin-bottom:3px;">ফি সেট করুন</button>` : ''}
-                                ${safePaymentStatus === 'পেমেন্ট রিভিউাধীন' ? `<button onclick="approvePayment('${order.id}')" style="background:green; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:12px; margin-bottom:3px;">পেমেন্ট অ্যাপ্রুভ</button>` : ''}
+                                ${safePaymentStatus === 'পেমেন্ট রিভিউাধীন' || safePaymentStatus === 'COD অনুমোদনের অপেক্ষায়' ? `<button onclick="approvePayment('${order.id}')" style="background:green; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:12px; margin-bottom:3px;">পেমেন্ট অ্যাপ্রুভ</button>` : ''}
                                 <br>
                                 <button onclick="deleteAdminOrder('${order.id}')" style="background:#d9534f; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; font-size:12px;">ডিলিট</button>
                             </td>
@@ -834,7 +996,8 @@
                 'অর্ডার আইডি': 'Order ID', 'সেবার নাম': 'Service Name', 'গ্রাহকের নাম ও ফোন': 'Customer Name and Phone',
                 'ঠিকানা ও বিবরণ': 'Address and Details', 'ছবিসমূহ': 'Images', 'স্ট্যাটাস ও পেমেন্ট ইনফো': 'Status and Payment Info', 'অ্যাকশন': 'Actions',
                 'লোড হচ্ছে...': 'Loading...', 'কোনো অর্ডার নেই': 'No orders found', 'ছবি নেই': 'No image', 'পেমেন্টের অপেক্ষায়': 'Awaiting payment',
-                'ফি সেট করুন': 'Set Fee', 'পেমেন্ট অ্যাপ্রুভ': 'Approve Payment', 'ডিলিট': 'Delete', 'Pending': 'Pending', 'Confirmed': 'Confirmed', 'Completed': 'Completed',
+                'ফি সেট করুন': 'Set Fee', 'পেমেন্ট অ্যাপ্রুভ': 'Approve Payment', 'ডিলিট': 'Delete', 'অপেক্ষমাণ': 'Pending', 'নিশ্চিত': 'Confirmed', 'সম্পন্ন': 'Completed',
+                'বিকাশ পার্সোনাল': 'bKash Personal', 'নগদ পার্সোনাল': 'Nagad Personal', 'রকেট পার্সোনাল': 'Rocket Personal', 'ক্যাশ অন ডেলিভারি': 'Cash On Delivery',
                 'ফি নির্ধারিত হয়নি': 'Fee not set', 'ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)': 'Fee set (payment pending)', 'পেমেন্ট রিভিউাধীন': 'Payment under review',
                 'অনুমোদিত': 'Approved', 'সেবা প্রদানকারীর পর্যালোচনায় আছে': 'Under provider review', 'পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত': 'Payment and provider assigned',
                 'বুকিং ফি ও পেমেন্ট নম্বর সেট করুন': 'Set Booking Fee and Payment Number', 'বুকিং ফি বা অ্যামাউন্ট (টাকা):': 'Booking fee or amount (BDT):',

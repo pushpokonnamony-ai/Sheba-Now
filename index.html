@@ -34,23 +34,30 @@
         html[lang="bn"] *, html[lang="bn"] *::before, html[lang="bn"] *::after { font-family: 'Noto Sans Bengali', 'Segoe UI', Tahoma, sans-serif !important; }
         html[lang="en"] *, html[lang="en"] *::before, html[lang="en"] *::after { font-family: 'Times New Roman', Times, serif !important; }
         
-        .navbar { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 18px 4%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px; }
-        .logo { font-size: 32px; font-weight: 900; color: #008060; cursor: pointer; white-space: nowrap; letter-spacing: -0.04em; }
+        .navbar { display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: center; background: #ffffff; padding: 18px 3%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; gap: 8px; overflow: visible; }
+        .navbar > * { flex-shrink: 0; }
+        .navbar > .search-box { flex-shrink: 1; }
+        .logo { flex: 0 0 auto; font-size: 32px; font-weight: 900; color: #008060; cursor: pointer; white-space: nowrap; letter-spacing: -0.04em; }
         .logo span { color: #d9534f; }
         
-        .search-box { display: flex; gap: 6px; flex-grow: 1; max-width: 450px; }
-        .search-box input { padding: 12px 15px; width: 100%; border: 1px solid #d7e3e0; border-radius: 8px; font-size: 15px; background: #f9fbfa; font-weight: 700; }
-        .search-box button { padding: 12px 20px; background: #008060; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 900; white-space: nowrap; }
+        .search-box { display: flex; flex: 1 1 260px; min-width: 150px; max-width: 340px; gap: 5px; }
+        .search-box input { padding: 10px 12px; width: 100%; border: 1px solid #d7e3e0; border-radius: 8px; font-size: 14px; background: #f9fbfa; font-weight: 700; }
+        .search-box button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 13px; background: #008060; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 900; white-space: nowrap; }
+        .search-box button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
         
-        .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 900; cursor: pointer; font-size: 16px; }
+        .nav-links { display: flex; flex: 0 0 auto; min-width: 0; flex-flow: row nowrap; align-items: center; gap: 10px; }
+        .nav-links > * { flex-shrink: 0; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 900; cursor: pointer; font-size: 16px; white-space: nowrap; }
         
-        .location-container { position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 900; font-size: 16px; color: #008060; }
+        .location-container { position: relative; display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 900; font-size: 16px; color: #008060; white-space: nowrap; }
         .location-icon-svg { width: 18px; height: 18px; fill: #008060; flex-shrink: 0; }
-        .location-popup { display: none; position: absolute; top: 40px; right: 0; background: #222; color: white; padding: 15px; border-radius: 8px; width: 280px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 200; font-size: 13px; text-align: left; }
+        .location-popup { display: none; position: absolute; top: 40px; right: 0; flex-direction: column; align-items: stretch; background: #222; color: white; padding: 15px; border-radius: 8px; width: min(280px, calc(100vw - 24px)); box-sizing: border-box; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 200; font-size: 13px; text-align: left; }
         .location-popup::before { content: ''; position: absolute; top: -6px; right: 20px; width: 12px; height: 12px; background: #222; transform: rotate(45deg); }
-        .location-popup p { margin-bottom: 10px; line-height: 1.4; color: #ddd; }
-        .btn-close-popup { background: #d9534f; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; float: right; font-size: 12px; }
+        .location-popup p { display: block; width: 100%; max-width: 100%; margin: 0 0 12px; line-height: 1.5; color: #ddd; white-space: normal !important; overflow-wrap: anywhere; word-break: break-word; }
+        .location-popup-address { display: block; width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; margin: 8px 0 12px; padding: 9px 10px; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; color: #fff; font-size: 12px; line-height: 1.45; white-space: normal !important; overflow-wrap: anywhere; word-break: break-word; }
+        .location-share-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(15,155,114,0.9); color: #fff; padding: 7px 10px; border-radius: 7px; cursor: pointer; font-size: 12px; font-weight: 800; }
+        .location-share-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .btn-close-popup { display: block; margin-left: auto; background: #d9534f; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; white-space: nowrap; }
 
         .map-search-wrap { margin-bottom: 12px; }
         .map-search-input {
@@ -66,7 +73,32 @@
         .city-option { background: #f1f1f1; padding: 10px 12px; margin: 6px 0; border-radius: 6px; cursor: pointer; font-weight: bold; color: #008060; border: 1px solid #ddd; transition: 0.2s; font-size: 13px; }
         .city-option:hover { background: #eef9f5; border-color: #008060; }
 
-        .btn-login { background: #008060; color: white; border: none; padding: 11px 20px; border-radius: 8px; cursor: pointer; font-weight: 900; font-size: 15px; }
+        .btn-login { background: #008060; color: white; border: none; padding: 11px 20px; border-radius: 8px; cursor: pointer; font-weight: 900; font-size: 15px; white-space: nowrap; }
+        .booking-nav-btn { display: none; }
+        .notification-menu { position: relative; display: none; }
+        .notification-bell { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #d7e3e0; border-radius: 14px; background: linear-gradient(145deg, #ffffff, #f0faf6); color: #087f5b; cursor: pointer; box-shadow: 0 7px 16px rgba(15, 95, 73, 0.10); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .notification-bell:hover, .notification-bell[aria-expanded="true"] { transform: translateY(-1px); box-shadow: 0 11px 22px rgba(15, 95, 73, 0.16); }
+        .notification-bell svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .notification-bell.has-unread { border-color: rgba(217, 83, 79, 0.35); animation: notification-pulse 2.4s ease-in-out infinite; }
+        .notification-badge { position: absolute; top: -7px; right: -7px; min-width: 20px; height: 20px; padding: 0 5px; border: 2px solid #fff; border-radius: 999px; background: linear-gradient(135deg, #e96a5f, #c63838); color: #fff; font-size: 10px; font-weight: 900; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 9px rgba(198, 56, 56, 0.28); }
+        .notification-dropdown { position: absolute; top: calc(100% + 13px); right: 0; width: min(370px, 90vw); max-height: 410px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; display: none; padding: 12px; background: rgba(255,255,255,0.97); border: 1px solid rgba(15, 155, 114, 0.15); border-radius: 17px; box-shadow: 0 22px 48px rgba(15,23,42,0.18); z-index: 200; backdrop-filter: blur(14px); }
+        .notification-dropdown.show { display: block; }
+        .notification-dropdown h3 { color: #087f5b; font-size: 16px; margin: 4px 6px 10px; }
+        .notification-empty { padding: 26px 8px; color: #778782; text-align: center; font-size: 13px; }
+        .notification-item { display: grid; grid-template-columns: 46px 1fr; gap: 11px; padding: 12px 9px; border-bottom: 1px solid #edf2f1; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; }
+        .notification-item:last-child { border-bottom: none; }
+        .notification-item:hover { background: #f8fcfa; transform: translateX(2px); }
+        .notification-item.unread { background: linear-gradient(100deg, #effbf6, #fffdf7); border-radius: 12px; }
+        .notification-item-media { width: 46px; height: 46px; border-radius: 13px; overflow: hidden; background: linear-gradient(145deg, #d9f5e9, #fff0d5); display: grid; place-items: center; color: #087f5b; font-size: 19px; font-weight: 900; }
+        .notification-item-media img { width: 100%; height: 100%; object-fit: cover; }
+        .notification-item strong { display: block; color: #17382f; font-size: 14px; line-height: 1.35; }
+        .notification-item p { margin-top: 4px; color: #536560; font-size: 12px; line-height: 1.5; }
+        .notification-item time { display: block; margin-top: 6px; color: #87928f; font-size: 10px; }
+        .notification-dropdown h3 { letter-spacing: 0.01em; font-weight: 900; }
+        .notification-item strong { letter-spacing: 0; font-weight: 900; }
+        .notification-item p { letter-spacing: 0; font-weight: 500; }
+        .notification-item time { font-weight: 700; letter-spacing: 0.01em; }
+        @keyframes notification-pulse { 0%, 100% { box-shadow: 0 7px 16px rgba(15, 95, 73, 0.10); } 50% { box-shadow: 0 0 0 6px rgba(217, 83, 79, 0.08), 0 11px 22px rgba(15, 95, 73, 0.16); } }
         .btn-logout { background: #d9534f; color: white; border: none; padding: 7px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; }
         .user-profile { display: none; align-items: center; gap: 8px; }
 
@@ -83,6 +115,7 @@
             cursor: pointer;
             font-weight: 900;
             font-size: 15px;
+            white-space: nowrap;
             box-shadow: 0 8px 18px rgba(15, 155, 114, 0.08);
         }
         .profile-avatar {
@@ -424,6 +457,12 @@
         .auth-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 8px; color: #777; font-size: 12px; }
         .auth-divider::before, .auth-divider::after { content: ''; height: 1px; flex: 1; background: #ddd; }
         .auth-message { min-height: 18px; margin-top: 8px; color: #b42318; font-size: 12px; text-align: center; }
+        .phone-input-group { display: flex; align-items: center; width: 100%; margin-top: 8px; }
+        .phone-country-code { display: flex; align-items: center; align-self: stretch; padding: 0 10px; border: 1px solid #ccc; border-right: none; border-radius: 4px 0 0 4px; background: #f5f8f7; color: #1f2937; font-weight: 700; white-space: nowrap; }
+        .phone-input-group input { flex: 1; min-width: 0; margin-bottom: 10px; border-radius: 0 4px 4px 0; }
+        .auth-field-with-icon { position: relative; }
+        .auth-field-with-icon input { padding-right: 42px; }
+        .password-toggle { position: absolute; top: 7px; right: 8px; border: none; background: transparent; color: #52635e; cursor: pointer; font-size: 17px; line-height: 1; padding: 2px; }
 
         .image-upload-container { display: flex; gap: 8px; margin-bottom: 10px; }
         .img-upload-box { width: 70px; height: 70px; border: 2px dashed #008060; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #eef9f5; position: relative; overflow: hidden; font-size: 20px; color: #008060; }
@@ -442,6 +481,10 @@
         .admin-table th { background: #f1f1f1; color: #333; }
         .admin-table .en-ui, .admin-table .en-ui * { font-family: "Times New Roman", Times, serif !important; font-weight: 700; letter-spacing: 0.01em; }
         .admin-table td a { font-family: "Times New Roman", Times, serif !important; }
+        .admin-map-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; padding: 5px 8px; border: 1px solid rgba(8, 127, 91, 0.18); border-radius: 7px; background: #effbf6; color: #087f5b !important; font-size: 11px; font-weight: 800; text-decoration: none !important; white-space: nowrap; }
+        .admin-map-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .admin-location-details { display: block; margin-top: 4px; color: #526660; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
+        .admin-location-label { display: block; margin-top: 5px; color: #087f5b; font-size: 11px; font-weight: 900; }
 
         footer { background: #222; color: #aaa; text-align: center; padding: 25px 15px; margin-top: 40px; }
         footer h3 { color: white; margin-bottom: 8px; font-size: 28px; font-weight: 900; letter-spacing: -0.04em; }
@@ -452,10 +495,20 @@
         footer p .brand-red { color: #d9534f !important; }
 
         @media (max-width: 768px) {
-            .navbar { padding: 10px 15px; justify-content: center; }
-            .search-box { max-width: 100%; order: 3; width: 100%; }
-            .logo { order: 1; }
-            .nav-links { order: 2; gap: 8px; }
+            .navbar { padding: 8px 10px; justify-content: flex-start; flex-wrap: nowrap; gap: 6px; overflow: visible; }
+            .search-box { order: 0; flex: 0 0 40px; width: 40px; max-width: 40px; gap: 0; }
+            .search-box input { display: none; }
+            .search-box button { width: 40px; height: 40px; padding: 0; border-radius: 12px; font-size: 0; flex: 0 0 40px; }
+            .search-box button svg { width: 19px; height: 19px; }
+            .logo { order: 0; flex: 0 0 auto; font-size: 27px; line-height: 1; white-space: nowrap; }
+            .nav-links { order: 0; flex: 0 0 auto; gap: 5px; flex-wrap: nowrap; min-width: 0; }
+            .nav-links a, .btn-login, .booking-nav-btn, .profile-trigger, #userNameDisplay { white-space: nowrap; }
+            .nav-links a { font-size: 12px; }
+            .btn-login { padding: 8px 9px; font-size: 12px; }
+            .profile-trigger { gap: 5px; padding: 6px 8px 6px 5px; font-size: 12px; }
+            .profile-avatar { width: 25px; height: 25px; }
+            #userNameDisplay { max-width: 76px; overflow: hidden; text-overflow: ellipsis; }
+            .notification-bell { width: 40px; height: 40px; flex: 0 0 40px; }
             .location-container {
                 max-width: calc(100vw - 120px);
                 padding: 7px 10px;
@@ -473,6 +526,8 @@
                 left: auto;
                 width: min(82vw, 300px);
                 max-width: calc(100vw - 18px);
+                min-width: 0;
+                padding: 14px;
                 z-index: 2500;
             }
             .location-popup::before {
@@ -498,6 +553,24 @@
                 font-size: 14px;
                 padding: 10px 12px;
             }
+            .notification-dropdown {
+                position: fixed;
+                top: 68px;
+                left: 0 !important;
+                right: auto !important;
+                width: 100vw !important;
+                max-height: calc(100vh - 88px);
+                overflow-y: auto;
+                padding: 15px 14px 20px;
+                border-radius: 0 0 20px 20px;
+                z-index: 2500;
+            }
+            .notification-dropdown h3 { font-size: 17px; margin: 2px 5px 12px; }
+            .notification-item { grid-template-columns: 50px minmax(0, 1fr); gap: 12px; padding: 13px 8px; }
+            .notification-item-media { width: 50px; height: 50px; }
+            .notification-item strong { font-size: 14px; line-height: 1.45; }
+            .notification-item p { font-size: 13px; line-height: 1.6; }
+            .notification-item time { font-size: 10px; }
             .dynamic-banner-shell { padding: 0 12px; }
             .dynamic-banner {
                 border-radius: 18px 18px 0 0;
@@ -571,19 +644,28 @@
         <div class="logo" id="siteLogo">Sheba<span>Now</span></div>
         <div class="search-box" id="searchBoxContainer">
             <input type="text" id="searchInput" placeholder="কী সেবা খুঁজছেন? যেমন: AC, ক্লিনিং...">
-            <button id="searchBtn">খুঁজুন</button>
+            <button id="searchBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg><span>খুঁজুন</span></button>
         </div>
         <nav class="nav-links">
             <div class="location-container" id="locationContainer">
                 <svg class="location-icon-svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span id="selectedLocationText" class="selected-location-text">গাজীপুর (কোনাবাড়ি)</span>
+                <span id="selectedLocationText" class="selected-location-text">Konabari, Gazipur</span>
                 <div class="location-popup" id="locationPopup">
                     <p><b>আপনার ডেলিভারি ঠিকানা সেট করুন</b><br>আমাদের সার্ভিস শুধু গাজীপুর এলাকার জন্য। আপনার সঠিক এলাকা নির্বাচন করুন।</p>
+                    <span id="locationPopupAddress" class="location-popup-address">Konabari, Gazipur</span>
+                    <button type="button" class="location-share-btn" id="locationShareBtn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4"></path><path d="m15.4 6.5-6.8 4"></path></svg>লোকেশন শেয়ার করুন</button>
                     <button class="btn-close-popup" id="closePopupBtn">বন্ধ করুন</button>
                 </div>
             </div>
             
             <a id="navAllServices">সব সেবা</a>
+            <div id="notificationMenu" class="notification-menu">
+                <button type="button" id="notificationBell" class="notification-bell" aria-label="নোটিফিকেশন দেখুন" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg><span id="notificationBadge" class="notification-badge">0</span></button>
+                <div id="notificationDropdown" class="notification-dropdown" role="status">
+                    <h3>নোটিফিকেশন</h3>
+                    <div id="notificationList"></div>
+                </div>
+            </div>
             <button id="loginBtnNav" class="btn-login">লগইন</button>
             <div id="userProfile" class="user-profile profile-menu">
                 <button type="button" id="profileTrigger" class="profile-trigger" aria-expanded="false">
@@ -594,7 +676,6 @@
                 <div id="profileDropdown" class="profile-dropdown">
                     <a href="admin.html" class="en-item">Admin Panel</a>
                     <a href="index.html" id="profileAllServices" class="bn-item">সব সেবা</a>
-                    <button type="button" id="myOrdersBtn" class="bn-item">আমার বুকিং</button>
                     <button type="button" id="languageToggle" class="language-toggle bn-item" aria-label="ভাষা পরিবর্তন">
                         <span class="language-toggle-icon" aria-hidden="true">文</span>
                         <span id="languageToggleLabel">English</span>
@@ -602,6 +683,7 @@
                     <button type="button" id="logoutBtn" class="logout-item en-item">Log out</button>
                 </div>
             </div>
+            <button type="button" id="myOrdersBtn" class="btn-login booking-nav-btn">আমার বুকিং</button>
         </nav>
     </header>
 
@@ -807,6 +889,14 @@
                     <p>বিশুদ্ধতার সাথে কোনো আপস নয়—একেবারে ফ্রেশ মিল্ক!</p>
                     <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('ফ্রেশ মিল্ক')">বুক করুন</button>
                 </div>
+                <div class="service-card" data-name="বইবাড়ী boibari library books" onclick="triggerBooking('বইবাড়ী (BoiBari)')">
+                    <div class="img-box">
+                        <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=900&q=80" alt="বইবাড়ী লাইব্রেরি">
+                    </div>
+                    <h3>বইবাড়ী (BoiBari)</h3>
+                    <p>লাইব্রেরি এখন আপনার ঘরের কোণে।</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('বইবাড়ী (BoiBari)')">বুক করুন</button>
+                </div>
             </div>
         </section>
     </div>
@@ -909,10 +999,11 @@
                     <option value="bKash Personal">bKash Personal</option>
                     <option value="Nagad Personal">Nagad Personal</option>
                     <option value="Rocket Personal">Rocket Personal</option>
+                    <option value="Cash On Delivery">Cash On Delivery</option>
                 </select>
 
                 <label style="font-size: 12px; font-weight: bold;">মার্চেন্ট/রিসিভ করার নম্বর:</label>
-                <input type="text" id="adminReceivePhone" placeholder="যেমন: 01800000000" required>
+                <input type="text" id="adminReceivePhone" placeholder="যেমন: 01800000000">
 
                 <button type="submit" class="btn-submit">সেট করুন ও কনফার্ম করুন</button>
             </form>
@@ -931,7 +1022,9 @@
                 <textarea id="problemDescription" placeholder="আপনার সমস্যা বা কাজের বিবরণ বিস্তারিত লিখুন..." rows="3" required></textarea>
                 <label for="bookingDate" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">বুকিংয়ের তারিখ</label>
                 <div class="booking-date-row">
-                    <input type="date" id="bookingDate" required>
+                    <input type="text" id="bookingDate" placeholder="দিন/মাস/বছর (DD/MM/YYYY)" inputmode="numeric" maxlength="10" pattern="\d{2}/\d{2}/\d{4}" required>
+                    <button type="button" id="openBookingCalendar" class="clear-date-btn" aria-label="ক্যালেন্ডার খুলুন">📅</button>
+                    <input type="date" id="bookingDatePicker" aria-hidden="true" tabindex="-1" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
                     <button type="button" id="clearBookingDate" class="clear-date-btn">তারিখ পরিষ্কার</button>
                 </div>
                 
@@ -1010,12 +1103,24 @@
                 <div id="nameFieldContainer" style="display: none;">
                     <input type="text" id="authNameInput" placeholder="আপনার পুরো নাম">
                 </div>
+                <div id="mobileFieldContainer" style="display: none;">
+                    <div class="phone-input-group">
+                        <span class="phone-country-code" aria-label="বাংলাদেশের country code">🇧🇩 +880</span>
+                        <input type="tel" id="authMobileInput" placeholder="1XXXXXXXXX" inputmode="numeric" maxlength="10" autocomplete="tel-national" aria-label="বাংলাদেশি মোবাইল নম্বর">
+                    </div>
+                    <small style="display: block; margin: -5px 0 8px; color: #666; font-size: 11px;">শুধু ১০ সংখ্যার নম্বর দিন, যেমন 1642949519</small>
+                </div>
                 <input type="email" id="authEmailInput" placeholder="ইমেইল ঠিকানা" required>
-                <input type="password" id="authPassInput" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট)" required>
+                <div class="auth-field-with-icon">
+                    <input type="password" id="authPassInput" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট)" required>
+                    <button type="button" class="password-toggle" data-password-target="authPassInput" aria-label="পাসওয়ার্ড দেখান">&#128065;</button>
+                </div>
+                <div id="confirmPasswordContainer" class="auth-field-with-icon" style="display: none;">
+                    <input type="password" id="authConfirmPassInput" placeholder="পাসওয়ার্ড আবার লিখুন" autocomplete="new-password">
+                    <button type="button" class="password-toggle" data-password-target="authConfirmPassInput" aria-label="কনফার্ম পাসওয়ার্ড দেখান">&#128065;</button>
+                </div>
                 <button type="submit" class="btn-submit" id="authSubmitBtn">লগইন</button>
             </form>
-            <div class="auth-divider"><span>অথবা</span></div>
-            <button type="button" class="auth-provider-btn" id="googleSignInBtn">Google দিয়ে চালিয়ে যান</button>
             <p id="authMessage" class="auth-message" role="alert"></p>
             <p style="margin-top: 12px; text-align: center; font-size: 13px;">
                 <span id="toggleAuthText">নতুন অ্যাকাউন্ট খুলতে চান?</span>
@@ -1065,7 +1170,7 @@
                 const autocomplete = new google.maps.places.Autocomplete(input, {
                     types: ["address"],
                     componentRestrictions: { country: "bd" },
-                    fields: ["formatted_address", "geometry", "name"]
+                    fields: ["formatted_address", "geometry", "name", "address_components"]
                 });
 
                 autocomplete.bindTo("bounds", map);
@@ -1082,10 +1187,12 @@
                     marker.setTitle(place.name || place.formatted_address || "Selected location");
 
                     const addressText = place.formatted_address || place.name || "গাজীপুর";
-                    const selectedText = document.getElementById("selectedLocationText");
-                    if (selectedText) {
-                        selectedText.textContent = addressText;
-                    }
+                    window.updateSelectedLocation({
+                        fullAddress: addressText,
+                        latitude: placeLocation.lat(),
+                        longitude: placeLocation.lng(),
+                        place
+                    });
                     input.value = addressText;
                 });
             }
@@ -1097,10 +1204,12 @@
                 geocoder.geocode({ location: event.latLng }, (results, status) => {
                     if (status === "OK" && results[0]) {
                         const clickedAddress = results[0].formatted_address || "গাজীপুর";
-                        const selectedText = document.getElementById("selectedLocationText");
-                        if (selectedText) {
-                            selectedText.textContent = clickedAddress;
-                        }
+                        window.updateSelectedLocation({
+                            fullAddress: clickedAddress,
+                            latitude: event.latLng.lat(),
+                            longitude: event.latLng.lng(),
+                            place: results[0]
+                        });
                         if (input) {
                             input.value = clickedAddress;
                         }
@@ -1112,8 +1221,9 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getDatabase, ref, push, set, get, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getDatabase, ref, push, set, get, update, remove, onChildAdded } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD96Zb90WfRKmssz3eA9veyJxgZlihC0UI",
@@ -1128,6 +1238,182 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
+        const VAPID_KEY = "BHuzi3JesVaj-qjlybldwfdR6EvxOLAzE_a5tIBUanLNyDiYf9ZBqaG_d0lbUZkS5FjMNwDeziHuGaDiABy7iEI";
+        let messaging;
+        let fcmToken;
+
+        async function saveFcmTokenForUser(user) {
+            if (!user || !fcmToken) return;
+            try {
+                await update(ref(db, `users/${user.uid}/fcmTokens`), {
+                    [fcmToken]: {
+                        token: fcmToken,
+                        updatedAt: new Date().toISOString()
+                    }
+                });
+            } catch (error) {
+                console.error("FCM token database save failed:", error);
+            }
+        }
+
+        const notificationMenu = document.getElementById("notificationMenu");
+        const notificationBell = document.getElementById("notificationBell");
+        const notificationBadge = document.getElementById("notificationBadge");
+        const notificationDropdown = document.getElementById("notificationDropdown");
+        const notificationList = document.getElementById("notificationList");
+        const notificationItems = [];
+        const unreadNotificationIds = new Set();
+        let notificationListenerStarted = false;
+
+        function escapeNotificationText(value) {
+            return String(value || "").replace(/[&<>"']/g, (character) => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+            }[character]));
+        }
+
+        function renderNotificationCenter() {
+            notificationBadge.textContent = String(unreadNotificationIds.size);
+            notificationBadge.style.display = unreadNotificationIds.size ? "flex" : "none";
+            notificationBell.classList.toggle("has-unread", unreadNotificationIds.size > 0);
+
+            if (!notificationItems.length) {
+                notificationList.innerHTML = '<div class="notification-empty">কোনো নোটিফিকেশন নেই।</div>';
+                return;
+            }
+
+            notificationList.innerHTML = notificationItems
+                .slice().sort((first, second) => String(second.createdAt || "").localeCompare(String(first.createdAt || "")))
+                .map((item) => `
+                    <div class="notification-item ${unreadNotificationIds.has(item.id) ? "unread" : ""}" data-notification-id="${escapeNotificationText(item.id)}">
+                        <div class="notification-item-media">${item.image ? `<img src="${escapeNotificationText(item.image)}" alt="">` : "✦"}</div>
+                        <div><strong>${escapeNotificationText(item.title)}</strong>
+                        <p>${escapeNotificationText(item.body)}</p>
+                        <time>${item.createdAt ? new Date(item.createdAt).toLocaleString("bn-BD") : ""}</time></div>
+                    </div>
+                `).join("");
+        }
+
+        function markNotificationsRead() {
+            unreadNotificationIds.clear();
+            localStorage.setItem("shebaNowReadNotifications", JSON.stringify(notificationItems.map((item) => item.id)));
+            renderNotificationCenter();
+        }
+
+        async function listenForNewOffers() {
+            if (notificationListenerStarted) return;
+            notificationListenerStarted = true;
+
+            try {
+                const notificationsRef = ref(db, "notifications");
+                const existingSnapshot = await get(notificationsRef);
+                const existingNotificationIds = new Set();
+
+                if (existingSnapshot.exists()) {
+                    existingSnapshot.forEach((childSnapshot) => {
+                        existingNotificationIds.add(childSnapshot.key);
+                        const offer = childSnapshot.val() || {};
+                        if (!offer.status || offer.status === "published") {
+                            notificationItems.push({ id: childSnapshot.key, ...offer });
+                        }
+                    });
+                }
+                renderNotificationCenter();
+
+                onChildAdded(notificationsRef, (snapshot) => {
+                    if (existingNotificationIds.has(snapshot.key)) return;
+                    const offer = snapshot.val() || {};
+                    if (offer.status && offer.status !== "published") return;
+
+                    notificationItems.push({ id: snapshot.key, ...offer });
+                    unreadNotificationIds.add(snapshot.key);
+                    renderNotificationCenter();
+
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        const notification = new Notification(offer.title || "ShebaNow Offer", {
+                            body: offer.body || "আপনার জন্য নতুন অফার এসেছে।",
+                            icon: offer.image || "/header-bg.jpg",
+                            image: offer.image || undefined,
+                            tag: `offer-${snapshot.key}`
+                        });
+                        notification.onclick = () => { window.focus(); notification.close(); };
+                    }
+                });
+            } catch (error) {
+                console.error("Offer notification listener failed:", error);
+            }
+        }
+
+        notificationBell.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const isOpen = notificationDropdown.classList.toggle("show");
+            notificationBell.setAttribute("aria-expanded", String(isOpen));
+            if (isOpen) markNotificationsRead();
+        });
+        document.addEventListener("click", (event) => {
+            if (!notificationMenu.contains(event.target)) {
+                notificationDropdown.classList.remove("show");
+                notificationBell.setAttribute("aria-expanded", "false");
+            }
+        });
+        listenForNewOffers();
+
+        let notificationPermissionRequest;
+        async function requestAndSaveNotificationPermission() {
+            if (notificationPermissionRequest) return notificationPermissionRequest;
+            notificationPermissionRequest = (async () => {
+            try {
+                if (!(await isSupported())) return;
+
+                const permission = await Notification.requestPermission();
+                if (permission !== "granted") {
+                    console.info("Notification permission denied.");
+                    return;
+                }
+
+                const serviceWorkerRegistration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+                messaging = getMessaging(app);
+                fcmToken = await getToken(messaging, {
+                    vapidKey: VAPID_KEY,
+                    serviceWorkerRegistration
+                });
+
+                if (fcmToken) {
+                    localStorage.setItem("shebaNowFcmToken", fcmToken);
+                    console.log("FCM token:", fcmToken);
+                    const safeKey = fcmToken.replace(/[.#$\[\]]/g, "_");
+                    await set(ref(db, `fcmTokens/${safeKey}`), {
+                        token: fcmToken,
+                        createdAt: new Date().toISOString()
+                    });
+                    console.log("Token successfully saved to database!");
+                    await saveFcmTokenForUser(auth.currentUser);
+                } else {
+                    console.warn("No FCM registration token available.");
+                }
+
+                onMessage(messaging, (payload) => {
+                    const notification = payload.notification || {};
+                    const data = payload.data || {};
+                    const title = notification.title || data.title || "ShebaNow";
+                    const body = notification.body || data.body || "আপনার জন্য নতুন আপডেট এসেছে।";
+                    const icon = notification.icon || data.icon || "/header-bg.jpg";
+                    const image = notification.image || data.image || data.offerImage;
+
+                    if (Notification.permission === "granted") {
+                        new Notification(title, {
+                            body,
+                            icon,
+                            image,
+                            data: { clickUrl: data.clickUrl || data.url || "/index.html" }
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error("Firebase Messaging initialization failed:", error);
+            }
+            })();
+            return notificationPermissionRequest;
+        }
 
         const GOOGLE_MAPS_API_KEY = "AIzaSyDzqvReJoGQdOigth3KdBrCKDNFCvHWitY";
         const FALLBACK_BANNER_URL = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80';
@@ -1137,6 +1423,52 @@
             'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1600&q=80'
         ];
         const DEFAULT_LOCATION_TEXT = 'গাজীপুর (কোনাবাড়ি)';
+        const DEFAULT_LOCATION_COORDINATES = { latitude: 24.0104, longitude: 90.4185 };
+        const savedLocation = (() => {
+            try {
+                return JSON.parse(localStorage.getItem('shebaNowSelectedLocation') || 'null');
+            } catch (error) {
+                return null;
+            }
+        })();
+        window.currentSelectedLocation = savedLocation && savedLocation.fullAddress
+            ? savedLocation
+            : {
+            shortName: 'Konabari, Gazipur',
+            fullAddress: DEFAULT_LOCATION_TEXT,
+            latitude: DEFAULT_LOCATION_COORDINATES.latitude,
+            longitude: DEFAULT_LOCATION_COORDINATES.longitude
+        };
+
+        function getLocationShortName(place, fallbackAddress = '') {
+            const components = place?.address_components || [];
+            const getComponent = (types) => components.find((component) => types.some((type) => component.types.includes(type)))?.long_name || '';
+            const area = getComponent(['sublocality_level_1', 'sublocality', 'neighborhood']) || getComponent(['locality']) || '';
+            const district = getComponent(['administrative_area_level_2']) || getComponent(['administrative_area_level_1']) || 'Gazipur';
+            if (area && district && area.toLowerCase() !== district.toLowerCase()) return `${area}, ${district}`;
+            if (area) return area;
+            const parts = String(fallbackAddress).split(',').map((part) => part.trim()).filter(Boolean);
+            return parts.length > 1 ? `${parts[parts.length - 2]}, ${parts[parts.length - 1]}` : (parts[0] || DEFAULT_LOCATION_TEXT);
+        }
+
+        window.updateSelectedLocation = function ({ fullAddress, latitude, longitude, place, shortName } = {}) {
+            const nextAddress = String(fullAddress || DEFAULT_LOCATION_TEXT).trim();
+            const nextLatitude = Number(latitude);
+            const nextLongitude = Number(longitude);
+            window.currentSelectedLocation = {
+                shortName: shortName || getLocationShortName(place, nextAddress),
+                fullAddress: nextAddress,
+                latitude: Number.isFinite(nextLatitude) ? nextLatitude : null,
+                longitude: Number.isFinite(nextLongitude) ? nextLongitude : null
+            };
+            localStorage.setItem('shebaNowSelectedLocation', JSON.stringify(window.currentSelectedLocation));
+            const selectedText = document.getElementById('selectedLocationText');
+            if (selectedText) selectedText.textContent = window.currentSelectedLocation.shortName;
+            const popupAddress = document.getElementById('locationPopupAddress');
+            if (popupAddress) popupAddress.textContent = `${window.currentSelectedLocation.shortName} | ${window.currentSelectedLocation.fullAddress}`;
+            return window.currentSelectedLocation;
+        };
+        window.updateSelectedLocation(window.currentSelectedLocation);
         const SERVICE_IMAGE_CONFIG = [
             { key: 'ac-servicing', matchers: ['এসি সার্ভিসিং', 'ac servicing', 'ac service'] },
             { key: 'home-cleaning', matchers: ['হোম ক্লিনিং', 'home cleaning', 'cleaning'] },
@@ -1155,7 +1487,8 @@
             { key: 'maid-caregiver', matchers: ['বুয়া', 'কেয়ারগিভার', 'maid', 'caregiver'] },
             { key: 'emergency-medicine', matchers: ['ঔষধ', 'medicine', 'মেডিসিন'] },
             { key: 'ambulance', matchers: ['অ্যাম্বুলেন্স', 'ambulance'] },
-            { key: 'fresh-milk', matchers: ['ফ্রেশ মিল্ক', 'fresh milk', 'milk'] }
+            { key: 'fresh-milk', matchers: ['ফ্রেশ মিল্ক', 'fresh milk', 'milk'] },
+            { key: 'boibari', matchers: ['বইবাড়ী', 'boibari', 'library', 'books'] }
         ];
 
         function normalizeServiceKey(value) {
@@ -1206,7 +1539,12 @@
         let bannerRotateTimer = null;
 
         function setLocationText(locationValue) {
-            selectedLocationText.innerText = `গাজীপুর (${locationValue})`;
+            window.updateSelectedLocation({
+                fullAddress: `${locationValue}, Gazipur`,
+                shortName: `${locationValue}, Gazipur`,
+                latitude: DEFAULT_LOCATION_COORDINATES.latitude,
+                longitude: DEFAULT_LOCATION_COORDINATES.longitude
+            });
         }
 
         function startBannerRotation() {
@@ -1392,6 +1730,7 @@
         const locationContainer = document.getElementById("locationContainer");
         const locationPopup = document.getElementById("locationPopup");
         const closePopupBtn = document.getElementById("closePopupBtn");
+        const locationShareBtn = document.getElementById("locationShareBtn");
         const cityModal = document.getElementById("cityModal");
         const closeCityModal = document.getElementById("closeCityModal");
         const areaModal = document.getElementById("areaModal");
@@ -1400,11 +1739,11 @@
 
         locationContainer.addEventListener("click", (e) => {
             e.stopPropagation();
-            if(locationPopup.style.display === "block") {
+            if(locationPopup.style.display === "flex") {
                 locationPopup.style.display = "none";
                 cityModal.style.display = "flex";
             } else {
-                locationPopup.style.display = "block";
+                locationPopup.style.display = "flex";
             }
         });
 
@@ -1412,6 +1751,32 @@
             e.stopPropagation();
             locationPopup.style.display = "none";
             cityModal.style.display = "flex";
+        });
+
+        locationShareBtn.addEventListener("click", async (event) => {
+            event.stopPropagation();
+            const location = window.currentSelectedLocation || {};
+            const hasCoordinates = Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude));
+            const mapUrl = hasCoordinates
+                ? `https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`
+                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress || location.shortName || 'Gazipur')}`;
+            const shareData = {
+                title: 'আমার লোকেশন - Sheba Now',
+                text: `${location.shortName || 'Selected location'}\n${location.fullAddress || ''}`.trim(),
+                url: mapUrl
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else if (navigator.clipboard?.writeText) {
+                    await navigator.clipboard.writeText(mapUrl);
+                    alert('লোকেশন লিংক কপি হয়েছে। এখন শেয়ার করতে পারবেন।');
+                } else {
+                    window.open(mapUrl, '_blank', 'noopener');
+                }
+            } catch (error) {
+                if (error.name !== 'AbortError') console.error('Location share failed:', error);
+            }
         });
 
         closeCityModal.addEventListener("click", () => {
@@ -1434,26 +1799,24 @@
                 return;
             }
 
-            alert("আপনার জিপিএস স্যাটেলাইট ও ম্যাপ থেকে সঠিক লোকেশন ট্র্যাক করা হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...");
-
-            navigator.geolocation.getCurrentPosition(async (position) => {
+            const geocodeCurrentPosition = (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-
-                try {
-                    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${GOOGLE_MAPS_API_KEY}`;
-                    const response = await fetch(geocodeUrl);
-                    const data = await response.json();
-
-                    if (data.status === "OK" && data.results && data.results.length > 0) {
-                        const formattedAddress = (data.results[0].formatted_address || "").trim();
+                const applyCurrentLocation = (result) => {
+                    const formattedAddress = (result?.formatted_address || "").trim();
+                    if (formattedAddress) {
                         const input = document.getElementById("gazipurLocationSearch");
                         if (input) {
                             input.value = formattedAddress || "গাজীপুর";
                         }
 
                         if (formattedAddress) {
-                            selectedLocationText.innerText = formattedAddress;
+                            window.updateSelectedLocation({
+                                fullAddress: formattedAddress,
+                                latitude: lat,
+                                longitude: lon,
+                                place: result
+                            });
 
                             if (window.gazipurMapInstance && window.currentGazipurMarker) {
                                 const exactLocation = new google.maps.LatLng(lat, lon);
@@ -1463,27 +1826,41 @@
                                 window.currentGazipurMarker.setTitle(formattedAddress);
                             }
 
-                            alert(`সফল! আপনার সঠিক বর্তমান অবস্থান: ${formattedAddress}`);
-                            return;
                         }
                     }
-
-                    selectedLocationText.innerText = DEFAULT_LOCATION_TEXT;
-                    alert("সঠিক লোকেশন নাম পাওয়া যায়নি, তাই ডিফল্টভাবে 'গাজীপুর (কোনাবাড়ি)' সেট করা হলো।");
-                } catch (error) {
-                    console.error("Location geocode failed:", error);
-                    selectedLocationText.innerText = DEFAULT_LOCATION_TEXT;
-                    alert("ম্যাপ সার্ভার কানেক্ট করতে সমস্যা হয়েছে। 'গাজীপুর (কোনাবাড়ি)' সিলেক্ট করা হলো।");
+                if (!formattedAddress) {
+                    window.updateSelectedLocation({ fullAddress: `${lat.toFixed(6)}, ${lon.toFixed(6)}`, latitude: lat, longitude: lon, shortName: 'Current location' });
                 }
-            }, (error) => {
+            };
+
+            if (window.google?.maps?.Geocoder) {
+                new google.maps.Geocoder().geocode({ location: { lat, lng: lon } }, (results, status) => {
+                    if (status === "OK" && results?.[0]) {
+                        applyCurrentLocation(results[0]);
+                    } else {
+                        applyCurrentLocation(null);
+                    }
+                });
+            } else {
+                applyCurrentLocation(null);
+            }
+            };
+
+            navigator.geolocation.getCurrentPosition(geocodeCurrentPosition, (error) => {
                 console.error("Location permission error:", error);
                 alert("লোকেশন পারমিশন দেওয়া হয়নি। দয়া করে ম্যানুয়ালি তালিকা থেকে আপনার এলাকা বেছে নিন।");
                 areaModal.style.display = "flex";
-            }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+            }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
         }
 
         window.setFinalLocation = function(locationName) {
-            selectedLocationText.innerText = `গাজীপুর (${locationName})`;
+            const markerPosition = window.currentGazipurMarker?.getPosition();
+            window.updateSelectedLocation({
+                fullAddress: `${locationName}, Gazipur`,
+                shortName: `${locationName}, Gazipur`,
+                latitude: markerPosition?.lat() || DEFAULT_LOCATION_COORDINATES.latitude,
+                longitude: markerPosition?.lng() || DEFAULT_LOCATION_COORDINATES.longitude
+            });
             areaModal.style.display = "none";
         }
 
@@ -1649,7 +2026,39 @@
         closeBooking.addEventListener("click", () => bookingModal.style.display = "none");
         document.getElementById("clearBookingDate").addEventListener("click", () => {
             const bookingDate = document.getElementById("bookingDate");
+            const bookingDatePicker = document.getElementById("bookingDatePicker");
             bookingDate.value = "";
+            bookingDatePicker.value = "";
+        });
+
+        const bookingDate = document.getElementById("bookingDate");
+        const bookingDatePicker = document.getElementById("bookingDatePicker");
+        const openBookingCalendar = document.getElementById("openBookingCalendar");
+
+        function openDatePicker() {
+            if (typeof bookingDatePicker.showPicker === "function") {
+                bookingDatePicker.showPicker();
+            } else {
+                bookingDatePicker.focus();
+            }
+        }
+
+        bookingDate.addEventListener("click", openDatePicker);
+        openBookingCalendar.addEventListener("click", openDatePicker);
+
+        bookingDate.addEventListener("input", (event) => {
+            const digits = event.target.value.replace(/\D/g, "").slice(0, 8);
+            event.target.value = digits.length > 4
+                ? `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`
+                : digits.length > 2
+                    ? `${digits.slice(0, 2)}/${digits.slice(2)}`
+                    : digits;
+        });
+
+        bookingDatePicker.addEventListener("change", () => {
+            if (!bookingDatePicker.value) return;
+            const [year, month, day] = bookingDatePicker.value.split("-");
+            bookingDate.value = `${day}/${month}/${year}`;
         });
 
         orderForm.addEventListener("submit", async (e) => {
@@ -1661,6 +2070,13 @@
             const description = document.getElementById("problemDescription").value;
             const date = document.getElementById("bookingDate").value;
             const customOrderId = generateOrderId();
+
+            const dateParts = date.split("/").map(Number);
+            const selectedDate = dateParts.length === 3 ? new Date(dateParts[2], dateParts[1] - 1, dateParts[0]) : null;
+            if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date) || !selectedDate || selectedDate.getFullYear() !== dateParts[2] || selectedDate.getMonth() !== dateParts[1] - 1 || selectedDate.getDate() !== dateParts[0]) {
+                alert("তারিখ দিন/মাস/বছর ফরম্যাটে দিন, যেমন 25/12/2026।");
+                return;
+            }
 
             const selectedImages = [];
             for(let i=1; i<=5; i++) {
@@ -1688,6 +2104,15 @@
                     name,
                     phone,
                     address,
+                    customerAddress: address,
+                    location: {
+                        shortName: window.currentSelectedLocation?.shortName || DEFAULT_LOCATION_TEXT,
+                        fullAddress: window.currentSelectedLocation?.fullAddress || address,
+                        latitude: window.currentSelectedLocation?.latitude ?? null,
+                        longitude: window.currentSelectedLocation?.longitude ?? null
+                    },
+                    latitude: window.currentSelectedLocation?.latitude ?? null,
+                    longitude: window.currentSelectedLocation?.longitude ?? null,
                     description,
                     date,
                     images: finalImages,
@@ -1784,8 +2209,9 @@
                             ${imgHtml}
                             <hr style="border:0; border-top:1px solid #eee; margin:8px 0;">
                             <p class="premium-bengali" style="font-size:14px; font-weight:800;"><b>স্ট্যাটাস:</b> <span class="en-ui" style="color: #d9534f; font-weight:900;">${(order.status || '').replace('টেকনিশিয়ান পর্যালোচনায় আছে', 'সেবা প্রদানকারীর পর্যালোচনায় আছে').replace('পেমেন্ট ও টেকনিশিয়ান নির্ধারিত', 'পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত')}</span></p>
-                            ${order.paymentFee ? `<p class="premium-bengali" style="font-size:14px; margin-top:5px; font-weight:700;"><b>পেমেন্ট মাধ্যম:</b> <span class="en-ui">${order.paymentGateway}</span> (<span class="en-ui">${order.receivePhone}</span>)<br><b>বুকিং ফি:</b> <span class="en-ui">৳${order.paymentFee}</span></p>` : ''}
-                            <p class="premium-bengali" style="font-size:14px; margin-top:5px; font-weight:700;"><b>পেমেন্ট স্ট্যাটাস:</b> <span class="en-ui" style="font-weight:900; color:${order.paymentStatus === 'অনুমোদিত' ? 'green' : 'orange'};">${order.paymentStatus}</span></p>
+                            ${order.paymentFee && order.paymentStatus === 'অনুমোদিত' ? `<p class="premium-bengali" style="font-size:14px; margin-top:5px; font-weight:700;"><b>পেমেন্ট মাধ্যম:</b> <span class="en-ui">${order.paymentGateway}</span>${order.paymentGateway !== 'Cash On Delivery' ? ` (<span class="en-ui">${order.receivePhone}</span>)` : ''}<br><b>বুকিং ফি:</b> <span class="en-ui">৳${order.paymentFee}</span></p>` : ''}
+                            ${order.paymentGateway === 'Cash On Delivery' && order.paymentStatus === 'অনুমোদিত' ? `<p class="premium-bengali" style="font-size:14px; margin-top:5px; font-weight:800; color:#087f5b;"><b>পেমেন্ট:</b> Cash On Delivery</p>` : ''}
+                            <p class="premium-bengali" style="font-size:14px; margin-top:5px; font-weight:700;"><b>পেমেন্ট স্ট্যাটাস:</b> <span class="en-ui" style="font-weight:900; color:${order.paymentStatus === 'অনুমোদিত' ? 'green' : 'orange'};">${order.paymentStatus === 'COD অনুমোদনের অপেক্ষায়' ? 'পেমেন্ট অনুমোদনের অপেক্ষায়' : order.paymentStatus}</span></p>
                             
                             ${order.paymentFee && order.paymentStatus === 'ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)' ? `<button class="premium-bengali" onclick="openUserPaymentModal('${order.id}', '${order.paymentGateway}', '${order.receivePhone}', '${order.paymentFee}')" style="background:#0275d8; color:white; border:none; padding:7px 12px; border-radius:6px; margin-top:8px; cursor:pointer; font-weight:900; font-size:13px; font-family: 'Times New Roman', Times, serif;">পেমেন্ট করুন</button>` : ''}
                         </div>
@@ -1857,12 +2283,19 @@
             const gateway = document.getElementById("adminPaymentGateway").value;
             const phone = document.getElementById("adminReceivePhone").value;
 
+            if (gateway !== "Cash On Delivery" && !phone.trim()) {
+                alert("অনলাইন পেমেন্টের জন্য রিসিভ করার নম্বর দিন।");
+                return;
+            }
+
             try {
                 await update(ref(db, `orders/${orderId}`), {
                     paymentFee: fee,
                     paymentGateway: gateway,
                     receivePhone: phone,
-                    paymentStatus: "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
+                    paymentStatus: gateway === "Cash On Delivery"
+                        ? "COD অনুমোদনের অপেক্ষায়"
+                        : "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
                 });
                 alert("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
                 adminSetPriceModal.style.display = "none";
@@ -1892,7 +2325,7 @@
                     const displayOrderId = (order.customId || order.id || 'SB0000').toString();
                     let paymentHtml = `<b class="premium-bengali">স্ট্যাটাস:</b> <span class="en-ui">${order.paymentStatus}</span><br>`;
                     if(order.paymentFee) {
-                        paymentHtml += `<span class="premium-bengali">ফি:</span> <span class="en-ui">৳${order.paymentFee}</span><br><span class="premium-bengali">নম্বর:</span> <span class="en-ui">${order.receivePhone}</span><br>`;
+                        paymentHtml += `<span class="premium-bengali">ফি:</span> <span class="en-ui">৳${order.paymentFee}</span><br><span class="premium-bengali">মাধ্যম:</span> <span class="en-ui">${order.paymentGateway}</span>${order.paymentGateway !== 'Cash On Delivery' ? `<br><span class="premium-bengali">নম্বর:</span> <span class="en-ui">${order.receivePhone}</span>` : ''}<br>`;
                     }
                     if(order.paymentDetails) {
                         paymentHtml += `<span class="en-ui" style="color:blue;">TrxID: ${order.paymentDetails.trxId} (${order.paymentDetails.senderPhone})</span>`;
@@ -1907,9 +2340,17 @@
                         adminImgHtml += `</div>`;
                     }
 
-                    const fullAddress = (order.address || '').trim();
+                    const locationData = order.location || {};
+                    const customerAddress = String(order.customerAddress || order.address || '').trim();
+                    const fullAddress = String(locationData.fullAddress || '').trim();
+                    const latitude = Number(locationData.latitude ?? order.latitude);
+                    const longitude = Number(locationData.longitude ?? order.longitude);
+                    const shortLocation = String(locationData.shortName || '').trim();
                     const { main: addressMain, location: addressLocation } = splitAddressLocation(fullAddress);
-                    const addressCellHtml = `<span class="en-ui">${addressMain || fullAddress || '—'}</span>`;
+                    const mapLink = Number.isFinite(latitude) && Number.isFinite(longitude)
+                        ? `<a class="admin-map-link" href="https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}" target="_blank" rel="noopener" aria-label="লোকেশনের Google Maps খুলুন"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>ম্যাপে দেখুন</a>`
+                        : '';
+                    const addressCellHtml = `<b class="admin-location-label">User address</b><span class="admin-location-details">${customerAddress || '—'}</span>${fullAddress ? `<b class="admin-location-label">Selected map location</b><span class="admin-location-details">${shortLocation || addressMain || '—'}<br>${fullAddress}</span>` : ''}${mapLink}${Number.isFinite(latitude) && Number.isFinite(longitude) ? `<small class="admin-location-details">${latitude.toFixed(6)}, ${longitude.toFixed(6)}</small>` : ''}`;
                     const orderDateDisplay = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) : (order.date || '');
 
                     html += `
@@ -1934,7 +2375,7 @@
                                 </select>
                                 <br>
                                 ${!order.paymentFee ? `<button onclick="openAdminSetPriceModal('${order.id}')" style="background:#f0ad4e; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px; margin-bottom:2px;">ফি সেট</button>` : ''}
-                                ${order.paymentStatus === 'পেমেন্ট রিভিউাধীন' ? `<button onclick="approvePayment('${order.id}')" style="background:green; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px; margin-bottom:2px;">অ্যাপ্রুভ</button>` : ''}
+                                ${order.paymentStatus === 'পেমেন্ট রিভিউাধীন' || order.paymentStatus === 'COD অনুমোদনের অপেক্ষায়' ? `<button onclick="approvePayment('${order.id}')" style="background:green; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px; margin-bottom:2px;">অ্যাপ্রুভ</button>` : ''}
                                 <br>
                                 <button onclick="deleteAdminOrder('${order.id}')" style="background:#d9534f; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px;">ডিলিট</button>
                             </td>
@@ -1980,9 +2421,13 @@
         const toggleAuthText = document.getElementById("toggleAuthText");
         const loginTitle = document.getElementById("loginTitle");
         const nameFieldContainer = document.getElementById("nameFieldContainer");
+        const mobileFieldContainer = document.getElementById("mobileFieldContainer");
+        const authMobileInput = document.getElementById("authMobileInput");
+        const confirmPasswordContainer = document.getElementById("confirmPasswordContainer");
+        const authConfirmPassInput = document.getElementById("authConfirmPassInput");
         const authSubmitBtn = document.getElementById("authSubmitBtn");
-        const googleSignInBtn = document.getElementById("googleSignInBtn");
         const authMessage = document.getElementById("authMessage");
+        const bookingNavBtn = document.getElementById("myOrdersBtn");
 
         let isRegistering = false;
 
@@ -2005,12 +2450,20 @@
             if(isRegistering) {
                 loginTitle.innerText = "রেজিস্ট্রেশন করুন";
                 nameFieldContainer.style.display = "block";
+                mobileFieldContainer.style.display = "block";
+                authMobileInput.required = true;
+                confirmPasswordContainer.style.display = "block";
+                authConfirmPassInput.required = true;
                 authSubmitBtn.innerText = "রেজিস্ট্রেশন";
                 toggleAuthText.innerText = "আগেই অ্যাকাউন্ট আছে?";
                 toggleAuthLink.innerText = "লগইন করুন";
             } else {
                 loginTitle.innerText = "লগইন করুন";
                 nameFieldContainer.style.display = "none";
+                mobileFieldContainer.style.display = "none";
+                authMobileInput.required = false;
+                confirmPasswordContainer.style.display = "none";
+                authConfirmPassInput.required = false;
                 authSubmitBtn.innerText = "লগইন";
                 toggleAuthText.innerText = "নতুন অ্যাকাউন্ট খুলতে চান?";
                 toggleAuthLink.innerText = "রেজিস্ট্রেশন করুন";
@@ -2022,11 +2475,27 @@
             const email = document.getElementById("authEmailInput").value;
             const password = document.getElementById("authPassInput").value;
             const name = document.getElementById("authNameInput")?.value || "";
+            const mobile = authMobileInput.value.replace(/\D/g, "");
+            const confirmPassword = authConfirmPassInput.value;
 
             try {
                 if(isRegistering) {
+                    if (!/^1[3-9]\d{8}$/.test(mobile)) {
+                        authMessage.textContent = "সঠিক বাংলাদেশি মোবাইল নম্বর দিন: 1XXXXXXXXX (১০ সংখ্যা)।";
+                        return;
+                    }
+                    if (password !== confirmPassword) {
+                        authMessage.textContent = "দুটি পাসওয়ার্ড একই হতে হবে।";
+                        return;
+                    }
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     await updateProfile(userCredential.user, { displayName: name });
+                    await update(ref(db, `users/${userCredential.user.uid}`), {
+                        displayName: name,
+                        email,
+                        mobileNumber: `+880${mobile}`,
+                        createdAt: new Date().toISOString()
+                    });
                     alert("সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে!");
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
@@ -2039,30 +2508,20 @@
             }
         });
 
-        googleSignInBtn.addEventListener("click", async () => {
-            authMessage.textContent = "";
-            try {
-                const provider = new GoogleAuthProvider();
-                provider.setCustomParameters({ prompt: "select_account" });
-                await signInWithPopup(auth, provider);
-                loginModal.style.display = "none";
-            } catch (error) {
-                if (error.code === "auth/popup-blocked" || error.code === "auth/popup-cancelled") {
-                    try {
-                        const provider = new GoogleAuthProvider();
-                        provider.setCustomParameters({ prompt: "select_account" });
-                        await signInWithRedirect(auth, provider);
-                    } catch (redirectError) {
-                        authMessage.textContent = "Google সাইন-ইন ব্যর্থ: " + redirectError.message;
-                    }
-                } else {
-                    authMessage.textContent = "Google সাইন-ইন ব্যর্থ: " + error.message;
-                }
-            }
+        authMobileInput.addEventListener("input", () => {
+            let mobile = authMobileInput.value.replace(/\D/g, "");
+            if (mobile.startsWith("880")) mobile = mobile.slice(3);
+            if (mobile.startsWith("0")) mobile = mobile.slice(1);
+            authMobileInput.value = mobile.slice(0, 10);
         });
 
-        getRedirectResult(auth).catch((error) => {
-            authMessage.textContent = "Google সাইন-ইন ব্যর্থ: " + error.message;
+        document.querySelectorAll("[data-password-target]").forEach((toggleButton) => {
+            toggleButton.addEventListener("click", () => {
+                const passwordInput = document.getElementById(toggleButton.dataset.passwordTarget);
+                const isPassword = passwordInput.type === "password";
+                passwordInput.type = isPassword ? "text" : "password";
+                toggleButton.setAttribute("aria-label", isPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখান");
+            });
         });
 
         if (profileTrigger && profileDropdown) {
@@ -2091,12 +2550,18 @@
             if (user) {
                 loginBtnNav.style.display = "none";
                 userProfile.style.display = "flex";
+                bookingNavBtn.style.display = "block";
+                notificationMenu.style.display = "block";
                 const displayName = user.displayName || (user.email ? user.email.split('@')[0] : user.phoneNumber || 'User');
                 userNameDisplay.innerText = displayName;
                 profileAvatar.innerText = (displayName || 'U').charAt(0).toUpperCase();
+                saveFcmTokenForUser(user);
+                requestAndSaveNotificationPermission();
             } else {
                 loginBtnNav.style.display = "block";
                 userProfile.style.display = "none";
+                bookingNavBtn.style.display = "none";
+                notificationMenu.style.display = "none";
                 profileDropdown.classList.remove("show");
             }
         });
@@ -2110,7 +2575,7 @@
                 'নতুন অ্যাকাউন্ট খুলতে চান?': 'Create a new account?', 'আগেই অ্যাকাউন্ট আছে?': 'Already have an account?',
                 'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? যেমন: AC, ক্লিনিং...': 'What service are you looking for? e.g. AC, cleaning...',
                 'গাজীপুর (কোনাবাড়ি)': 'Gazipur (Konabari)', 'জনপ্রিয় সেবাসমূহ (গাজীপুর এর জন্য প্রযোজ্য)': 'Popular Services (Available in Gazipur)',
-                'আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে': 'ShebaNow is here for all your service needs',
+                'আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে': 'ShebaNow is here for all your service needs', 'বইবাড়ী (BoiBari)': 'BoiBari (Library)', 'লাইব্রেরি এখন আপনার ঘরের কোণে।': 'A library in the corner of your home.',
                 'ঘরে বসে': 'At-home', 'সেবা নিন': 'Get service', 'আপনার প্রয়োজনীয় যেকোনো সেবা পেতে': 'For any service you need', 'এর পাশে থাকুন': 'stay with',
                 'এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস (শুধুমাত্র গাজীপুর)': 'Book your desired service from home with one click (Gazipur only)',
                 'বুক করুন': 'Book Now', 'দ্রুত এবং বিশ্বস্ত মেরামত সেবা': 'Fast and reliable repair service',
@@ -2137,7 +2602,7 @@
                 'কোনো বুকিং পাওয়া যায়নি।': 'No bookings found.', 'লোড হচ্ছে...': 'Loading...', 'সফলভাবে লগইন হয়েছে!': 'Logged in successfully!',
                 'লগ-আউট সফল হয়েছে!': 'Logged out successfully!', 'অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!': 'The order was deleted from the admin panel!',
                 'পেমেন্ট তথ্য সফলভাবে জমা দেওয়া হয়েছে!': 'Payment information submitted successfully!', 'ত্রুটি:': 'Error:', 'বন্ধ করুন': 'Close',
-                'Pending': 'Pending', 'Confirmed': 'Confirmed', 'Completed': 'Completed', 'Admin Panel': 'Admin Panel', 'Log out': 'Log out',
+                'অপেক্ষমাণ': 'Pending', 'নিশ্চিত': 'Confirmed', 'সম্পন্ন': 'Completed', 'বিকাশ পার্সোনাল': 'bKash Personal', 'নগদ পার্সোনাল': 'Nagad Personal', 'রকেট পার্সোনাল': 'Rocket Personal', 'ক্যাশ অন ডেলিভারি': 'Cash On Delivery', 'Admin Panel': 'Admin Panel', 'Log out': 'Log out',
                 'বিস্তারিত জানতে চাই': 'I want to know more details', 'শুধুমাত্র গাজীপুর': 'Gazipur only',
                 'আপনার প্রতিদিনের সেবায় আমরা সদা প্রস্তুত (শুধুমাত্র গাজীপুর).': 'We are always ready to serve you every day (Gazipur only).',
                 'গাজীপুর)': 'Gazipur)', 'গাজীপুরের লোকাল এলাকা নির্বাচন করুন': 'Choose a local area in Gazipur', 'সদর গাজীপুর': 'Gazipur Sadar',
@@ -2150,7 +2615,7 @@
                 'একটি গাড়ি বুক করুন': 'Book a Car', 'দূরপাল্লা/দীর্ঘপথ গাড়ি': 'Long-distance Travel Car', 'দর্পণ/দীর্ঘপথ গাড়ি': 'Long-distance Travel Car',
                 'বিউটি অ্যান্ড কেয়ার': 'Beauty and Care', 'প্লাম্বিং সার্ভিস': 'Plumbing Service', 'লন্ড্রি সার্ভিস': 'Laundry Service', 'হোম সেলুন': 'Home Salon',
                 'আইপিএস ও ব্যাটারি': 'IPS and Battery', 'এলপিজি গ্যাস': 'LPG Gas', 'ইলেকট্রিক মিস্ত্রি': 'Electrician', 'হোম টিউটর': 'Home Tutor',
-                'বুয়া ও কেয়ারগিভার': 'Maid and Caregiver', 'জরুরি ঔষধ সেবা': 'Emergency Medicine', 'অ্যাম্বুলেন্স সেবা': 'Ambulance Service', 'ফ্রেশ মিল্ক': 'Fresh Milk'
+                'বুয়া ও কেয়ারগিভার': 'Maid and Caregiver', 'জরুরি ঔষধ সেবা': 'Emergency Medicine', 'অ্যাম্বুলেন্স সেবা': 'Ambulance Service', 'ফ্রেশ মিল্ক': 'Fresh Milk', 'বইবাড়ী (BoiBari)': 'BoiBari (Library)'
             };
             Object.assign(languagePairs, servicePairs);
             const englishToBengali = Object.fromEntries(Object.entries(languagePairs).map(([bengali, english]) => [english, bengali]));
