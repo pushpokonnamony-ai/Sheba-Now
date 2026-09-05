@@ -419,6 +419,11 @@
         .modal-content h2 { margin-bottom: 12px; font-size: 18px; color: #008060; }
         .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 9px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
         .btn-submit { background: #008060; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .auth-provider-btn { width: 100%; padding: 10px; border: 1px solid #d7e3e0; border-radius: 4px; background: #fff; color: #1f2937; cursor: pointer; font-weight: 700; margin-top: 8px; }
+        .auth-provider-btn:hover { background: #f1faf7; border-color: #008060; }
+        .auth-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 8px; color: #777; font-size: 12px; }
+        .auth-divider::before, .auth-divider::after { content: ''; height: 1px; flex: 1; background: #ddd; }
+        .auth-message { min-height: 18px; margin-top: 8px; color: #b42318; font-size: 12px; text-align: center; }
 
         .image-upload-container { display: flex; gap: 8px; margin-bottom: 10px; }
         .img-upload-box { width: 70px; height: 70px; border: 2px dashed #008060; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #eef9f5; position: relative; overflow: hidden; font-size: 20px; color: #008060; }
@@ -998,7 +1003,7 @@
     </div>
 
     <div id="loginModal" class="modal">
-        <div class="modal-content" style="max-width: 350px;">
+        <div class="modal-content" style="max-width: 390px;">
             <span class="close-btn" id="closeLogin">&times;</span>
             <h2 id="loginTitle">লগইন করুন</h2>
             <form id="authForm">
@@ -1009,6 +1014,9 @@
                 <input type="password" id="authPassInput" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট)" required>
                 <button type="submit" class="btn-submit" id="authSubmitBtn">লগইন</button>
             </form>
+            <div class="auth-divider"><span>অথবা</span></div>
+            <button type="button" class="auth-provider-btn" id="googleSignInBtn">Google দিয়ে চালিয়ে যান</button>
+            <p id="authMessage" class="auth-message" role="alert"></p>
             <p style="margin-top: 12px; text-align: center; font-size: 13px;">
                 <span id="toggleAuthText">নতুন অ্যাকাউন্ট খুলতে চান?</span>
                 <a href="#" id="toggleAuthLink" style="color: #008060; font-weight: bold; text-decoration: none;">রেজিস্ট্রেশন করুন</a>
@@ -1104,7 +1112,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getDatabase, ref, push, set, get, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
         const firebaseConfig = {
@@ -1508,7 +1516,7 @@
                     imgElement.style.display = "block";
                     document.getElementById(`plus${index}`).style.display = "none";
                     document.getElementById(`removeBtn${index}`).style.display = "flex";
-                    uploadedImages[index] = e.target.result;
+                    uploadedImages[index] = file;
                 }
                 reader.readAsDataURL(file);
             }
@@ -1654,34 +1662,44 @@
             const date = document.getElementById("bookingDate").value;
             const customOrderId = generateOrderId();
 
-            const finalImages = [];
+            const selectedImages = [];
             for(let i=1; i<=5; i++) {
                 if(uploadedImages[i]) {
-                    finalImages.push(uploadedImages[i]);
+                    selectedImages.push(uploadedImages[i]);
                 }
             }
 
-            const orderData = {
-                customId: customOrderId,
-                userId: auth.currentUser.uid,
-                userEmail: auth.currentUser.email,
-                service,
-                name,
-                phone,
-                address,
-                description,
-                date,
-                images: finalImages,
-                status: "Pending (সেবা প্রদানকারীর পর্যালোচনায় আছে)",
-                paymentFee: null,
-                paymentGateway: null,
-                receivePhone: null,
-                paymentStatus: "ফি নির্ধারিত হয়নি",
-                paymentDetails: null,
-                createdAt: Date.now()
-            };
-
             try {
+                const finalImages = await Promise.all(selectedImages.map(async (file, index) => {
+                    const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '-');
+                    const imagePath = `order-images/${auth.currentUser.uid}/${customOrderId}-${index + 1}-${Date.now()}-${safeFileName}`;
+                    const uploadedFile = await uploadBytes(storageRef(storage, imagePath), file, {
+                        contentType: file.type || 'image/jpeg',
+                        cacheControl: 'public,max-age=31536000,immutable'
+                    });
+                    return getDownloadURL(uploadedFile.ref);
+                }));
+
+                const orderData = {
+                    customId: customOrderId,
+                    userId: auth.currentUser.uid,
+                    userEmail: auth.currentUser.email,
+                    service,
+                    name,
+                    phone,
+                    address,
+                    description,
+                    date,
+                    images: finalImages,
+                    status: "Pending (সেবা প্রদানকারীর পর্যালোচনায় আছে)",
+                    paymentFee: null,
+                    paymentGateway: null,
+                    receivePhone: null,
+                    paymentStatus: "ফি নির্ধারিত হয়নি",
+                    paymentDetails: null,
+                    createdAt: Date.now()
+                };
+
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
                 alert("আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে!");
@@ -1963,12 +1981,15 @@
         const loginTitle = document.getElementById("loginTitle");
         const nameFieldContainer = document.getElementById("nameFieldContainer");
         const authSubmitBtn = document.getElementById("authSubmitBtn");
+        const googleSignInBtn = document.getElementById("googleSignInBtn");
+        const authMessage = document.getElementById("authMessage");
 
         let isRegistering = false;
 
         loginBtnNav.addEventListener("click", () => {
             isRegistering = false;
             updateAuthModalUI();
+            authMessage.textContent = "";
             loginModal.style.display = "flex";
         });
 
@@ -2014,8 +2035,34 @@
                 loginModal.style.display = "none";
                 authForm.reset();
             } catch (error) {
-                alert("ত্রুটি: " + error.message);
+                authMessage.textContent = "ত্রুটি: " + error.message;
             }
+        });
+
+        googleSignInBtn.addEventListener("click", async () => {
+            authMessage.textContent = "";
+            try {
+                const provider = new GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: "select_account" });
+                await signInWithPopup(auth, provider);
+                loginModal.style.display = "none";
+            } catch (error) {
+                if (error.code === "auth/popup-blocked" || error.code === "auth/popup-cancelled") {
+                    try {
+                        const provider = new GoogleAuthProvider();
+                        provider.setCustomParameters({ prompt: "select_account" });
+                        await signInWithRedirect(auth, provider);
+                    } catch (redirectError) {
+                        authMessage.textContent = "Google সাইন-ইন ব্যর্থ: " + redirectError.message;
+                    }
+                } else {
+                    authMessage.textContent = "Google সাইন-ইন ব্যর্থ: " + error.message;
+                }
+            }
+        });
+
+        getRedirectResult(auth).catch((error) => {
+            authMessage.textContent = "Google সাইন-ইন ব্যর্থ: " + error.message;
         });
 
         if (profileTrigger && profileDropdown) {
@@ -2044,7 +2091,7 @@
             if (user) {
                 loginBtnNav.style.display = "none";
                 userProfile.style.display = "flex";
-                const displayName = user.displayName || user.email.split('@')[0];
+                const displayName = user.displayName || (user.email ? user.email.split('@')[0] : user.phoneNumber || 'User');
                 userNameDisplay.innerText = displayName;
                 profileAvatar.innerText = (displayName || 'U').charAt(0).toUpperCase();
             } else {
