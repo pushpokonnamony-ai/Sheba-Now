@@ -2404,23 +2404,29 @@
 
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
-                fetch("/.netlify/functions/send-booking-telegram", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        orderId: customOrderId,
-                        service,
-                        name,
-                        phone,
-                        address,
-                        description,
-                        date,
-                        email: auth.currentUser?.email || "",
-                        location: orderData.location
-                    })
-                }).catch((notificationError) => {
-                    console.error("Telegram booking notification failed:", notificationError);
-                });
+                try {
+                    const telegramResponse = await fetch("/.netlify/functions/send-booking-telegram", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            orderId: customOrderId,
+                            service,
+                            name,
+                            phone,
+                            address,
+                            description,
+                            date,
+                            email: auth.currentUser?.email || "",
+                            location: orderData.location
+                        })
+                    });
+
+                    if (!telegramResponse.ok) {
+                        console.error("Telegram booking notification failed:", await telegramResponse.text());
+                    }
+                } catch (notificationError) {
+                    console.error("Telegram booking notification request failed:", notificationError);
+                }
                 alert("আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে!");
                 bookingModal.style.display = "none";
                 orderForm.reset();
