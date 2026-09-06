@@ -525,7 +525,9 @@
             #searchBoxContainer { display: none !important; }
             .logo { flex: 0 0 auto; font-size: 25px; line-height: 1; }
             .nav-links { flex: 0 0 auto; gap: 7px; margin-left: auto; }
-            .nav-links .location-container, #navAllServices, #loginBtnNav, .booking-nav-btn { display: none !important; }
+            .nav-links .location-container, #navAllServices, .booking-nav-btn { display: none !important; }
+            .nav-links #loginBtnNav { display: inline-flex; width: 38px; height: 38px; min-height: 38px; padding: 0; border-radius: 12px; }
+            .nav-links #loginBtnNav span { display: none; }
             .nav-links a, .profile-trigger, #userNameDisplay { white-space: nowrap; }
             .notification-bell { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; }
             .profile-trigger { gap: 4px; padding: 5px 7px 5px 5px; font-size: 12px; min-height: 38px; }
@@ -553,6 +555,7 @@
             .mobile-menu-brand span { color: #d9534f; }
             .mobile-menu-close { border: 0; background: transparent; color: #52736a; font-size: 24px; cursor: pointer; }
             .mobile-menu-link { display: flex; align-items: center; width: 100%; padding: 13px 12px; margin-top: 6px; border: 1px solid #e2eee9; border-radius: 11px; background: #f7fcfa; color: #16493b; text-decoration: none; font-weight: 800; cursor: pointer; }
+            .mobile-menu-link.login-link { border-color: rgba(8,127,91,0.22); background: linear-gradient(135deg, #effcf7, #eaf8f2); color: #087f5b; }
             .location-container {
                 max-width: calc(100vw - 120px);
                 padding: 7px 10px;
@@ -800,6 +803,7 @@
         <header><div class="mobile-menu-brand">Sheba<span>Now</span></div><button type="button" id="mobileMenuClose" class="mobile-menu-close" aria-label="মেনু বন্ধ করুন">&times;</button></header>
         <a href="#servicesSection" id="mobileAllServices" class="mobile-menu-link">সব সেবা</a>
         <button type="button" id="mobileMyOrders" class="mobile-menu-link">আমার বুকিং</button>
+        <button type="button" id="mobileLoginBtn" class="mobile-menu-link login-link"><svg class="nav-control-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-3.2 3.2-5 7-5s6.2 1.8 7 5"></path></svg><span>লগইন</span></button>
     </aside>
 
     <div id="cityModal" class="city-modal">
@@ -1544,12 +1548,6 @@
 
             const notificationCard = event.target.closest("[data-notification-id]");
             if (!notificationCard) return;
-            const notification = notificationItems.find((item) => item.id === notificationCard.dataset.notificationId);
-            const serviceName = notification && findNotificationService(notification);
-            if (!serviceName || typeof window.triggerBooking !== "function") return;
-            notificationDropdown.classList.remove("show");
-            notificationBell.setAttribute("aria-expanded", "false");
-            window.triggerBooking(serviceName);
         });
         document.addEventListener("click", (event) => {
             if (!notificationMenu.contains(event.target)) {
@@ -2185,6 +2183,7 @@
         const mobileMenuBackdrop = document.getElementById("mobileMenuBackdrop");
         const mobileAllServices = document.getElementById("mobileAllServices");
         const mobileMyOrders = document.getElementById("mobileMyOrders");
+        const mobileLoginBtn = document.getElementById("mobileLoginBtn");
         function closeMobileMenu() {
             mobileMenuDrawer.classList.remove("show");
             mobileMenuBackdrop.classList.remove("show");
@@ -2214,6 +2213,10 @@
         mobileMyOrders.addEventListener("click", () => {
             closeMobileMenu();
             document.getElementById("myOrdersBtn").click();
+        });
+        mobileLoginBtn.addEventListener("click", () => {
+            closeMobileMenu();
+            loginBtnNav.click();
         });
 
         closeAdminLogin.addEventListener("click", () => adminLoginModal.style.display = "none");
@@ -2401,6 +2404,23 @@
 
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
+                fetch("/.netlify/functions/send-booking-telegram", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        orderId: customOrderId,
+                        service,
+                        name,
+                        phone,
+                        address,
+                        description,
+                        date,
+                        email: auth.currentUser?.email || "",
+                        location: orderData.location
+                    })
+                }).catch((notificationError) => {
+                    console.error("Telegram booking notification failed:", notificationError);
+                });
                 alert("আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে!");
                 bookingModal.style.display = "none";
                 orderForm.reset();
@@ -2837,6 +2857,7 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 loginBtnNav.style.display = "none";
+                mobileLoginBtn.style.display = "none";
                 userProfile.style.display = "flex";
                 bookingNavBtn.style.display = "block";
                 notificationMenu.style.display = "block";
@@ -2851,6 +2872,7 @@
                 requestAndSaveNotificationPermission();
             } else {
                 loginBtnNav.style.display = "block";
+                mobileLoginBtn.style.display = "flex";
                 userProfile.style.display = "none";
                 bookingNavBtn.style.display = "none";
                 notificationMenu.style.display = "none";
