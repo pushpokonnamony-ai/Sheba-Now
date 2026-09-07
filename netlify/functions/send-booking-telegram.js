@@ -12,9 +12,8 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: JSON.stringify({ message: 'Method not allowed.' }) };
   }
 
-  const botToken = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.REACT_APP_TELEGRAM_CHAT_ID;
-
+  const botToken = "8937594572:AAHCV3WPPPXoNkdfzPlCzHy5AYcBdMcNh7s";
+const chatId = "6394284813";
   if (!botToken || !chatId) {
     console.error('Telegram notification environment variables are missing.');
     return { statusCode: 500, body: JSON.stringify({ message: 'Telegram notification is not configured.' }) };
