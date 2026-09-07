@@ -21,7 +21,7 @@ function getGoogleMapsUrl(location) {
   const latitude = Number(location.latitude);
   const longitude = Number(location.longitude);
   if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${latitude},${longitude}`)}`;
+    return `https://www.google.com/maps?q=${latitude},${longitude}`;
   }
 
   if (location.fullAddress) {

@@ -289,7 +289,7 @@
                 <div class="offer-image-upload">
                     <div>
                         <label for="offerImageFileInput">অফারের ছবি সরাসরি আপলোড করুন</label>
-                        <small>ছবিটি automatic ৮০০ × ৮০০px notification-ready size-এ তৈরি হবে।</small>
+                        <small>ছবিটি automatic ১২০০ × ১২০০px high-resolution notification-ready size-এ তৈরি হবে।</small>
                         <input type="file" id="offerImageFileInput" accept="image/jpeg,image/png,image/webp" aria-label="অফারের ছবি আপলোড করুন">
                     </div>
                     <img id="offerImagePreview" class="offer-image-preview" alt="অফারের ছবির preview">
@@ -387,7 +387,7 @@
     <!-- Firebase SDK Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, push, set, get, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getDatabase, ref, push, set, get, update, remove, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
         import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
         const firebaseConfig = {
@@ -428,7 +428,7 @@
                 const image = new Image();
                 const objectUrl = URL.createObjectURL(file);
                 image.onload = () => {
-                    const size = 800;
+                    const size = 1200;
                     const canvas = document.createElement("canvas");
                     const context = canvas.getContext("2d");
                     const cropSize = Math.min(image.naturalWidth, image.naturalHeight);
@@ -438,7 +438,7 @@
                     canvas.height = size;
                     context.drawImage(image, cropX, cropY, cropSize, cropSize, 0, 0, size, size);
                     URL.revokeObjectURL(objectUrl);
-                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("ছবিটি প্রস্তুত করা যায়নি")), "image/jpeg", 0.86);
+                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("ছবিটি প্রস্তুত করা যায়নি")), "image/jpeg", 0.94);
                 };
                 image.onerror = () => {
                     URL.revokeObjectURL(objectUrl);
@@ -638,19 +638,18 @@
                 });
             });
 
-            SERVICE_IMAGE_CONFIG.forEach((service) => {
-                const preview = container.querySelector(`img[data-preview-key="${service.key}"]`);
-                if (!preview) return;
-
-                const serviceImagesRef = ref(db, `siteSettings/serviceImages/${service.key}`);
-                get(serviceImagesRef).then((snapshot) => {
-                    if (snapshot.exists() && snapshot.val() && snapshot.val().imageUrl) {
-                        preview.src = snapshot.val().imageUrl;
+            get(ref(db, 'siteSettings/serviceImages')).then((snapshot) => {
+                const customImages = snapshot.exists() ? snapshot.val() : {};
+                SERVICE_IMAGE_CONFIG.forEach((service) => {
+                    const preview = container.querySelector(`img[data-preview-key="${service.key}"]`);
+                    const imageUrl = customImages[service.key]?.imageUrl;
+                    if (preview && imageUrl) {
+                        preview.src = imageUrl;
                         preview.style.display = 'block';
                     }
-                }).catch((error) => {
-                    console.error('Service preview load failed:', error);
                 });
+            }).catch((error) => {
+                console.error('Service preview load failed:', error);
             });
         }
 
@@ -884,8 +883,8 @@
             const tbody = document.getElementById("adminOrdersTableBody");
             tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">লোড হচ্ছে...</td></tr>`;
             
-            const ordersRef = ref(db, "orders");
-            const snapshot = await get(ordersRef);
+            const ordersQuery = query(ref(db, "orders"), orderByChild("createdAt"), limitToLast(100));
+            const snapshot = await get(ordersQuery);
             if(snapshot.exists()) {
                 let adminOrders = [];
                 snapshot.forEach(childSnapshot => {

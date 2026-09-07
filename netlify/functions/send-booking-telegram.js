@@ -4,7 +4,30 @@ function escapeTelegramText(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getGoogleMapsUrl(location) {
+  if (!location || typeof location !== 'object') return '';
+
+  const suppliedUrl = location.googleMapsUrl || location.mapUrl || location.mapsUrl;
+  if (typeof suppliedUrl === 'string' && /^https?:\/\//i.test(suppliedUrl)) {
+    return suppliedUrl;
+  }
+
+  const latitude = Number(location.latitude);
+  const longitude = Number(location.longitude);
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    return `https://www.google.com/maps?q=${latitude},${longitude}`;
+  }
+
+  if (location.fullAddress) {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.fullAddress)}`;
+  }
+
+  return '';
 }
 
 exports.handler = async (event) => {
@@ -21,6 +44,12 @@ const chatId = "6394284813";
 
   try {
     const booking = JSON.parse(event.body || '{}');
+    const locationUrl = getGoogleMapsUrl(booking.location);
+    const locationLabel = booking.location?.fullAddress
+      ? `${escapeTelegramText(booking.location.fullAddress)}${locationUrl ? ` - <a href="${escapeTelegramText(locationUrl)}">View on Map</a>` : ''}`
+      : locationUrl
+        ? `<a href="${escapeTelegramText(locationUrl)}">View on Map</a>`
+        : '';
     const text = [
       '📢 <b>নতুন বুকিং এসেছে</b>',
       '',
@@ -32,8 +61,8 @@ const chatId = "6394284813";
       `📝 <b>বিস্তারিত:</b> ${escapeTelegramText(booking.description)}`,
       `📅 <b>তারিখ:</b> ${escapeTelegramText(booking.date)}`,
       `📧 <b>ইমেইল:</b> ${escapeTelegramText(booking.email || 'দেওয়া হয়নি')}`,
-      booking.location?.fullAddress
-        ? `🗺️ <b>লোকেশন:</b> ${escapeTelegramText(booking.location.fullAddress)}`
+      locationLabel
+        ? `🗺️ <b>লোকেশন:</b> ${locationLabel}`
         : ''
     ].filter(Boolean).join('\n');
 

@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://sheebanowa2z.netlify.app/">
     <meta property="og:title" content="ShebaNow - আপনার প্রয়োজনীয় সকল সেবা এক জায়গায়">
     <meta property="og:description" content="এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস">
-    <meta property="og:image" content="https://sheebanowa2z.netlify.app/header-bg.jpg">
+    <meta property="og:image" content="https://sheebanowa2z.netlify.app/header-bg.jpg?v=2">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -23,7 +23,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ShebaNow - আপনার প্রয়োজনীয় সকল সেবা এক জায়গায়">
     <meta name="twitter:description" content="এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস">
-    <meta name="twitter:image" content="https://sheebanowa2z.netlify.app/header-bg.jpg">
+    <meta name="twitter:image" content="https://sheebanowa2z.netlify.app/header-bg.jpg?v=2">
 
     <!-- Cloudflare Web Analytics -->
     <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ad37231139524b76b322b87fa7ba390e"}'></script>
@@ -1342,7 +1342,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getDatabase, ref, push, set, get, update, remove, onChildAdded, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getDatabase, ref, push, set, get, update, remove, onChildAdded, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
         import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 
         const firebaseConfig = {
@@ -1390,7 +1390,7 @@
             localStorage.removeItem("shebaNowDeletedNotifications");
         }
         const deletedNotificationIds = new Set(Array.isArray(savedDeletedNotificationIds) ? savedDeletedNotificationIds : []);
-        let notificationListenerStarted = false;
+        let stopNotificationListener = null;
 
         function escapeNotificationText(value) {
             return String(value || "").replace(/[&<>"']/g, (character) => ({
@@ -1488,12 +1488,11 @@
         }
 
         async function listenForNewOffers() {
-            if (notificationListenerStarted) return;
-            notificationListenerStarted = true;
+            if (stopNotificationListener) return;
 
             try {
-                const notificationsRef = ref(db, "notifications");
-                const existingSnapshot = await get(notificationsRef);
+                const notificationsQuery = query(ref(db, "notifications"), orderByChild("createdAt"), limitToLast(30));
+                const existingSnapshot = await get(notificationsQuery);
                 const existingNotificationIds = new Set();
 
                 if (existingSnapshot.exists()) {
@@ -1507,7 +1506,9 @@
                 }
                 renderNotificationCenter();
 
-                onChildAdded(notificationsRef, (snapshot) => {
+                if (!auth.currentUser) return;
+
+                stopNotificationListener = onChildAdded(notificationsQuery, (snapshot) => {
                     if (existingNotificationIds.has(snapshot.key)) return;
                     const offer = snapshot.val() || {};
                     if ((offer.status && offer.status !== "published") || deletedNotificationIds.has(snapshot.key)) return;
@@ -1529,6 +1530,16 @@
             } catch (error) {
                 console.error("Offer notification listener failed:", error);
             }
+        }
+
+        function stopListeningForNewOffers() {
+            if (stopNotificationListener) {
+                stopNotificationListener();
+                stopNotificationListener = null;
+            }
+            notificationItems.length = 0;
+            unreadNotificationIds.clear();
+            renderNotificationCenter();
         }
 
         notificationBell.addEventListener("click", (event) => {
@@ -2474,11 +2485,11 @@
             try {
                 let snapshot;
                 try {
-                    const filteredOrdersRef = query(ref(db, "orders"), orderByChild("userId"), equalTo(currentUser.uid));
+                    const filteredOrdersRef = query(ref(db, "orders"), orderByChild("userId"), equalTo(currentUser.uid), limitToLast(50));
                     snapshot = await get(filteredOrdersRef);
                 } catch (queryError) {
                     console.warn("Filtered booking query failed; using compatibility fallback:", queryError);
-                    snapshot = await get(ref(db, "orders"));
+                    throw queryError;
                 }
                 if(snapshot.exists()) {
                     const userOrders = [];
@@ -2877,6 +2888,7 @@
                 saveFcmTokenForUser(user);
                 requestAndSaveNotificationPermission();
             } else {
+                stopListeningForNewOffers();
                 loginBtnNav.style.display = "block";
                 mobileLoginBtn.style.display = "flex";
                 userProfile.style.display = "none";
