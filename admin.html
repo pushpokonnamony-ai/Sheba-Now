@@ -882,19 +882,25 @@
         async function loadAdminOrders() {
             const tbody = document.getElementById("adminOrdersTableBody");
             tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">লোড হচ্ছে...</td></tr>`;
-            
-            const ordersQuery = query(ref(db, "orders"), orderByChild("createdAt"), limitToLast(100));
-            const snapshot = await get(ordersQuery);
-            if(snapshot.exists()) {
-                let adminOrders = [];
-                snapshot.forEach(childSnapshot => {
-                    adminOrders.push({ id: childSnapshot.key, ...childSnapshot.val() });
-                });
 
-                adminOrders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            try {
+                // Avoid requiring a Firebase .indexOn rule for createdAt.
+                const snapshot = await get(ref(db, "orders"));
+                if(snapshot.exists()) {
+                    let adminOrders = [];
+                    snapshot.forEach(childSnapshot => {
+                        adminOrders.push({ id: childSnapshot.key, ...childSnapshot.val() });
+                    });
 
-                let html = "";
-                adminOrders.forEach(order => {
+                    adminOrders.sort((a, b) => {
+                        const dateA = new Date(a.createdAt || a.date || 0).getTime() || 0;
+                        const dateB = new Date(b.createdAt || b.date || 0).getTime() || 0;
+                        return dateB - dateA;
+                    });
+                    adminOrders = adminOrders.slice(0, 100);
+
+                    let html = "";
+                    adminOrders.forEach(order => {
                     const safeStatus = String(order.status || 'Pending (টেকনিশিয়ান পর্যালোচনায় আছে)');
                     const safePaymentStatus = String(order.paymentStatus || 'ফি নির্ধারিত হয়নি');
                     const displayOrderId = (order.customId || order.id || 'SB0000').toString();
@@ -956,10 +962,14 @@
                             </td>
                         </tr>
                     `;
-                });
-                tbody.innerHTML = html;
-            } else {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">কোনো অর্ডার নেই</td></tr>`;
+                    });
+                    tbody.innerHTML = html;
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">কোনো অর্ডার নেই</td></tr>`;
+                }
+            } catch (error) {
+                console.error("Admin booking list load failed:", error);
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #b42318;">অর্ডার লোড করা যায়নি। আবার চেষ্টা করুন।</td></tr>`;
             }
         }
 

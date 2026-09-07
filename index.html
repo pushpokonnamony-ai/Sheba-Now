@@ -2491,8 +2491,8 @@
                     const filteredOrdersRef = query(ref(db, "orders"), orderByChild("userId"), equalTo(currentUser.uid), limitToLast(50));
                     snapshot = await get(filteredOrdersRef);
                 } catch (queryError) {
-                    console.warn("Filtered booking query failed; using compatibility fallback:", queryError);
-                    throw queryError;
+                    console.warn("Filtered booking query failed; using full-list fallback:", queryError);
+                    snapshot = await get(ref(db, "orders"));
                 }
                 if(snapshot.exists()) {
                     const userOrders = [];
@@ -2503,7 +2503,11 @@
                         }
                     });
 
-                    userOrders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    userOrders.sort((a, b) => {
+                        const dateA = new Date(a.createdAt || a.date || 0).getTime() || 0;
+                        const dateB = new Date(b.createdAt || b.date || 0).getTime() || 0;
+                        return dateB - dateA;
+                    });
 
                     let html = "";
                     userOrders.forEach(order => {
@@ -2649,7 +2653,9 @@
                 let html = "";
                 adminOrders.forEach(order => {
                     const displayOrderId = (order.customId || order.id || 'SB0000').toString();
-                    let paymentHtml = `<b class="premium-bengali">স্ট্যাটাস:</b> <span class="en-ui">${order.paymentStatus}</span><br>`;
+                    const safeStatus = String(order.status || 'Pending (সেবা প্রদানকারীর পর্যালোচনায় আছে)');
+                    const safePaymentStatus = String(order.paymentStatus || 'ফি নির্ধারিত হয়নি');
+                    let paymentHtml = `<b class="premium-bengali">স্ট্যাটাস:</b> <span class="en-ui">${safePaymentStatus}</span><br>`;
                     if(order.paymentFee) {
                         paymentHtml += `<span class="premium-bengali">ফি:</span> <span class="en-ui">৳${order.paymentFee}</span><br><span class="premium-bengali">মাধ্যম:</span> <span class="en-ui">${order.paymentGateway}</span>${order.paymentGateway !== 'Cash On Delivery' ? `<br><span class="premium-bengali">নম্বর:</span> <span class="en-ui">${order.receivePhone}</span>` : ''}<br>`;
                     }
@@ -2695,9 +2701,9 @@
                             <td>${paymentHtml}</td>
                             <td>
                                 <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding:3px; margin-bottom:4px; font-size:11px;">
-                                    <option value="Pending (সেবা প্রদানকারীর পর্যালোচনায় আছে)" ${order.status.includes('Pending') ? 'selected' : ''}>Pending</option>
-                                    <option value="Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" ${order.status.includes('Confirmed') ? 'selected' : ''}>Confirmed</option>
-                                    <option value="Completed (কাজ সম্পন্ন)" ${order.status.includes('Completed') ? 'selected' : ''}>Completed</option>
+                                    <option value="Pending (সেবা প্রদানকারীর পর্যালোচনায় আছে)" ${safeStatus.includes('Pending') ? 'selected' : ''}>Pending</option>
+                                    <option value="Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" ${safeStatus.includes('Confirmed') ? 'selected' : ''}>Confirmed</option>
+                                    <option value="Completed (কাজ সম্পন্ন)" ${safeStatus.includes('Completed') ? 'selected' : ''}>Completed</option>
                                 </select>
                                 <br>
                                 ${!order.paymentFee ? `<button onclick="openAdminSetPriceModal('${order.id}')" style="background:#f0ad4e; color:white; border:none; padding:3px 6px; border-radius:3px; cursor:pointer; font-size:11px; margin-bottom:2px;">ফি সেট</button>` : ''}
