@@ -2405,7 +2405,7 @@
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
                 try {
-                    const telegramResponse = await fetch("/.netlify/functions/send-booking-telegram", {
+                    const telegramResponse = await fetch("/api/send-booking-telegram", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
