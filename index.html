@@ -40,7 +40,17 @@
         html[lang="en"] *, html[lang="en"] *::before, html[lang="en"] *::after { font-family: 'Times New Roman', Times, serif !important; }
         
         .navbar { display: flex; flex-flow: row nowrap; justify-content: flex-start; align-items: center; background: #ffffff; padding: 14px 2.5%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; gap: 8px; overflow: visible; }
-        .mobile-search-row, .mobile-menu-toggle, .mobile-menu-backdrop, .mobile-menu-drawer, #userFirstNameDisplay { display: none; }
+        .mobile-search-row, .mobile-menu-backdrop, .mobile-menu-drawer, #userFirstNameDisplay { display: none; }
+        .mobile-menu-toggle { position: fixed; top: 15px; right: 2.5%; z-index: 110; display: none; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border: 1px solid #d7e3e0; border-radius: 12px; background: #f5fbf8; color: #087f5b; cursor: pointer; }
+        .mobile-menu-toggle svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+        .mobile-menu-toggle path { transform-box: fill-box; transform-origin: center; transition: transform 0.24s ease, opacity 0.18s ease; }
+        .mobile-menu-toggle.is-open path:first-child { transform: translateY(6px) rotate(45deg); }
+        .mobile-menu-toggle.is-open path:nth-child(2) { opacity: 0; transform: scaleX(0.2); }
+        .mobile-menu-toggle.is-open path:last-child { transform: translateY(-6px) rotate(-45deg); }
+        .mobile-menu-backdrop { position: fixed; inset: 0; background: rgba(9, 38, 29, 0.32); z-index: 3000; }
+        .mobile-menu-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(74vw, 290px); padding: 22px 18px; background: #fff; box-shadow: -14px 0 35px rgba(15, 23, 42, 0.16); transform: translateX(100%); transition: transform 0.24s ease; z-index: 3001; }
+        .mobile-menu-backdrop.show { display: block; }
+        .mobile-menu-drawer.show { display: block; transform: translateX(0); }
         .navbar > * { flex-shrink: 0; }
         .navbar > .search-box { flex-shrink: 1; }
         .logo { position: relative; display: inline-flex; align-items: center; flex: 0 0 auto; font-family: Georgia, 'Times New Roman', serif !important; font-size: 30px; font-weight: 900; color: #087f5b; cursor: pointer; white-space: nowrap; letter-spacing: -0.045em; text-shadow: 0 2px 10px rgba(8,127,91,0.12); transition: transform 0.2s ease, filter 0.2s ease; }
@@ -91,7 +101,7 @@
         .btn-login { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 38px; background: linear-gradient(135deg, #0b9a72, #087f5b); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 9px 12px; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 14px; white-space: nowrap; box-shadow: 0 7px 16px rgba(8,127,91,0.16), inset 0 1px 0 rgba(255,255,255,0.18); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .btn-login:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(8,127,91,0.24), inset 0 1px 0 rgba(255,255,255,0.22); }
         .nav-control-icon { width: 15px; height: 15px; flex: 0 0 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .booking-nav-btn { display: none; }
+        .booking-nav-btn { display: inline-flex; }
         .notification-menu { position: relative; display: none; }
         .notification-bell { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #d7e3e0; border-radius: 14px; background: linear-gradient(145deg, #ffffff, #f0faf6); color: #087f5b; cursor: pointer; box-shadow: 0 7px 16px rgba(15, 95, 73, 0.10); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .notification-bell:hover, .notification-bell[aria-expanded="true"] { transform: translateY(-1px); box-shadow: 0 11px 22px rgba(15, 95, 73, 0.16); }
@@ -397,10 +407,11 @@
             z-index: 1;
             text-align: center;
             font-size: clamp(1rem, 2vw, 2.1rem);
-            font-weight: 800;
-            color: #ffffff;
+            font-weight: 900;
+            color: #ffd700;
             letter-spacing: 0.02em;
             line-height: 1.35;
+            text-shadow: 0 2px 8px rgba(30, 67, 49, 0.35);
         }
         .promo-copy strong { display: inline-block; background: rgba(255,255,255,0.12); padding: 0 10px; border-radius: 8px; }
 
@@ -454,7 +465,7 @@
         .btn-order:active { transform: translateY(0); box-shadow: 0 5px 10px rgba(6,123,89,0.2); }
 
         /* Floating WhatsApp Widget Styles with Pre-filled Popup Menu */
-        .whatsapp-float-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; align-items: center; gap: 10px; }
+        .whatsapp-float-container { position: fixed; top: auto; left: auto; right: 20px; bottom: max(20px, env(safe-area-inset-bottom)); z-index: 9999; display: flex; align-items: center; gap: 10px; }
         
         /* WhatsApp Service Options Menu Box */
         .whatsapp-menu-box { display: none; position: absolute; bottom: 70px; right: 0; background: #ffffff; width: 280px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); padding: 12px; z-index: 10000; border: 1px solid #dcdcdc; text-align: left; }
@@ -525,6 +536,7 @@
 
         @media (max-width: 768px) {
             .navbar { width: 100%; padding: 10px 16px; justify-content: space-between; gap: 8px; }
+            .mobile-menu-toggle { position: relative; top: auto; right: auto; z-index: 2; flex: 0 0 38px; }
             #searchBoxContainer { display: none !important; }
             .logo { flex: 0 0 auto; font-size: 25px; line-height: 1; }
             .nav-links { flex: 0 0 auto; gap: 7px; margin-left: auto; }
@@ -672,12 +684,13 @@
             .hero { padding: 35px 15px; }
             .hero h1 { font-size: 20px; }
             .services-container { width: 100%; margin: 15px auto; padding: 0 12px; }
+            .services-container h2 { font-size: clamp(11px, 3.2vw, 15px); white-space: nowrap; }
             .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-            .service-card { min-width: 0; padding: 10px; border-radius: 12px; }
-            .service-card .img-box { height: clamp(95px, 24vw, 140px); margin-bottom: 9px; }
-            .service-card h3 { font-size: clamp(13px, 2.2vw, 17px); line-height: 1.35; }
-            .service-card p { font-size: clamp(10px, 1.8vw, 13px); line-height: 1.4; }
-            .btn-order { min-height: 38px; padding: 8px 5px; font-size: 12px; border-radius: 10px; gap: 4px; }
+            .service-card { min-width: 0; padding: 8px; border-radius: 12px; }
+            .service-card .img-box { height: clamp(96px, 26vw, 128px); margin-bottom: 8px; }
+            .service-card h3 { font-size: clamp(12px, 2.2vw, 16px); line-height: 1.3; }
+            .service-card p { font-size: clamp(10px, 1.8vw, 13px); line-height: 1.35; margin-bottom: 8px; }
+            .btn-order { min-height: 36px; padding: 7px 4px; font-size: 11px; border-radius: 10px; gap: 4px; }
             .btn-order::after { font-size: 15px; }
             footer {
                 padding: 30px 20px;
@@ -704,7 +717,7 @@
             .search-box, .nav-links > .search-box { flex: 0 0 240px; min-width: 240px; max-width: 240px; }
             .nav-links { gap: 7px; }
             .nav-links a, .location-container, #userNameDisplay { font-size: 13px; }
-            .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .services-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         }
 
         @media (min-width: 769px) {
@@ -712,6 +725,11 @@
             .navbar { width: 100%; min-width: 0; overflow: visible; }
             .navbar > .search-box, .nav-links > .search-box { flex: 0 0 300px; min-width: 300px; max-width: 300px; }
             #searchInput::placeholder { font-size: 12px; }
+            .services-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .service-card .img-box { height: 192px; }
+            .service-card h3 { font-size: 19px; }
+            .service-card p { font-size: 15px; }
+            .btn-order { min-height: 44px; padding: 10px 14px; font-size: 14px; }
             .nav-links { flex: 0 0 auto; }
             .nav-links > * { flex: 0 0 auto; }
         }
@@ -736,10 +754,6 @@
             .profile-trigger { padding-left: 3px; padding-right: 4px; }
             #userNameDisplay { max-width: 42px; }
             .notification-bell { width: 36px; height: 36px; flex-basis: 36px; }
-            .services-grid { grid-template-columns: 1fr; gap: 12px; }
-            .service-card .img-box { height: 150px; }
-            .service-card h3 { font-size: 17px; }
-            .service-card p { font-size: 13px; }
             .dynamic-banner-shell { padding: 0 10px; }
             .hero { padding-left: 12px; padding-right: 12px; }
         }
@@ -784,6 +798,7 @@
                     <div class="profile-summary"><strong id="profileFullName">Shahanaz Mony</strong><span>ShebaNow account</span></div>
                     <a href="admin.html" class="en-item">Admin Panel</a>
                     <a href="index.html" id="profileAllServices" class="bn-item">সব সেবা</a>
+                    <button type="button" id="profileMyOrders" class="profile-menu-action"><svg class="nav-control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6z"></path><path d="M9 8h6M9 12h6M9 16h4"></path></svg><span id="profileMyOrdersLabel">আমার বুকিং</span></button>
                     <button type="button" id="languageToggle" class="language-toggle bn-item" aria-label="ভাষা পরিবর্তন">
                         <span class="language-toggle-icon" aria-hidden="true">文</span>
                         <span id="languageToggleLabel">English</span>
@@ -791,7 +806,7 @@
                     <button type="button" id="logoutBtn" class="logout-item en-item">Log out</button>
                 </div>
             </div>
-            <button type="button" id="myOrdersBtn" class="btn-login booking-nav-btn"><svg class="nav-control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6z"></path><path d="M9 8h6M9 12h6M9 16h4"></path></svg><span>আমার বুকিং</span></button>
+            <button type="button" id="myOrdersBtn" class="btn-login booking-nav-btn"><svg class="nav-control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6z"></path><path d="M9 8h6M9 12h6M9 16h4"></path></svg><span id="myOrdersLabel">আমার বুকিং</span></button>
             <button type="button" id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="মেনু খুলুন" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg></button>
         </nav>
     </header>
@@ -856,7 +871,7 @@
                 </div>
             </div>
             <div class="promo-strip">
-                <div class="promo-copy">আপনার প্রয়োজনীয় যেকোনো সেবা পেতে <strong>ShebaNow</strong> এর পাশে থাকুন</div>
+                <div class="promo-copy">প্রথম বুকিংয়ে পাচ্ছেন ১০% ছাড়! এছাড়াও থাকছে ফ্রি ডেলিভারি।</div>
             </div>
         </section>
 
@@ -1386,6 +1401,13 @@
         const notificationList = document.getElementById("notificationList");
         const notificationItems = [];
         const unreadNotificationIds = new Set();
+        let savedReadNotificationIds = [];
+        try {
+            savedReadNotificationIds = JSON.parse(localStorage.getItem("shebaNowReadNotifications") || "[]");
+        } catch (error) {
+            localStorage.removeItem("shebaNowReadNotifications");
+        }
+        const readNotificationIds = new Set(Array.isArray(savedReadNotificationIds) ? savedReadNotificationIds : []);
         let savedDeletedNotificationIds = [];
         try {
             savedDeletedNotificationIds = JSON.parse(localStorage.getItem("shebaNowDeletedNotifications") || "[]");
@@ -1426,6 +1448,9 @@
         }
 
         async function deleteNotification(notificationId) {
+            const user = auth.currentUser;
+            if (!user) return;
+
             deletedNotificationIds.add(notificationId);
             unreadNotificationIds.delete(notificationId);
             localStorage.setItem("shebaNowDeletedNotifications", JSON.stringify([...deletedNotificationIds]));
@@ -1434,20 +1459,12 @@
             renderNotificationCenter();
 
             try {
-                await remove(ref(db, `notifications/${notificationId}`));
+                // Store deletion per user so the same account stays synced across devices.
+                await update(ref(db, `users/${user.uid}/deletedNotifications`), {
+                    [notificationId]: { deletedAt: new Date().toISOString() }
+                });
             } catch (error) {
-                const user = auth.currentUser;
-                if (user) {
-                    try {
-                        await update(ref(db, `users/${user.uid}/deletedNotifications`), {
-                            [notificationId]: { deletedAt: new Date().toISOString() }
-                        });
-                        console.warn("Global notification delete was denied; saved user-wide deletion state.", error);
-                        return;
-                    } catch (fallbackError) {
-                        console.error("Notification delete sync failed:", fallbackError);
-                    }
-                }
+                console.error("Notification delete sync failed:", error);
                 deletedNotificationIds.delete(notificationId);
                 localStorage.setItem("shebaNowDeletedNotifications", JSON.stringify([...deletedNotificationIds]));
                 renderNotificationCenter();
@@ -1486,7 +1503,8 @@
 
         function markNotificationsRead() {
             unreadNotificationIds.clear();
-            localStorage.setItem("shebaNowReadNotifications", JSON.stringify(notificationItems.map((item) => item.id)));
+            notificationItems.forEach((item) => readNotificationIds.add(item.id));
+            localStorage.setItem("shebaNowReadNotifications", JSON.stringify([...readNotificationIds]));
             renderNotificationCenter();
         }
 
@@ -1494,30 +1512,39 @@
             if (stopNotificationListener) return;
 
             try {
-                const notificationsQuery = query(ref(db, "notifications"), orderByChild("createdAt"), limitToLast(30));
-                const existingSnapshot = await get(notificationsQuery);
+                const notificationsRef = ref(db, "notifications");
+                // Read directly so notifications do not depend on a Realtime Database index rule.
+                const existingSnapshot = await get(notificationsRef);
                 const existingNotificationIds = new Set();
+                const existingNotifications = [];
 
                 if (existingSnapshot.exists()) {
                     existingSnapshot.forEach((childSnapshot) => {
                         existingNotificationIds.add(childSnapshot.key);
                         const offer = childSnapshot.val() || {};
                         if ((!offer.status || offer.status === "published") && !deletedNotificationIds.has(childSnapshot.key)) {
-                            notificationItems.push({ id: childSnapshot.key, ...offer });
+                            existingNotifications.push({ id: childSnapshot.key, ...offer });
                         }
                     });
                 }
+                existingNotifications
+                    .sort((first, second) => String(second.createdAt || "").localeCompare(String(first.createdAt || "")))
+                    .slice(0, 30)
+                    .forEach((offer) => {
+                        notificationItems.push(offer);
+                        if (!readNotificationIds.has(offer.id)) unreadNotificationIds.add(offer.id);
+                    });
                 renderNotificationCenter();
 
                 if (!auth.currentUser) return;
 
-                stopNotificationListener = onChildAdded(notificationsQuery, (snapshot) => {
+                stopNotificationListener = onChildAdded(notificationsRef, (snapshot) => {
                     if (existingNotificationIds.has(snapshot.key)) return;
                     const offer = snapshot.val() || {};
                     if ((offer.status && offer.status !== "published") || deletedNotificationIds.has(snapshot.key)) return;
 
                     notificationItems.push({ id: snapshot.key, ...offer });
-                    unreadNotificationIds.add(snapshot.key);
+                    if (!readNotificationIds.has(snapshot.key)) unreadNotificationIds.add(snapshot.key);
                     renderNotificationCenter();
 
                     if ("Notification" in window && Notification.permission === "granted") {
@@ -2747,6 +2774,7 @@
         const profileAvatar = document.getElementById("profileAvatar");
         const userFirstNameDisplay = document.getElementById("userFirstNameDisplay");
         const profileFullName = document.getElementById("profileFullName");
+        const profileMyOrders = document.getElementById("profileMyOrders");
         const logoutBtn = document.getElementById("logoutBtn");
         const loginModal = document.getElementById("loginModal");
         const closeLogin = document.getElementById("closeLogin");
@@ -2872,6 +2900,12 @@
                 }
             });
         }
+
+        profileMyOrders?.addEventListener("click", () => {
+            profileDropdown?.classList.remove("show");
+            profileTrigger?.setAttribute("aria-expanded", "false");
+            document.getElementById("myOrdersBtn")?.click();
+        });
 
         logoutBtn.addEventListener("click", () => {
             signOut(auth).then(() => {
@@ -2999,8 +3033,11 @@
                 if (languageToggle) languageToggle.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch to Bengali' : 'Switch to English');
                 const profileAllServices = document.getElementById('profileAllServices');
                 if (profileAllServices) profileAllServices.textContent = currentLanguage === 'en' ? 'All Services' : 'সব সেবা';
-                const myOrdersLabel = document.getElementById('myOrdersBtn');
-                if (myOrdersLabel) myOrdersLabel.textContent = currentLanguage === 'en' ? 'My Bookings' : 'আমার বুকিং';
+                const bookingLabel = currentLanguage === 'en' ? 'My Bookings' : 'আমার বুকিং';
+                const myOrdersLabel = document.getElementById('myOrdersLabel');
+                if (myOrdersLabel) myOrdersLabel.textContent = bookingLabel;
+                const profileMyOrdersLabel = document.getElementById('profileMyOrdersLabel');
+                if (profileMyOrdersLabel) profileMyOrdersLabel.textContent = bookingLabel;
                 const logoutLabel = document.getElementById('logoutBtn');
                 if (logoutLabel) logoutLabel.textContent = currentLanguage === 'en' ? 'Log out' : 'লগ আউট';
                 isTranslating = false;
