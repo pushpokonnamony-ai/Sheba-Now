@@ -281,6 +281,8 @@
         .hero h1 { font-size: 24px; margin-bottom: 8px; line-height: 1.4; }
         .hero h1 span { color: #ffeb3b; }
         .hero p { font-size: 14px; }
+        .hero-primary-line,
+        .hero-location-line { display: inline; }
 
         .dynamic-banner-shell { width: 100%; max-width: 1280px; margin: 18px auto 0; padding: 0 18px; }
         .dynamic-banner {
@@ -731,6 +733,10 @@
             }
             .hero { padding: 35px 15px; }
             .hero h1 { font-size: 20px; }
+            .hero p { max-width: 320px; margin: 0 auto; }
+            .hero-primary-line,
+            .hero-location-line { display: block; }
+            .hero-location-line { margin-top: 2px; }
             .services-container { width: 100%; margin: 15px auto; padding: 0 12px; }
             .services-container h2 { font-size: clamp(11px, 3.2vw, 15px); white-space: nowrap; }
             .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -926,7 +932,7 @@
 
         <section class="hero">
             <h1>আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে <span style="color: #008060; background: #fff; padding: 0 6px; border-radius: 4px;">Sheba<span style="color: #d9534f;">Now</span></span></h1>
-            <p>এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস (শুধুমাত্র গাজীপুর)</p>
+            <p><span class="hero-primary-line">এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস</span><span class="hero-location-line"> (শুধুমাত্র গাজীপুর)</span></p>
         </section>
 
         <section class="services-container" id="servicesSection">
