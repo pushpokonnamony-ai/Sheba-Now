@@ -91,6 +91,11 @@
         }
         #gazipurMap { width: 100%; height: 300px; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 28px rgba(0,0,0,0.08); border: 1px solid rgba(0,128,96,0.12); margin-bottom: 12px; }
         .location-map-modal .city-modal-content { max-width: 560px; }
+        .location-accuracy-status { display: flex; align-items: center; gap: 7px; min-height: 20px; margin: 0 0 10px; color: #52736a; font-size: 12px; font-weight: 700; text-align: left; }
+        .location-accuracy-status::before { content: ''; width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: #0f9b72; box-shadow: 0 0 0 4px rgba(15,155,114,0.12); }
+        .location-accuracy-status.is-loading::before { background: #f0ad4e; box-shadow: 0 0 0 4px rgba(240,173,78,0.14); }
+        .location-accuracy-status.is-error { color: #b42318; }
+        .location-accuracy-status.is-error::before { background: #d9534f; box-shadow: 0 0 0 4px rgba(217,83,79,0.12); }
         .map-action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 
         .city-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
@@ -184,18 +189,26 @@
         .profile-summary span { display: block; margin-top: 2px; color: #7b8b86; font-size: 11px; font-weight: 600; }
         .profile-dropdown a,
         .profile-dropdown button {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             width: 100%;
             border: none;
             background: transparent;
             color: #1f2937;
             text-align: left;
-            padding: 11px 12px;
+            padding: 10px 12px;
             border-radius: 10px;
-            font-size: 15px;
-            font-weight: 800;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
             text-decoration: none;
             cursor: pointer;
+        }
+        .profile-dropdown .nav-control-icon {
+            width: 16px;
+            height: 16px;
+            flex: 0 0 16px;
         }
         .profile-dropdown .bn-item {
             font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", sans-serif;
@@ -254,14 +267,15 @@
             background: transparent;
             color: #1f2937;
             text-align: left;
-            padding: 11px 12px;
+            padding: 10px 12px;
             border-radius: 10px;
-            font-size: 15px;
-            font-weight: 800;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
             cursor: pointer;
         }
         .language-toggle:hover { background: #edfaf5; color: #008060; }
-        .language-toggle-icon { font-size: 17px; color: #008060; font-family: "Segoe UI Symbol", "Noto Sans Bengali", sans-serif; }
+        .language-toggle-icon { display: inline-grid; place-items: center; width: 16px; height: 16px; flex: 0 0 16px; font-size: 15px; color: #008060; font-family: "Segoe UI Symbol", "Noto Sans Bengali", sans-serif; }
 
         .hero { background: linear-gradient(rgba(0,128,96,0.85), rgba(0,128,96,0.85)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; color: white; text-align: center; padding: 50px 15px; }
         .hero h1 { font-size: 24px; margin-bottom: 8px; line-height: 1.4; }
@@ -480,6 +494,34 @@
         .whatsapp-icon-btn:active { cursor: grabbing; }
         .whatsapp-icon-btn:hover { transform: scale(1.1); }
         .whatsapp-icon-btn svg { width: 28px; height: 28px; fill: white; }
+
+        .page-scroll-control {
+            position: fixed;
+            left: 24px;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            z-index: 9998;
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            color: #087f5b;
+            box-shadow: none;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease, background 0.2s ease;
+        }
+        .page-scroll-top { bottom: max(76px, calc(env(safe-area-inset-bottom) + 56px)); }
+        .page-scroll-bottom { bottom: max(20px, env(safe-area-inset-bottom)); }
+        .page-scroll-control.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .page-scroll-control:hover { background: rgba(239, 252, 247, 0.9); transform: translateY(-2px); }
+        .page-scroll-control:focus-visible { outline: 2px solid rgba(8, 127, 91, 0.28); outline-offset: 2px; }
+        .page-scroll-control svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
         
         .wa-status-tooltip { display: none; position: absolute; bottom: 65px; right: 0; background: #222; color: #fff; padding: 10px 14px; border-radius: 6px; font-size: 12px; width: 220px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10000; line-height: 1.4; }
 
@@ -833,6 +875,7 @@
                 <input id="gazipurLocationSearch" class="map-search-input" type="text" placeholder="ঠিকানা লিখুন, যেমন: গাজীপুর কোনাবাড়ি, টঙ্গী, শ্রীপুর...">
             </div>
             <div id="gazipurMap" aria-label="Gazipur map"></div>
+            <div id="locationAccuracyStatus" class="location-accuracy-status" role="status" aria-live="polite">ম্যাপ থেকে একটি সঠিক অবস্থান নির্বাচন করুন।</div>
 
             <div class="map-action-row">
                 <div class="city-option" onclick="detectCurrentLocationSmart()">আমার বর্তমান অবস্থান</div>
@@ -1071,6 +1114,13 @@
         </div>
     </div>
 
+    <button type="button" class="page-scroll-control page-scroll-top" id="pageScrollTop" aria-label="উপরে যান" title="উপরে যান">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6"></path><path d="M12 8v10"></path></svg>
+    </button>
+    <button type="button" class="page-scroll-control page-scroll-bottom" id="pageScrollBottom" aria-label="নিচে যান" title="নিচে যান">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 10 6 6 6-6"></path><path d="M12 6v10"></path></svg>
+    </button>
+
     <div id="adminPanelContainer">
         <div class="admin-header">
             <h2>অ্যাডমিন ড্যাশবোর্ড - বুকিং ম্যানেজমেন্ট (গাজীপুর)</h2>
@@ -1278,6 +1328,29 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzqvReJoGQdOigth3KdBrCKDNFCvHWitY&libraries=places&callback=initGazipurMap" async defer></script>
 
     <script>
+        (function () {
+            const scrollTopButton = document.getElementById('pageScrollTop');
+            const scrollBottomButton = document.getElementById('pageScrollBottom');
+            if (!scrollTopButton || !scrollBottomButton) return;
+
+            function updateScrollControls() {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const hasScrollableContent = maxScroll > 80;
+                const isAtTop = scrollTop <= 24;
+                const isAtBottom = scrollTop >= maxScroll - 24;
+
+                scrollTopButton.classList.toggle('is-visible', hasScrollableContent && !isAtTop);
+                scrollBottomButton.classList.toggle('is-visible', hasScrollableContent && !isAtBottom);
+            }
+
+            scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }));
+            window.addEventListener('scroll', updateScrollControls, { passive: true });
+            window.addEventListener('resize', updateScrollControls);
+            updateScrollControls();
+        }());
+
         window.initGazipurMap = function () {
             const mapContainer = document.getElementById("gazipurMap");
             if (!mapContainer) return;
@@ -1315,6 +1388,30 @@
                 autocomplete.addListener("place_changed", () => {
                     const place = autocomplete.getPlace();
                     if (!place.geometry || !place.geometry.location) {
+                        const typedAddress = input.value.trim();
+                        if (typedAddress && window.google?.maps?.Geocoder) {
+                            new google.maps.Geocoder().geocode({ address: typedAddress, region: 'BD' }, (results, status) => {
+                                if (status === "OK" && results?.[0]?.geometry?.location) {
+                                    const result = results[0];
+                                    const resultLocation = result.geometry.location;
+                                    const addressText = result.formatted_address || typedAddress;
+                                    map.setCenter(resultLocation);
+                                    map.setZoom(16);
+                                    marker.setPosition(resultLocation);
+                                    marker.setTitle(addressText);
+                                    window.updateSelectedLocation({
+                                        fullAddress: addressText,
+                                        latitude: resultLocation.lat(),
+                                        longitude: resultLocation.lng(),
+                                        place: result
+                                    });
+                                    const statusElement = document.getElementById('locationAccuracyStatus');
+                                    if (statusElement) statusElement.textContent = `লোকেশন অটো-সেভ হয়েছে: ${addressText}`;
+                                    const locationModal = document.getElementById('cityModal');
+                                    if (locationModal) locationModal.style.display = "none";
+                                }
+                            });
+                        }
                         return;
                     }
 
@@ -1332,6 +1429,10 @@
                         place
                     });
                     input.value = addressText;
+                    const statusElement = document.getElementById('locationAccuracyStatus');
+                    if (statusElement) statusElement.textContent = `লোকেশন অটো-সেভ হয়েছে: ${addressText}`;
+                    const locationModal = document.getElementById('cityModal');
+                    if (locationModal) locationModal.style.display = "none";
                 });
             }
 
@@ -2021,6 +2122,7 @@
 
         locationShareBtn.addEventListener("click", async (event) => {
             event.stopPropagation();
+            event.preventDefault();
             const location = window.currentSelectedLocation || {};
             const hasCoordinates = Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude));
             const mapUrl = hasCoordinates
@@ -2034,14 +2136,31 @@
             try {
                 if (navigator.share) {
                     await navigator.share(shareData);
-                } else if (navigator.clipboard?.writeText) {
-                    await navigator.clipboard.writeText(mapUrl);
-                    alert('লোকেশন লিংক কপি হয়েছে। এখন শেয়ার করতে পারবেন।');
                 } else {
-                    window.open(mapUrl, '_blank', 'noopener');
+                    throw new Error('Web Share API unavailable');
                 }
             } catch (error) {
-                if (error.name !== 'AbortError') console.error('Location share failed:', error);
+                if (error.name === 'AbortError') return;
+
+                try {
+                    if (navigator.clipboard?.writeText) {
+                        await navigator.clipboard.writeText(mapUrl);
+                    } else {
+                        const copyInput = document.createElement('textarea');
+                        copyInput.value = mapUrl;
+                        copyInput.setAttribute('readonly', '');
+                        copyInput.style.position = 'fixed';
+                        copyInput.style.opacity = '0';
+                        document.body.appendChild(copyInput);
+                        copyInput.select();
+                        document.execCommand('copy');
+                        copyInput.remove();
+                    }
+                    alert('লোকেশন লিংক কপি হয়েছে। এখন শেয়ার করতে পারবেন।');
+                } catch (copyError) {
+                    console.error('Location share and copy failed:', copyError);
+                    window.open(mapUrl, '_blank', 'noopener,noreferrer');
+                }
             }
         });
 
@@ -2060,63 +2179,133 @@
 
         window.detectCurrentLocationSmart = function() {
             cityModal.style.display = "none";
+            const accuracyStatus = document.getElementById('locationAccuracyStatus');
+            const setAccuracyStatus = (message, state = '') => {
+                if (!accuracyStatus) return;
+                accuracyStatus.textContent = message;
+                accuracyStatus.className = `location-accuracy-status${state ? ` is-${state}` : ''}`;
+            };
+
             if (!navigator.geolocation) {
+                setAccuracyStatus('এই ব্রাউজারে exact location পাওয়া যাচ্ছে না।', 'error');
                 alert("আপনার ব্রাউজার জিওলোকেশন সমর্থন করে না।");
                 return;
             }
 
+            setAccuracyStatus('আপনার exact location শনাক্ত করা হচ্ছে...', 'loading');
+
             const geocodeCurrentPosition = (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                const applyCurrentLocation = (result) => {
-                    const formattedAddress = (result?.formatted_address || "").trim();
-                    if (formattedAddress) {
-                        const input = document.getElementById("gazipurLocationSearch");
-                        if (input) {
-                            input.value = formattedAddress || "গাজীপুর";
-                        }
-
-                        if (formattedAddress) {
-                            window.updateSelectedLocation({
-                                fullAddress: formattedAddress,
-                                latitude: lat,
-                                longitude: lon,
-                                place: result
-                            });
-
-                            if (window.gazipurMapInstance && window.currentGazipurMarker) {
-                                const exactLocation = new google.maps.LatLng(lat, lon);
-                                window.gazipurMapInstance.setCenter(exactLocation);
-                                window.gazipurMapInstance.setZoom(16);
-                                window.currentGazipurMarker.setPosition(exactLocation);
-                                window.currentGazipurMarker.setTitle(formattedAddress);
-                            }
-
-                        }
-                    }
-                if (!formattedAddress) {
-                    window.updateSelectedLocation({ fullAddress: `${lat.toFixed(6)}, ${lon.toFixed(6)}`, latitude: lat, longitude: lon, shortName: 'Current location' });
+                const accuracy = Number(position.coords.accuracy);
+                const accuracyText = Number.isFinite(accuracy) ? `প্রায় ${Math.round(accuracy)} মিটার নির্ভুলতা` : 'GPS location পাওয়া গেছে';
+                const exactLocation = new google.maps.LatLng(lat, lon);
+                if (window.gazipurMapInstance && window.currentGazipurMarker) {
+                    window.gazipurMapInstance.setCenter(exactLocation);
+                    window.gazipurMapInstance.setZoom(17);
+                    window.currentGazipurMarker.setPosition(exactLocation);
+                    window.currentGazipurMarker.setTitle(`আপনার exact location (${accuracyText})`);
                 }
-            };
+
+                const saveResolvedLocation = (result, fallbackName = '') => {
+                    const formattedAddress = (result?.formatted_address || '').trim();
+                    const placeName = (result?.name || fallbackName || '').trim();
+                    const vicinity = (result?.vicinity || '').trim();
+                    const displayAddress = formattedAddress || [placeName, vicinity].filter(Boolean).join(', ');
+                    const exactAddress = displayAddress || 'Current location near Gazipur';
+                    const input = document.getElementById("gazipurLocationSearch");
+                    if (input) input.value = exactAddress;
+                    window.updateSelectedLocation({
+                        fullAddress: exactAddress,
+                        latitude: lat,
+                        longitude: lon,
+                        place: result,
+                        shortName: formattedAddress ? undefined : (placeName || 'Current location')
+                    });
+                    setAccuracyStatus(`${exactAddress} • ${accuracyText}`);
+                    cityModal.style.display = "flex";
+                };
+
+                const findNearestPlace = () => {
+                    if (!window.google?.maps?.places?.PlacesService || !window.gazipurMapInstance) {
+                        saveResolvedLocation(null);
+                        return;
+                    }
+                    const placesService = new google.maps.places.PlacesService(window.gazipurMapInstance);
+                    placesService.nearbySearch({
+                        location: exactLocation,
+                        radius: 1000
+                    }, (places, status) => {
+                        if (status === 'OK' && places?.[0]) {
+                            saveResolvedLocation(places[0], 'Nearby location');
+                        } else {
+                            saveResolvedLocation(null);
+                        }
+                    });
+                };
 
             if (window.google?.maps?.Geocoder) {
                 new google.maps.Geocoder().geocode({ location: { lat, lng: lon } }, (results, status) => {
                     if (status === "OK" && results?.[0]) {
-                        applyCurrentLocation(results[0]);
+                        saveResolvedLocation(results[0]);
                     } else {
-                        applyCurrentLocation(null);
+                        findNearestPlace();
                     }
                 });
             } else {
-                applyCurrentLocation(null);
+                findNearestPlace();
             }
             };
 
-            navigator.geolocation.getCurrentPosition(geocodeCurrentPosition, (error) => {
-                console.error("Location permission error:", error);
-                alert("লোকেশন পারমিশন দেওয়া হয়নি। দয়া করে ম্যানুয়ালি তালিকা থেকে আপনার এলাকা বেছে নিন।");
+            let bestPosition = null;
+            let watchId = null;
+            let finishTimer = null;
+            let locationFinished = false;
+
+            const finishWithBestPosition = () => {
+                if (locationFinished) return;
+                locationFinished = true;
+                if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+                if (finishTimer) clearTimeout(finishTimer);
+
+                if (bestPosition) {
+                    geocodeCurrentPosition(bestPosition);
+                    return;
+                }
+
+                const message = 'আপনার exact location পাওয়া যায়নি। Browser settings থেকে Location permission Allow করে আবার চেষ্টা করুন।';
+                setAccuracyStatus(message, 'error');
+                alert(message);
                 areaModal.style.display = "flex";
-            }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+            };
+
+            watchId = navigator.geolocation.watchPosition((position) => {
+                const nextAccuracy = Number(position.coords.accuracy);
+                const bestAccuracy = bestPosition ? Number(bestPosition.coords.accuracy) : Infinity;
+                if (!bestPosition || (Number.isFinite(nextAccuracy) && nextAccuracy < bestAccuracy)) {
+                    bestPosition = position;
+                    const accuracyMessage = Number.isFinite(nextAccuracy)
+                        ? `GPS location পাওয়া যাচ্ছে... প্রায় ${Math.round(nextAccuracy)} মিটার নির্ভুলতা`
+                        : 'GPS location পাওয়া যাচ্ছে...';
+                    setAccuracyStatus(accuracyMessage, 'loading');
+                }
+
+                if (Number.isFinite(nextAccuracy) && nextAccuracy <= 30) {
+                    finishWithBestPosition();
+                }
+            }, (error) => {
+                console.error("Location permission error:", error);
+                if (error.code === 1) {
+                    locationFinished = true;
+                    if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+                    const message = "লোকেশন পারমিশন দেওয়া হয়নি। Browser settings থেকে Location permission Allow করে আবার চেষ্টা করুন।";
+                    setAccuracyStatus(message, 'error');
+                    alert(message);
+                    areaModal.style.display = "flex";
+                }
+            }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 });
+
+            finishTimer = setTimeout(finishWithBestPosition, 30000);
         }
 
         window.setFinalLocation = function(locationName) {
