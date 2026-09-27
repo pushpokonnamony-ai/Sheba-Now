@@ -58,9 +58,59 @@
         .logo:hover { transform: translateY(-1px); filter: drop-shadow(0 5px 8px rgba(8,127,91,0.16)); }
         .logo span { color: #d9534f; }
         
-        .search-box { display: flex; flex: 0 1 230px; min-width: 140px; max-width: 260px; gap: 5px; }
-        .search-box input { flex: 1 1 auto; min-width: 0; padding: 10px 12px; width: 100%; border: 1px solid #d7e3e0; border-radius: 8px; font-size: 14px; background: #f9fbfa; font-weight: 700; text-align: center; }
-        .search-box button { display: inline-flex; flex: 0 0 46px; align-items: center; justify-content: center; gap: 5px; min-width: 46px; min-height: 40px; padding: 10px 8px; background: linear-gradient(135deg, #0b9a72, #087f5b); color: white; border: 1px solid rgba(255,255,255,0.22); border-radius: 12px; cursor: pointer; font-size: 0; font-weight: 900; white-space: nowrap; box-shadow: 0 7px 16px rgba(8,127,91,0.18), inset 0 1px 0 rgba(255,255,255,0.2); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .search-box {
+            display: flex;
+            flex: 0 1 230px;
+            min-width: 140px;
+            max-width: 260px;
+            gap: 6px;
+            padding: 4px;
+            border: 1px solid rgba(11, 154, 114, 0.16);
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(238, 248, 244, 0.94));
+            box-shadow: 0 10px 24px rgba(15, 95, 73, 0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+        .search-box input {
+            flex: 1 1 auto;
+            min-width: 0;
+            padding: 11px 14px;
+            width: 100%;
+            border: 1px solid rgba(7, 127, 91, 0.12);
+            border-radius: 12px;
+            font-size: 14px;
+            background: linear-gradient(180deg, #ffffff, #f6fbf9);
+            color: #1d2f29;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: inset 0 1px 2px rgba(11, 154, 114, 0.08);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .search-box input::placeholder { color: #667a75; }
+        .search-box input:focus {
+            outline: none;
+            border-color: rgba(11, 154, 114, 0.5);
+            box-shadow: 0 0 0 4px rgba(11, 154, 114, 0.12), inset 0 1px 2px rgba(11, 154, 114, 0.08);
+        }
+        .search-box button {
+            display: inline-flex;
+            flex: 0 0 46px;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            min-width: 46px;
+            min-height: 40px;
+            padding: 10px 8px;
+            background: linear-gradient(135deg, #0b9a72, #087f5b);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0;
+            font-weight: 900;
+            white-space: nowrap;
+            box-shadow: 0 7px 16px rgba(8,127,91,0.18), inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
         .search-box button:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(8,127,91,0.25), inset 0 1px 0 rgba(255,255,255,0.24); }
         .search-box button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
         
@@ -422,7 +472,7 @@
             position: relative;
             z-index: 1;
             text-align: center;
-            font-size: clamp(1rem, 2vw, 2.1rem);
+            font-size: clamp(0.9rem, 1.7vw, 1.5rem);
             font-weight: 900;
             color: #ffd700;
             letter-spacing: 0.02em;
@@ -430,6 +480,28 @@
             text-shadow: 0 2px 8px rgba(30, 67, 49, 0.35);
         }
         .promo-copy strong { display: inline-block; background: rgba(255,255,255,0.12); padding: 0 10px; border-radius: 8px; }
+        .promo-copy .promo-line {
+            display: block;
+        }
+        .promo-copy .promo-delivery {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 6px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.08));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 8px 18px rgba(10, 78, 58, 0.18);
+            color: #fffaf0;
+        }
+        .promo-copy .promo-delivery::before,
+        .promo-copy .promo-delivery::after {
+            content: '✦';
+            font-size: 0.8em;
+            color: #ffe27a;
+            text-shadow: 0 0 12px rgba(255, 226, 122, 0.8);
+        }
 
         .services-container { width: 100%; max-width: 1200px; margin: 25px auto; padding: 0 15px; }
         .services-container h2 { margin-bottom: 15px; font-size: 20px; color: #333; }
@@ -615,6 +687,21 @@
             .mobile-menu-close { border: 0; background: transparent; color: #52736a; font-size: 24px; cursor: pointer; }
             .mobile-menu-link { display: flex; align-items: center; width: 100%; padding: 13px 12px; margin-top: 6px; border: 1px solid #e2eee9; border-radius: 11px; background: #f7fcfa; color: #16493b; text-decoration: none; font-weight: 800; cursor: pointer; }
             .mobile-menu-link.login-link { border-color: rgba(8,127,91,0.22); background: linear-gradient(135deg, #effcf7, #eaf8f2); color: #087f5b; }
+            .mobile-menu-logout {
+                border: 1px solid rgba(209, 45, 45, 0.12);
+                background: linear-gradient(135deg, rgba(255, 244, 244, 0.96), rgba(255, 255, 255, 0.94));
+                color: #af2b2b;
+                box-shadow: 0 8px 18px rgba(145, 45, 45, 0.08);
+            }
+            .mobile-menu-logout .bn-item,
+            .mobile-menu-logout .en-item,
+            .mobile-menu-logout {
+                font-family: "Noto Sans Bengali", "Segoe UI", sans-serif;
+            }
+            .mobile-menu-logout .en-item {
+                font-family: "Times New Roman", Times, serif;
+                letter-spacing: 0.02em;
+            }
             .location-container {
                 max-width: calc(100vw - 120px);
                 padding: 7px 10px;
@@ -733,9 +820,19 @@
             }
             .hero { padding: 35px 15px; }
             .hero h1 { font-size: 20px; }
-            .hero p { max-width: 320px; margin: 0 auto; }
+            .hero p {
+                max-width: 320px;
+                margin: 0 auto;
+                font-size: 13px;
+                line-height: 1.35;
+                white-space: normal;
+            }
             .hero-primary-line,
-            .hero-location-line { display: block; }
+            .hero-location-line {
+                display: block;
+                white-space: normal;
+                font-size: 13px;
+            }
             .hero-location-line { margin-top: 2px; }
             .services-container { width: 100%; margin: 15px auto; padding: 0 12px; }
             .services-container h2 { font-size: clamp(11px, 3.2vw, 15px); white-space: nowrap; }
@@ -876,6 +973,7 @@
         <a href="#servicesSection" id="mobileAllServices" class="mobile-menu-link">সব সেবা</a>
         <button type="button" id="mobileMyOrders" class="mobile-menu-link">আমার বুকিং</button>
         <button type="button" id="mobileLoginBtn" class="mobile-menu-link login-link"><svg class="nav-control-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-3.2 3.2-5 7-5s6.2 1.8 7 5"></path></svg><span>লগইন</span></button>
+        <button type="button" id="mobileLogoutBtn" class="mobile-menu-link mobile-menu-logout"><span id="mobileLogoutLabel" class="bn-item">লগ আউট</span></button>
     </aside>
 
     <div id="cityModal" class="city-modal">
@@ -926,13 +1024,19 @@
                 </div>
             </div>
             <div class="promo-strip">
-                <div class="promo-copy">প্রথম বুকিংয়ে পাচ্ছেন ১০% ছাড়! এছাড়াও থাকছে ফ্রি ডেলিভারি।</div>
+                <div class="promo-copy">
+                    <span class="promo-line">প্রথম বুকিংয়ে পাচ্ছেন ১০% ছাড়! এছাড়াও থাকছে ...</span>
+                    <span class="promo-line promo-delivery">ফ্রি ডেলিভারি</span>
+                </div>
             </div>
         </section>
 
         <section class="hero">
             <h1>আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে <span style="color: #008060; background: #fff; padding: 0 6px; border-radius: 4px;">Sheba<span style="color: #d9534f;">Now</span></span></h1>
-            <p><span class="hero-primary-line">এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস</span><span class="hero-location-line"> (শুধুমাত্র গাজীপুর)</span></p>
+            <p>
+                <span class="hero-primary-line">এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস</span>
+                <span class="hero-location-line">(শুধুমাত্র গাজীপুর)</span>
+            </p>
         </section>
 
         <section class="services-container" id="servicesSection">
@@ -1052,7 +1156,7 @@
                 </div>
                 <div class="service-card" data-name="বিশ্বস্ত বুয়া ও কেয়ারগিভার maid caregiver" onclick="triggerBooking('বিশ্বস্ত বুয়া ও কেয়ারগিভার')">
                     <div class="img-box">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80" alt="বুয়া ও কেয়ারগিভার">
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=80" alt="বুয়া ও কেয়ারগিভার">
                     </div>
                     <h3>বুয়া ও কেয়ারগিভার</h3>
                     <p>কাজের জন্য সৎ ও দায়িত্বশীল সাহায্যকারী</p>
@@ -1803,12 +1907,19 @@
             return parts.length > 1 ? `${parts[parts.length - 2]}, ${parts[parts.length - 1]}` : (parts[0] || DEFAULT_LOCATION_TEXT);
         }
 
+        const isGenericLocationLabel = (value = '') => {
+            return /^current location|my current location|current location near gazipur/i.test(String(value).trim());
+        };
+
         window.updateSelectedLocation = function ({ fullAddress, latitude, longitude, place, shortName } = {}) {
             const nextAddress = String(fullAddress || DEFAULT_LOCATION_TEXT).trim();
             const nextLatitude = Number(latitude);
             const nextLongitude = Number(longitude);
+            const baseShortName = shortName && !isGenericLocationLabel(shortName) ? shortName : '';
+            const isExactLocationSelection = Boolean(place) || /,/.test(nextAddress) || /\d/.test(nextAddress);
+            const resolvedShortName = baseShortName || (isExactLocationSelection ? nextAddress : getLocationShortName(place, nextAddress));
             window.currentSelectedLocation = {
-                shortName: shortName || getLocationShortName(place, nextAddress),
+                shortName: isGenericLocationLabel(resolvedShortName) ? nextAddress : resolvedShortName,
                 fullAddress: nextAddress,
                 latitude: Number.isFinite(nextLatitude) ? nextLatitude : null,
                 longitude: Number.isFinite(nextLongitude) ? nextLongitude : null
@@ -2225,6 +2336,7 @@
                     const vicinity = (result?.vicinity || '').trim();
                     const displayAddress = formattedAddress || [placeName, vicinity].filter(Boolean).join(', ');
                     const exactAddress = displayAddress || 'Current location near Gazipur';
+                    const exactShortName = formattedAddress || placeName || vicinity || 'Current location';
                     const input = document.getElementById("gazipurLocationSearch");
                     if (input) input.value = exactAddress;
                     window.updateSelectedLocation({
@@ -2232,7 +2344,7 @@
                         latitude: lat,
                         longitude: lon,
                         place: result,
-                        shortName: formattedAddress ? undefined : (placeName || 'Current location')
+                        shortName: exactShortName
                     });
                     setAccuracyStatus(`${exactAddress} • ${accuracyText}`);
                     cityModal.style.display = "flex";
@@ -2977,6 +3089,7 @@
         const profileFullName = document.getElementById("profileFullName");
         const profileMyOrders = document.getElementById("profileMyOrders");
         const logoutBtn = document.getElementById("logoutBtn");
+        const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
         const loginModal = document.getElementById("loginModal");
         const closeLogin = document.getElementById("closeLogin");
         const authForm = document.getElementById("authForm");
@@ -3115,6 +3228,14 @@
             });
         });
 
+        mobileLogoutBtn?.addEventListener("click", () => {
+            signOut(auth).then(() => {
+                mobileMenuDrawer?.classList.remove("show");
+                mobileMenuBackdrop?.classList.remove("show");
+                alert("লগ-আউট সফল হয়েছে!");
+            });
+        });
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 loginBtnNav.style.display = "none";
@@ -3241,6 +3362,12 @@
                 if (profileMyOrdersLabel) profileMyOrdersLabel.textContent = bookingLabel;
                 const logoutLabel = document.getElementById('logoutBtn');
                 if (logoutLabel) logoutLabel.textContent = currentLanguage === 'en' ? 'Log out' : 'লগ আউট';
+                const mobileLogoutLabel = document.getElementById('mobileLogoutLabel');
+                if (mobileLogoutLabel) mobileLogoutLabel.textContent = currentLanguage === 'en' ? 'Log out' : 'লগ আউট';
+                if (mobileLogoutLabel) {
+                    mobileLogoutLabel.classList.toggle('en-item', currentLanguage === 'en');
+                    mobileLogoutLabel.classList.toggle('bn-item', currentLanguage !== 'en');
+                }
                 isTranslating = false;
             }
 
