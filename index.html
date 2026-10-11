@@ -1186,6 +1186,30 @@
                     <p>বিশুদ্ধতার সাথে কোনো আপস নয়—একেবারে ফ্রেশ মিল্ক!</p>
                     <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('ফ্রেশ মিল্ক')">বুক করুন</button>
                 </div>
+                <div class="service-card" data-name="ফুড ডেলিভারি food delivery restaurant meal" onclick="triggerBooking('ফুড ডেলিভারি')">
+                    <div class="img-box">
+                        <img src="food-delivery.svg" alt="ShebaNow টি-শার্ট ও ডেলিভারি ব্যাগ পরা খাবার ডেলিভারি রাইডার">
+                    </div>
+                    <h3>ফুড ডেলিভারি</h3>
+                    <p>গরম খাবার, দ্রুত ডেলিভারি!</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('ফুড ডেলিভারি')">অর্ডার করুন</button>
+                </div>
+                <div class="service-card" data-name="গ্রোসারি ও বাজার grocery groceries market" onclick="triggerBooking('গ্রোসারি ও বাজার')">
+                    <div class="img-box">
+                        <img src="grocery-market.svg" alt="তাজা বাজারের reusable bag হাতে হাসিমুখে ShebaNow worker">
+                    </div>
+                    <h3>গ্রোসারি ও বাজার</h3>
+                    <p>নিত্যপ্রয়োজনীয় বাজার, দ্রুত আপনার দ্বারে!</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('গ্রোসারি ও বাজার')">অর্ডার করুন</button>
+                </div>
+                <div class="service-card" data-name="ন্যাপকিন ও ডায়াপার sanitary pads diapers baby care" onclick="triggerBooking('ন্যাপকিন ও ডায়াপার')">
+                    <div class="img-box">
+                        <img src="napkin-diaper.svg" alt="মা ও শিশুর পাশে স্যানিটারি প্যাড ও ডায়াপার নিয়ে ShebaNow delivery worker">
+                    </div>
+                    <h3>ন্যাপকিন ও ডায়াপার</h3>
+                    <p>ঘরে বসেই যত্ন • আরামদায়ক মাস • পরিচ্ছন্ন শৈশব • নিশ্চিন্ত পরিবার</p>
+                    <button class="btn-order" onclick="event.stopPropagation(); triggerBooking('ন্যাপকিন ও ডায়াপার')">অর্ডার করুন</button>
+                </div>
                 <div class="service-card" data-name="বইবাড়ী boibari library books" onclick="triggerBooking('বইবাড়ী (BoiBari)')">
                     <div class="img-box">
                         <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=900&q=80" alt="বইবাড়ী লাইব্রেরি">
@@ -1951,6 +1975,9 @@
             { key: 'emergency-medicine', matchers: ['ঔষধ', 'medicine', 'মেডিসিন'] },
             { key: 'ambulance', matchers: ['অ্যাম্বুলেন্স', 'ambulance'] },
             { key: 'fresh-milk', matchers: ['ফ্রেশ মিল্ক', 'fresh milk', 'milk'] },
+            { key: 'food-delivery', matchers: ['ফুড ডেলিভারি', 'food delivery', 'food'] },
+            { key: 'grocery-market', matchers: ['গ্রোসারি ও বাজার', 'grocery', 'groceries', 'market'] },
+            { key: 'napkin-diaper', matchers: ['ন্যাপকিন ও ডায়াপার', 'sanitary pads', 'diapers', 'baby care'] },
             { key: 'boibari', matchers: ['বইবাড়ী', 'boibari', 'library', 'books'] }
         ];
 
@@ -2089,6 +2116,9 @@
                 'লন্ড্রি সার্ভিস',
                 'জরুরি ঔষধ সেবা',
                 'ফ্রেশ মিল্ক',
+                'ফুড ডেলিভারি',
+                'গ্রোসারি ও বাজার',
+                'ন্যাপকিন ও ডায়াপার',
                 'বইবাড়ী',
                 'tripbuddy',
                 'হোম সেলুন',
@@ -3270,12 +3300,13 @@
                 'সব সেবা': 'All Services', 'আমার বুকিং': 'My Bookings',
                 'লগইন': 'Log in', 'লগইন করুন': 'Log in', 'রেজিস্ট্রেশন করুন': 'Register', 'রেজিস্ট্রেশন': 'Register',
                 'নতুন অ্যাকাউন্ট খুলতে চান?': 'Create a new account?', 'আগেই অ্যাকাউন্ট আছে?': 'Already have an account?',
-                'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? যেমন: AC, ক্লিনিং...': 'What service are you looking for? e.g. AC, cleaning...',
+                'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? (যেমন: AC servicing)': 'What service are you looking for? (e.g. AC servicing)',
                 'গাজীপুর (কোনাবাড়ি)': 'Gazipur (Konabari)', 'জনপ্রিয় সেবাসমূহ (গাজীপুর এর জন্য প্রযোজ্য)': 'Popular Services (Available in Gazipur)',
                 'আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে': 'ShebaNow is here for all your service needs', 'বইবাড়ী (BoiBari)': 'BoiBari (Library)', 'লাইব্রেরি এখন আপনার ঘরের কোণে।': 'A library in the corner of your home.',
                 'ঘরে বসে': 'At-home', 'সেবা নিন': 'Get service', 'আপনার প্রয়োজনীয় যেকোনো সেবা পেতে': 'For any service you need', 'এর পাশে থাকুন': 'stay with',
-                'এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস (শুধুমাত্র গাজীপুর)': 'Book your desired service from home with one click (Gazipur only)',
-                'বুক করুন': 'Book Now', 'দ্রুত এবং বিশ্বস্ত মেরামত সেবা': 'Fast and reliable repair service',
+                'এক ক্লিকেই ঘরে বসেই বুক করুন আপনার কাঙ্ক্ষিত সার্ভিস': 'Book your desired service from home with one click',
+                'প্রথম বুকিংয়ে পাচ্ছেন ১০% ছাড়! এছাড়াও থাকছে ...': 'Get 10% off your first booking! Plus enjoy ...', 'ফ্রি ডেলিভারি': 'Free delivery',
+                'বুক করুন': 'Book Now', 'অর্ডার করুন': 'Order Now', 'দ্রুত এবং বিশ্বস্ত মেরামত সেবা': 'Fast and reliable repair service',
                 'বাড়ি কিংবা অফিসের নিখুঁত পরিষ্কার': 'Thorough home or office cleaning', 'দ্রুত, নিরাপদ ও পারদর্শী হাউস শিফটিং সেবা': 'Fast, safe and professional house shifting',
                 'দরদাম ও ফিটনেস অনুযায়ী সাশ্রয়ী ভাড়া': 'Affordable rent based on negotiation and fitness', 'মসৃণ ভ্রমণের জন্য নির্ভরযোগ্য ট্রাভেল সেবা': 'Reliable travel service for a smooth journey',
                 'ঘরে বসেই পার্লার সেবা নিন': 'Get salon services at home', 'অভিজ্ঞ টেকনিশিয়ান দ্বারা নিখুঁত কাজ': 'Expert service by experienced professionals',
@@ -3284,6 +3315,9 @@
                 'নিরাপদ ও দক্ষ ওয়্যারিং সেবা': 'Safe and skilled wiring service', 'অভিজ্ঞ শিক্ষক দ্বারা যত্নশীল পড়াশোনা': 'Caring education from experienced tutors',
                 'কাজের জন্য সৎ ও দায়িত্বশীল সাহায্যকারী': 'Honest and responsible helpers for your work', 'ঘরে বসেই ১০% ছাড়ে জেনুইন মেডিসিন': 'Genuine medicine delivered at home with 10% off',
                 'জরুরি মুহূর্তে দ্রুত ও নিরাপদ পরিবহন': 'Fast and safe emergency transport', 'বিশুদ্ধতার সাথে কোনো আপস নয়—একেবারে ফ্রেশ মিল্ক!': 'No compromise on purity—fresh milk, every time!',
+                'গরম খাবার, দ্রুত ডেলিভারি!': 'Hot meals, delivered fast!', 'নিত্যপ্রয়োজনীয় বাজার, দ্রুত আপনার দ্বারে!': 'Everyday essentials, delivered to your door!',
+                'আপনার ভ্রমণ, আমাদের পরিকল্পনা': 'Your trip, our plan.',
+                'ঘরে বসেই যত্ন • আরামদায়ক মাস • পরিচ্ছন্ন শৈশব • নিশ্চিন্ত পরিবার': 'Care at home • Comfort every month • A clean childhood • Peace of mind for every family',
                 'আপনার সঠিক এলাকা নির্বাচন করুন': 'Choose your exact area', 'আপনার বর্তমান অবস্থান': 'My Current Location', 'গাজীপুরের এলাকা': 'Gazipur Areas',
                 'আপনার ডেলিভারি ঠিকানা সেট করুন': 'Set your delivery address', 'আমাদের সার্ভিস শুধু গাজীপুর এলাকার জন্য। আপনার সঠিক এলাকা নির্বাচন করুন।': 'Our service is available only in Gazipur. Choose your exact area.',
                 'গাজীপুর কোনাবাড়ি, টঙ্গী, শ্রীপুর...': 'Gazipur Konabari, Tongi, Sreepur...', 'বন্ধ করুন': 'Close',
@@ -3312,7 +3346,8 @@
                 'একটি গাড়ি বুক করুন': 'Book a Car', 'দূরপাল্লা/দীর্ঘপথ গাড়ি': 'Long-distance Travel Car', 'দর্পণ/দীর্ঘপথ গাড়ি': 'Long-distance Travel Car',
                 'বিউটি অ্যান্ড কেয়ার': 'Beauty and Care', 'প্লাম্বিং সার্ভিস': 'Plumbing Service', 'লন্ড্রি সার্ভিস': 'Laundry Service', 'হোম সেলুন': 'Home Salon',
                 'আইপিএস ও ব্যাটারি': 'IPS and Battery', 'এলপিজি গ্যাস': 'LPG Gas', 'ইলেকট্রিক মিস্ত্রি': 'Electrician', 'হোম টিউটর': 'Home Tutor',
-                'বুয়া ও কেয়ারগিভার': 'Maid and Caregiver', 'জরুরি ঔষধ সেবা': 'Emergency Medicine', 'অ্যাম্বুলেন্স সেবা': 'Ambulance Service', 'ফ্রেশ মিল্ক': 'Fresh Milk', 'বইবাড়ী (BoiBari)': 'BoiBari (Library)'
+                'বুয়া ও কেয়ারগিভার': 'Maid and Caregiver', 'জরুরি ঔষধ সেবা': 'Emergency Medicine', 'অ্যাম্বুলেন্স সেবা': 'Ambulance Service', 'ফ্রেশ মিল্ক': 'Fresh Milk', 'ফুড ডেলিভারি': 'Food Delivery', 'গ্রোসারি ও বাজার': 'Groceries & Essentials', 'বইবাড়ী (BoiBari)': 'BoiBari (Library)',
+                'TripBuddy (ট্রিপবাডি)': 'TripBuddy', 'ন্যাপকিন ও ডায়াপার': 'Sanitary Pads & Diapers'
             };
             Object.assign(languagePairs, servicePairs);
             const englishToBengali = Object.fromEntries(Object.entries(languagePairs).map(([bengali, english]) => [english, bengali]));
@@ -3322,9 +3357,11 @@
             let isTranslating = false;
 
             function replaceLanguageText(value) {
+                const text = String(value || '');
+                if (currentLanguage !== 'en' && /[\u0980-\u09ff]/.test(text)) return text;
                 const pairs = currentLanguage === 'en' ? languagePairs : englishToBengali;
                 return Object.entries(pairs).sort((first, second) => second[0].length - first[0].length)
-                    .reduce((text, [from, to]) => text.split(from).join(to), String(value || ''));
+                    .reduce((translatedText, [from, to]) => translatedText.split(from).join(to), text);
             }
 
             function translateTextNode(node) {

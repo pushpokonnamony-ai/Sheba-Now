@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title description">
+  <title id="title">ShebaNow food delivery rider</title>
+  <desc id="description">A detailed male ShebaNow rider in a green uniform, carrying a hot food parcel beside his insulated delivery bag.</desc>
+  <defs>
+    <linearGradient id="backdrop" x2="0" y2="1">
+      <stop stop-color="#f6ebd6"/>
+      <stop offset="1" stop-color="#fff9ec"/>
+    </linearGradient>
+    <linearGradient id="uniform" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#23b783"/>
+      <stop offset=".55" stop-color="#0c966b"/>
+      <stop offset="1" stop-color="#087254"/>
+    </linearGradient>
+    <linearGradient id="thermalBag" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fa8050"/>
+      <stop offset="1" stop-color="#cf482f"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#efbd96"/>
+      <stop offset="1" stop-color="#cc8965"/>
+    </linearGradient>
+    <linearGradient id="helmet" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#20a878"/>
+      <stop offset="1" stop-color="#075e49"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#backdrop)"/>
+  <path d="M0 690h1600v310H0z" fill="#e6d3b4"/>
+  <path d="M0 748h1600v252H0z" fill="#d7c09d"/>
+  <path d="M0 688h1600" stroke="#c5a77d" stroke-width="8"/>
+
+  <path d="M95 102h340v586H95z" fill="#ecd9b9"/>
+  <path d="M132 143h266v473H132z" fill="#fffaf0"/>
+  <path d="M158 173h215v268H158z" fill="#c9e7db"/>
+  <path d="M158 362h215v79H158z" fill="#a4cdb8"/>
+  <path d="M145 453h240v17H145z" fill="#e8d3ae"/>
+  <path d="M145 492h190v12H145zM145 519h146v12H145z" fill="#e8d3ae"/>
+  <path d="M1230 125h280v563h-280z" fill="#eedcbe"/>
+  <path d="M1260 158h221v365h-221z" fill="#fffaf0"/>
+  <path d="M1285 183h171v246h-171z" fill="#d9ece0"/>
+  <path d="M1285 350h171v79h-171z" fill="#afd0b9"/>
+  <path d="M1270 548h202v15h-202zM1270 580h151v11h-151z" fill="#e8d3ae"/>
+
+  <ellipse cx="834" cy="861" rx="440" ry="54" fill="#776a59" opacity=".19"/>
+
+  <!-- Insulated delivery backpack -->
+  <path d="M885 310q0-38 38-38h277q38 0 38 38v394H885z" fill="url(#thermalBag)"/>
+  <path d="M957 274v-70q0-45 44-45h117q44 0 44 45v70" fill="none" stroke="#a33c2c" stroke-width="28" stroke-linecap="round"/>
+  <path d="M910 361h304v24H910z" fill="#ffbd80" opacity=".75"/>
+  <path d="M916 650h291" stroke="#ad3c2b" stroke-width="12" opacity=".55"/>
+  <path d="M915 399h-35v205h35M1208 399h35v205h-35" fill="none" stroke="#b94330" stroke-width="15"/>
+  <rect x="933" y="445" width="278" height="120" rx="15" fill="#fff8e9"/>
+  <text x="1072" y="495" text-anchor="middle" fill="#087b5b" font-family="Arial,sans-serif" font-size="44" font-weight="800">ShebaNow</text>
+  <text x="1072" y="535" text-anchor="middle" fill="#c64d32" font-family="Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="3">FOOD DELIVERY</text>
+
+  <!-- Rider's trousers and boots -->
+  <path d="M563 695h324l-18 202q-4 35-39 35h-89l-13-175-38 175H562q-37 0-32-39z" fill="#263a36"/>
+  <path d="M536 909h178v35q0 19-23 19H512q-26 0-23-19 4-35 47-35z" fill="#1e302d"/>
+  <path d="M738 909h150q44 0 56 27 8 21-18 27H736z" fill="#1e302d"/>
+  <path d="M590 747l95 8M757 750l94-8" stroke="#40534d" stroke-width="11" opacity=".65"/>
+
+  <!-- Male rider, shown large in the foreground -->
+  <path d="M541 391q18-71 94-82h151q77 8 101 84l67 321H480z" fill="url(#uniform)"/>
+  <path d="M623 322q78 54 160 2" fill="none" stroke="#6dd3a6" stroke-width="13" opacity=".72"/>
+  <path d="M542 438q34 34 60 82l-88 110-77-49 85-143z" fill="#087c5b"/>
+  <path d="M837 431q45 16 78 62l88 112-70 53-117-127z" fill="#087c5b"/>
+  <path d="M499 607l-63 57q-22 20-2 44l62 58 40-45-37-42 62-42z" fill="url(#skin)"/>
+  <path d="M952 605l69 54q22 19 5 43l-48 67-48-37 29-48-63-42z" fill="url(#skin)"/>
+  <path d="M454 706l-27 29 69 64 32-38-43-39zM974 731l-30 39 45 35 33-48z" fill="#d99d78"/>
+  <path d="M523 462q70 45 194 36" fill="none" stroke="#55c695" stroke-width="12" opacity=".65"/>
+  <path d="M548 677q110 28 237 4" fill="none" stroke="#087451" stroke-width="13" opacity=".5"/>
+  <rect x="625" y="500" width="184" height="63" rx="10" fill="#f3fff7"/>
+  <text x="717" y="542" text-anchor="middle" fill="#087b5b" font-family="Arial,sans-serif" font-size="31" font-weight="800">ShebaNow</text>
+  <path d="M785 382l19 33-19 36-18-36z" fill="#f5c76d"/>
+
+  <!-- Face, hair and helmet -->
+  <path d="M618 205q5-95 109-106 103 7 116 110l-20 59H630z" fill="url(#helmet)"/>
+  <path d="M611 222q106-39 227-5l-9 33q-109-29-212 16z" fill="#064c3d"/>
+  <path d="M635 228q-37-3-38 34 2 31 34 34M844 228q36-1 37 34-2 31-34 34" fill="url(#skin)"/>
+  <path d="M636 218q5-42 33-61 28-19 65-13 39-25 77 0 29 20 35 69l-8 94q-14 88-93 100-80-13-96-100z" fill="url(#skin)"/>
+  <path d="M645 183q13-77 102-84 88 5 99 83-38-13-68-40-46 33-133 41z" fill="#182a27"/>
+  <path d="M668 273q24-17 54-2M770 270q25-17 54-1" fill="none" stroke="#49362f" stroke-width="11" stroke-linecap="round"/>
+  <path d="M677 295q16 13 35 0M782 293q16 13 35 0" fill="none" stroke="#263633" stroke-width="9" stroke-linecap="round"/>
+  <path d="M750 298l-13 48 24 7" fill="none" stroke="#b97959" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M695 365q52 33 106-2-13 54-53 55-39-5-53-53z" fill="#51392f"/>
+  <path d="M714 370q36 14 69-1" fill="none" stroke="#f4d2b5" stroke-width="9" stroke-linecap="round"/>
+  <path d="M626 225q105-37 219-4" fill="none" stroke="#53c79a" stroke-width="11" opacity=".75"/>
+  <path d="M696 120q28-17 57-16" fill="none" stroke="#72d3a8" stroke-width="9" stroke-linecap="round" opacity=".75"/>
+
+  <!-- Hot takeaway parcel in his hand -->
+  <path d="M251 602h202l-14 149H264z" fill="#bd7746"/>
+  <path d="M237 581h231v38H237z" fill="#edb66e"/>
+  <path d="M290 581v-31q0-38 38-38h53q38 0 38 38v31" fill="#fff4df" stroke="#bd7746" stroke-width="12"/>
+  <path d="M328 543q-18-32 7-59M382 543q-15-33 11-58" fill="none" stroke="#ef9a43" stroke-width="12" stroke-linecap="round"/>
+  <path d="M275 654h157" stroke="#fff2d9" stroke-width="10" opacity=".8"/>
+  <rect x="278" y="675" width="151" height="51" rx="9" fill="#fff8e9"/>
+  <text x="353" y="710" text-anchor="middle" fill="#087b5b" font-family="Arial,sans-serif" font-size="23" font-weight="800">HOT &amp; FRESH</text>
+</svg>

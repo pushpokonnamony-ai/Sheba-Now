@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title description">
+  <title id="title">ShebaNow grocery market delivery</title>
+  <desc id="description">A smiling ShebaNow worker carries an eco-friendly bag filled with fresh vegetables, rice, oil, milk and groceries.</desc>
+  <defs>
+    <linearGradient id="room" x2="0" y2="1">
+      <stop stop-color="#e4f4e9"/>
+      <stop offset="1" stop-color="#fbf7e9"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#23b783"/>
+      <stop offset=".55" stop-color="#0c966b"/>
+      <stop offset="1" stop-color="#087254"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f4c9a4"/>
+      <stop offset="1" stop-color="#d69470"/>
+    </linearGradient>
+    <linearGradient id="tote" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#d9b47b"/>
+      <stop offset="1" stop-color="#bb8d55"/>
+    </linearGradient>
+    <linearGradient id="oil" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#f7bb36"/>
+      <stop offset=".5" stop-color="#ffe47b"/>
+      <stop offset="1" stop-color="#e69b1e"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#room)"/>
+  <path d="M0 747h1600v253H0z" fill="#d6c8a8"/>
+  <path d="M0 735h1600" stroke="#b7a47d" stroke-width="8"/>
+  <path d="M105 118h380v550H105z" fill="#c5e4d2"/>
+  <path d="M142 154h306v450H142z" fill="#fafff4"/>
+  <path d="M166 180h258v268H166z" fill="#d4eee0"/>
+  <path d="M166 357h258v91H166z" fill="#a9d2b6"/>
+  <path d="M134 476h321v17H134zM134 520h250v12H134z" fill="#dce8d2"/>
+  <path d="M1210 133h285v535h-285z" fill="#f1e1bf"/>
+  <path d="M1240 165h224v292h-224z" fill="#fffaf0"/>
+  <path d="M1262 188h180v225h-180z" fill="#dcefe1"/>
+  <path d="M1262 337h180v76h-180z" fill="#afd0b7"/>
+  <path d="M1249 486h208v15h-208zM1249 519h158v11h-158z" fill="#e8d6b5"/>
+  <ellipse cx="826" cy="870" rx="440" ry="52" fill="#647662" opacity=".18"/>
+
+  <!-- Worker uniform and legs -->
+  <path d="M965 687h300l10 224h-105l-49-156-27 156H987z" fill="#294039"/>
+  <path d="M984 891h145v40q0 18-22 18H963q-19 0-15-18 7-30 36-40zM1117 891h140q36 0 48 28 8 21-17 30h-171z" fill="#233630"/>
+  <path d="M906 418q17-62 83-77h193q81 12 103 87l36 279H867z" fill="url(#shirt)"/>
+  <path d="M970 352q83 54 173 1" fill="none" stroke="#75d9ad" stroke-width="13" opacity=".75"/>
+  <path d="M929 467q44 35 93 42M1220 465q-33 30-75 42" fill="none" stroke="#54c899" stroke-width="13" opacity=".56"/>
+  <path d="M1080 348l22 38-22 41-23-41z" fill="#f4cf75"/>
+  <rect x="1089" y="493" width="187" height="63" rx="10" fill="#f4fff8"/>
+  <text x="1183" y="535" text-anchor="middle" fill="#087b5b" font-family="Arial,sans-serif" font-size="30" font-weight="800">ShebaNow</text>
+
+  <!-- Smiling worker's face and hair -->
+  <path d="M1013 217q-8-87 81-126 83-26 139 34 36 38 28 109l-30 117q-34 82-101 86-82-11-108-94z" fill="#202d29"/>
+  <path d="M1034 248q-36-1-39 34 0 32 33 38M1226 246q35-1 39 32 0 30-34 39" fill="url(#skin)"/>
+  <path d="M1040 213q7-63 66-84 51-16 101 15 31 21 38 71-58-8-101-53-39 44-104 51z" fill="#202d29"/>
+  <path d="M1046 229q1 113 49 171 29 34 77 39 57-17 82-83 18-47 10-125-66-5-119-53-38 42-99 51z" fill="url(#skin)"/>
+  <path d="M1062 278q24-18 53-2M1161 276q24-18 51-1" fill="none" stroke="#4b382f" stroke-width="10" stroke-linecap="round"/>
+  <path d="M1072 302q15 13 31 0M1170 301q15 13 31 0" fill="none" stroke="#26342f" stroke-width="9" stroke-linecap="round"/>
+  <path d="M1134 302l-12 46 23 8" fill="none" stroke="#bd805e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1088 374q48 39 98-2-12 54-51 57-35-6-47-55z" fill="#6f4136"/>
+  <path d="M1108 379q31 13 60-2" fill="none" stroke="#fff0dc" stroke-width="9" stroke-linecap="round"/>
+  <path d="M1042 240q4-27 27-39" fill="none" stroke="#3d4e44" stroke-width="10" stroke-linecap="round"/>
+  <path d="M1250 207q30 24 33 64" fill="none" stroke="#202d29" stroke-width="21" stroke-linecap="round"/>
+
+  <!-- Reusable eco tote -->
+  <path d="M410 575q0-32 34-32h494q34 0 34 32l-33 320H444z" fill="url(#tote)"/>
+  <path d="M546 557v-82q0-58 58-58h177q58 0 58 58v82" fill="none" stroke="#89683f" stroke-width="28" stroke-linecap="round"/>
+  <path d="M448 624h485" stroke="#e4c695" stroke-width="13" opacity=".65"/>
+  <rect x="591" y="755" width="176" height="76" rx="11" fill="#f5f1d9" opacity=".96"/>
+  <path d="M624 789q18-31 38 0 20-31 39 0-19 25-39 37-20-12-38-37z" fill="#17825c"/>
+  <text x="678" y="817" text-anchor="middle" fill="#17684f" font-family="Arial,sans-serif" font-size="19" font-weight="800">REUSE ME</text>
+
+  <!-- Fresh greens and vegetables -->
+  <path d="M462 582q-36-80 4-137 20 51 10 92 39-85 86-101-8 57-67 114 64-46 112-34-39 49-105 61z" fill="#267f4f"/>
+  <path d="M477 563q-24-65-1-104M505 570q13-68 57-102M525 575q34-48 82-61" fill="none" stroke="#a5c96b" stroke-width="9" stroke-linecap="round"/>
+  <path d="M523 593q-12-43 13-73 27 30 8 72zM561 591q-5-48 24-68 20 37-7 71z" fill="#5ba848"/>
+  <path d="M615 584q-40-54-11-98 42 33 27 89zM647 577q-19-54 20-85 30 45-1 91z" fill="#39894f"/>
+  <path d="M609 557q-35-75 7-109 29 46 8 91 39-66 80-66-6 54-70 88z" fill="#2f7846"/>
+  <circle cx="545" cy="582" r="35" fill="#db5942"/>
+  <path d="M534 551l12-14 11 15-11 9z" fill="#38834d"/>
+  <circle cx="678" cy="581" r="37" fill="#e56c4a"/>
+  <path d="M667 548l12-14 12 15-12 9z" fill="#39834b"/>
+  <path d="M723 594q-28-26-18-54 31 11 35 42zM740 586q-7-36 19-52 18 34-7 58z" fill="#77a94f"/>
+
+  <!-- Rice sack, cooking oil, milk and packaged groceries -->
+  <path d="M774 403h100l18 188H760z" fill="#f7f0d8" stroke="#d7c79e" stroke-width="8"/>
+  <path d="M778 433h94v49h-94z" fill="#e3edc5"/>
+  <text x="825" y="465" text-anchor="middle" fill="#537348" font-family="Arial,sans-serif" font-size="24" font-weight="800">RICE</text>
+  <path d="M787 523h70" stroke="#d5c89f" stroke-width="7"/>
+  <path d="M711 426h-18v-36h74v36l15 26v119q0 17-18 17h-53q-18 0-18-17v-119z" fill="url(#oil)" stroke="#cd8b22" stroke-width="7"/>
+  <path d="M710 390h46v-26h-46z" fill="#e6a42a"/>
+  <rect x="706" y="482" width="72" height="51" rx="7" fill="#fff5d6"/>
+  <text x="742" y="514" text-anchor="middle" fill="#9a6b16" font-family="Arial,sans-serif" font-size="18" font-weight="800">OIL</text>
+  <path d="M864 473h76v124h-76z" fill="#fffdf3" stroke="#d6dfd1" stroke-width="7"/>
+  <path d="M864 473l38-30 38 30" fill="#65a8ba"/>
+  <path d="M878 523h49v41h-49z" fill="#dcefe3"/>
+  <text x="903" y="550" text-anchor="middle" fill="#518b79" font-family="Arial,sans-serif" font-size="16" font-weight="800">MILK</text>
+  <path d="M916 568h48v97h-48z" fill="#e7a451"/>
+  <path d="M916 568h48v23h-48z" fill="#d47741"/>
+  <path d="M928 611h25" stroke="#fff0d3" stroke-width="7"/>
+  <path d="M957 594h54v75h-54z" fill="#d76342"/>
+  <path d="M957 594h54v17h-54z" fill="#f2b65d"/>
+  <path d="M970 630h29" stroke="#fff2dc" stroke-width="7"/>
+
+  <!-- Worker holding the tote handles -->
+  <path d="M945 465q-38 33-77 84l-61 37q-23 14-10 35 14 22 39 7l88-46q34-18 66-66z" fill="url(#skin)"/>
+  <path d="M800 575q-24 5-31 25-5 16 8 24 14 9 30-5l20-19z" fill="url(#skin)"/>
+  <path d="M793 562l-11 43M809 566l-10 40M825 572l-10 39" stroke="#bd805e" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Front-facing staples stay visible in the filled tote -->
+  <path d="M842 442h83v153h-83z" fill="#fffdf3" stroke="#d6dfd1" stroke-width="7"/>
+  <path d="M842 442l41-31 42 31" fill="#65a8ba"/>
+  <path d="M856 493h55v56h-55z" fill="#dcefe3"/>
+  <text x="883" y="529" text-anchor="middle" fill="#518b79" font-family="Arial,sans-serif" font-size="20" font-weight="800">MILK</text>
+  <path d="M922 565h55v95h-55z" fill="#e7a451"/>
+  <path d="M922 565h55v24h-55z" fill="#d47741"/>
+  <text x="949" y="630" text-anchor="middle" fill="#fff5df" font-family="Arial,sans-serif" font-size="15" font-weight="800">TEA</text>
+  <path d="M966 594h58v77h-58z" fill="#d76342"/>
+  <path d="M966 594h58v18h-58z" fill="#f2b65d"/>
+  <text x="995" y="648" text-anchor="middle" fill="#fff5df" font-family="Arial,sans-serif" font-size="13" font-weight="800">PASTA</text>
+</svg>
