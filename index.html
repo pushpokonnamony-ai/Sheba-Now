@@ -204,6 +204,17 @@
             white-space: nowrap;
             min-height: 38px;
             box-shadow: 0 8px 18px rgba(15, 155, 114, 0.08);
+            transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+        }
+        .profile-trigger:hover, .profile-trigger[aria-expanded="true"] {
+            background: linear-gradient(135deg, #e4f7ef, #f4faf7);
+            border-color: rgba(0,128,96,0.28);
+            box-shadow: 0 10px 24px rgba(15, 95, 73, 0.16);
+            transform: translateY(-1px);
+        }
+        .profile-trigger:focus-visible {
+            outline: 2px solid #087f5b;
+            outline-offset: 3px;
         }
         .profile-avatar {
             width: 30px;
@@ -217,9 +228,11 @@
             font-size: 12px;
             font-weight: 800;
         }
-        .profile-caret { font-size: 11px; opacity: 0.8; }
         #userNameDisplay { font-size: 17px; color: #064f3d; }
-        .profile-caret { font-size: 15px; color: #064f3d; opacity: 1; font-weight: 900; }
+        .profile-caret { display: grid; place-items: center; width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: rgba(0,128,96,0.09); color: #087f5b; transition: background 0.18s ease, color 0.18s ease, transform 0.2s ease; }
+        .profile-caret svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .profile-trigger:hover .profile-caret, .profile-trigger[aria-expanded="true"] .profile-caret { background: #087f5b; color: #fff; }
+        .profile-trigger[aria-expanded="true"] .profile-caret { transform: rotate(180deg); }
         .profile-dropdown {
             position: absolute;
             top: calc(100% + 10px);
@@ -556,15 +569,19 @@
         .whatsapp-float-container { position: fixed; top: auto; left: auto; right: 20px; bottom: max(20px, env(safe-area-inset-bottom)); z-index: 9999; display: flex; align-items: center; gap: 10px; }
         
         /* WhatsApp Service Options Menu Box */
-        .whatsapp-menu-box { display: none; position: absolute; bottom: 70px; right: 0; background: #ffffff; width: 280px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); padding: 12px; z-index: 10000; border: 1px solid #dcdcdc; text-align: left; }
+        .whatsapp-menu-box { display: none; position: absolute; bottom: 70px; right: 0; background: #ffffff; width: min(300px, calc(100vw - 28px)); max-height: min(78vh, 520px); overflow-y: auto; overscroll-behavior: contain; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); padding: 12px; z-index: 10000; border: 1px solid #dcdcdc; text-align: left; }
         .whatsapp-menu-header { font-size: 13px; font-weight: bold; color: #008060; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-        .whatsapp-menu-item { background: #f9f9f9; padding: 8px 10px; margin: 5px 0; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; color: #333; border: 1px solid #e5e5e5; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .whatsapp-menu-close { display: grid; place-items: center; width: 28px; height: 28px; flex: 0 0 28px; border: 1px solid #f0d7d5; border-radius: 50%; background: #fff7f6; color: #b42318; cursor: pointer; font-size: 17px; line-height: 1; }
+        .whatsapp-menu-item { width: 100%; background: #f9f9f9; padding: 9px 10px; margin: 5px 0; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; color: #333; border: 1px solid #e5e5e5; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; text-align: left; }
         .whatsapp-menu-item:hover { background: #eef9f5; border-color: #008060; color: #008060; }
         .whatsapp-menu-item span { color: #25d366; font-size: 14px; }
 
-        .whatsapp-chat-bubble { background: #ffffff; color: #333; padding: 8px 14px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1px solid #e0e0e0; transition: 0.2s; white-space: nowrap; }
-        .whatsapp-chat-bubble:hover { background: #f0f0f0; }
-        .whatsapp-icon-btn { width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: grab; touch-action: none; transition: transform 0.3s; }
+        .whatsapp-chat-bubble { position: relative; background: #ffffff; color: #174236; padding: 9px 14px; border-radius: 18px; box-shadow: 0 7px 20px rgba(15, 55, 43, 0.16); font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(8,127,91,0.15); white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; transform: translateX(12px) scale(0.94); transform-origin: right center; transition: opacity 0.2s ease, transform 0.24s ease, visibility 0.2s; }
+        .whatsapp-chat-bubble::after { content: ''; position: absolute; right: -5px; top: calc(50% - 5px); width: 9px; height: 9px; background: #fff; border-top: 1px solid rgba(8,127,91,0.15); border-right: 1px solid rgba(8,127,91,0.15); transform: rotate(45deg); }
+        .whatsapp-float-container.is-chat-prompt-visible .whatsapp-chat-bubble { opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0) scale(1); animation: whatsapp-bubble-enter 0.32s ease-out both; }
+        @keyframes whatsapp-bubble-enter { from { opacity: 0; transform: translateX(16px) scale(0.92); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        .whatsapp-chat-bubble:hover { background: #f0faf5; }
+        .whatsapp-icon-btn { width: 50px; height: 50px; padding: 0; border: 0; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,211,102,0.4); cursor: grab; touch-action: none; transition: transform 0.3s; }
         .whatsapp-icon-btn:active { cursor: grabbing; }
         .whatsapp-icon-btn:hover { transform: scale(1.1); }
         .whatsapp-icon-btn svg { width: 28px; height: 28px; fill: white; }
@@ -650,7 +667,22 @@
         footer p .brand-green { color: #008060 !important; }
         footer p .brand-red { color: #d9534f !important; }
 
+        .mobile-bottom-nav { display: none; }
+
         @media (max-width: 768px) {
+            body { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+            .mobile-bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 9999; display: flex; justify-content: space-around; align-items: stretch; min-height: 64px; padding: 7px 8px calc(7px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(13, 86, 66, 0.12); background: rgba(255, 255, 255, 0.97); box-shadow: 0 -8px 24px rgba(15, 55, 43, 0.14); backdrop-filter: blur(14px); }
+            .mobile-bottom-nav-item { position: relative; display: flex; flex: 1 1 0; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 0; border: 0; border-radius: 10px; background: transparent; color: #536b63; text-decoration: none; font-size: 10px; font-weight: 700; line-height: 1.2; cursor: pointer; transition: color 0.18s ease, background-color 0.18s ease, transform 0.18s ease; -webkit-tap-highlight-color: transparent; }
+            .mobile-bottom-nav-item svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+            .mobile-bottom-nav-item:hover, .mobile-bottom-nav-item:focus-visible, .mobile-bottom-nav-item.is-active { color: #087f5b; background: #eff9f4; }
+            .mobile-bottom-nav-item:active { transform: scale(0.95); }
+            .mobile-bottom-nav-item:focus-visible { outline: 2px solid #087f5b; outline-offset: -2px; }
+            .mobile-booking-count { position: absolute; top: 2px; left: calc(50% + 5px); display: grid; place-items: center; min-width: 16px; height: 16px; padding: 0 4px; border: 2px solid #fff; border-radius: 999px; background: #d9534f; color: #fff; font-family: Arial, sans-serif !important; font-size: 9px; font-weight: 800; line-height: 1; }
+            .mobile-booking-count[hidden] { display: none; }
+            #ordersModal .modal-content { display: flex; flex-direction: column; width: 100%; max-height: calc(100dvh - 24px); padding: 16px; }
+            #ordersModal .modal-content h2 { flex: 0 0 auto; font-size: 21px !important; }
+            #ordersList { flex: 1 1 auto; min-height: 0; max-height: none !important; overflow-y: auto; overscroll-behavior: contain; }
+            #ordersList .order-detail-card { overflow-wrap: anywhere; }
             .navbar { width: 100%; padding: 10px 16px; justify-content: space-between; gap: 8px; }
             .mobile-menu-toggle { position: relative; top: auto; right: auto; z-index: 2; flex: 0 0 38px; }
             #searchBoxContainer { display: none !important; }
@@ -940,10 +972,10 @@
             </div>
             <button id="loginBtnNav" class="btn-login"><svg class="nav-control-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-3.2 3.2-5 7-5s6.2 1.8 7 5"></path></svg><span>লগইন</span></button>
             <div id="userProfile" class="user-profile profile-menu">
-                <button type="button" id="profileTrigger" class="profile-trigger" aria-expanded="false">
+                <button type="button" id="profileTrigger" class="profile-trigger" aria-expanded="false" aria-haspopup="true">
                     <span class="profile-avatar" id="profileAvatar">U</span>
                     <span id="userNameDisplay">User</span><span id="userFirstNameDisplay">User</span>
-                    <span class="profile-caret">▾</span>
+                    <span class="profile-caret" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
                 </button>
                 <div id="profileDropdown" class="profile-dropdown">
                     <div class="profile-summary"><strong id="profileFullName">Shahanaz Mony</strong><span>ShebaNow account</span></div>
@@ -975,6 +1007,26 @@
         <button type="button" id="mobileLoginBtn" class="mobile-menu-link login-link"><svg class="nav-control-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-3.2 3.2-5 7-5s6.2 1.8 7 5"></path></svg><span>লগইন</span></button>
         <button type="button" id="mobileLogoutBtn" class="mobile-menu-link mobile-menu-logout"><span id="mobileLogoutLabel" class="bn-item">লগ আউট</span></button>
     </aside>
+    <nav id="mobileBottomNav" class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <button type="button" id="mobileBottomHome" class="mobile-bottom-nav-item is-active" aria-label="Home">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9M9 20v-6h6v6"></path></svg>
+            <span id="mobileBottomHomeLabel">Home</span>
+        </button>
+        <button type="button" id="mobileBottomBookings" class="mobile-bottom-nav-item" aria-label="আমার বুকিং">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4.5h6M9 10h6M9 14h6M9 18h3"></path></svg>
+            <span id="mobileBottomBookingsLabel">আমার বুকিং</span>
+            <span id="mobileBookingCount" class="mobile-booking-count" aria-live="polite" hidden>0</span>
+        </button>
+        <a class="mobile-bottom-nav-item" href="tel:+8801577707450" aria-label="Call">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-6-6l3-2-2-5z"></path></svg>
+            <span id="mobileBottomCallLabel">Call</span>
+        </a>
+        <button type="button" id="mobileBottomAuth" class="mobile-bottom-nav-item" aria-label="Login">
+            <svg id="mobileBottomLoginIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-3.2 3.2-5 7-5s6.2 1.8 7 5"></path></svg>
+            <svg id="mobileBottomLogoutIcon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path></svg>
+            <span id="mobileBottomAuthLabel">Login</span>
+        </button>
+    </nav>
 
     <div id="cityModal" class="city-modal">
         <div class="city-modal-content location-map-modal">
@@ -1227,31 +1279,37 @@
         <div class="wa-status-tooltip" id="waStatusTooltip">Off today, Open tomorrow (8:00 AM - 10:00 PM)</div>
         
         <!-- Home Service Pre-filled Options Menu Box -->
-        <div class="whatsapp-menu-box" id="whatsappMenuBox">
+        <div class="whatsapp-menu-box" id="whatsappMenuBox" role="dialog" aria-modal="false" aria-labelledby="whatsappMenuTitle" aria-hidden="true">
             <div class="whatsapp-menu-header">
-                <span>কোন সেবাটি নিতে চান?</span>
-                <span style="cursor: pointer; color: #d9534f; font-weight: bold;" onclick="toggleWhatsAppMenu(event)">✕</span>
+                <span id="whatsappMenuTitle">কোন সেবাটি নিতে চান?</span>
+                <button type="button" class="whatsapp-menu-close" onclick="toggleWhatsAppMenu(event)" aria-label="বন্ধ করুন">&times;</button>
             </div>
-            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমি এসি সার্ভিসিং সম্পর্কে বিস্তারিত জানতে চাই।')">
-                এসি সার্ভিসিং করাতে চাই <span>💬</span>
-            </div>
-            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমি হোম ক্লিনিং সার্ভিস নিতে চাই।')">
-                হোম ক্লিনিং সার্ভিস চাই <span>💬</span>
-            </div>
-            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, প্লাম্বিং বা ইলেকট্রিক কাজ সম্পর্কে জানতে চাই।')">
-                প্লাম্বিং বা ইলেকট্রিক কাজ <span>💬</span>
-            </div>
-            <div class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আপনাদের অন্যান্য সার্ভিস সম্পর্কে জানতে চাই।')">
-                অন্যান্য সার্ভিস সম্পর্কে জিজ্ঞাসা <span>💬</span>
-            </div>
+            <button type="button" class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমার একটি এলপিজি সিলিন্ডার লাগবে।')">
+                এলপিজি সিলিন্ডার লাগবে <span aria-hidden="true">↗</span>
+            </button>
+            <button type="button" class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমার জরুরি ঔষধ লাগবে।')">
+                জরুরি ঔষধ লাগবে <span aria-hidden="true">↗</span>
+            </button>
+            <button type="button" class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমার ফুড ডেলিভারি লাগবে।')">
+                ফুড ডেলিভারি লাগবে <span aria-hidden="true">↗</span>
+            </button>
+            <button type="button" class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমার গ্রোসারি ও বাজার লাগবে।')">
+                গ্রোসারি ও বাজার লাগবে <span aria-hidden="true">↗</span>
+            </button>
+            <button type="button" class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, আমার লন্ড্রি সার্ভিস লাগবে।')">
+                লন্ড্রি সার্ভিস লাগবে <span aria-hidden="true">↗</span>
+            </button>
+            <button type="button" class="whatsapp-menu-item" onclick="sendWhatsAppPreFilled('হ্যালো, অন্যান্য সার্ভিস সম্পর্কে জানতে চাই।')">
+                অন্যান্য সার্ভিস সম্পর্কে জানতে চাই <span aria-hidden="true">↗</span>
+            </button>
         </div>
 
-        <div class="whatsapp-chat-bubble" onclick="toggleWhatsAppMenu(event)">
-            👋 Chat with us
-        </div>
-        <div class="whatsapp-icon-btn" onclick="toggleWhatsAppMenu(event)" title="Chat with us">
-            <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-        </div>
+        <button type="button" class="whatsapp-chat-bubble" onclick="toggleWhatsAppMenu(event)" aria-label="Chat with us">
+            <span aria-hidden="true">👋</span><span id="whatsappChatLabel">Chat with us</span>
+        </button>
+        <button type="button" class="whatsapp-icon-btn" onclick="toggleWhatsAppMenu(event)" aria-label="Chat with us" title="Chat with us">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.2.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.173-1.29.173-1.414z"/></svg>
+        </button>
     </div>
 
     <button type="button" class="page-scroll-control page-scroll-top" id="pageScrollTop" aria-label="উপরে যান" title="উপরে যান">
@@ -1347,7 +1405,7 @@
                 <input type="text" id="clientName" placeholder="আপনার নাম" required>
                 <input type="tel" id="clientPhone" placeholder="মোবাইল নম্বর" required>
                 <input type="text" id="clientAddress" placeholder="আপনার সম্পূর্ণ ঠিকানা (গাজীপুরের ভেতর)" required>
-                <textarea id="problemDescription" placeholder="আপনার সমস্যা বা কাজের বিবরণ বিস্তারিত লিখুন..." rows="3" required></textarea>
+                <textarea id="problemDescription" placeholder="আপনার সমস্যা বা কাজের বিবরণ বিস্তারিত লিখুন..." rows="3"></textarea>
                 <label for="bookingDate" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">বুকিংয়ের তারিখ</label>
                 <div class="booking-date-row">
                     <input type="text" id="bookingDate" placeholder="দিন/মাস/বছর (DD/MM/YYYY)" inputmode="numeric" maxlength="10" pattern="\d{2}/\d{2}/\d{4}" required>
@@ -2146,12 +2204,13 @@
             const menuBox = document.getElementById("whatsappMenuBox");
             const tooltip = document.getElementById("waStatusTooltip");
             tooltip.style.display = "none"; // hide offline tooltip if open
-            
-            if (menuBox.style.display === "block") {
-                menuBox.style.display = "none";
-            } else {
-                menuBox.style.display = "block";
-            }
+
+            const isOpen = menuBox.style.display === "block";
+            menuBox.style.display = isOpen ? "none" : "block";
+            menuBox.setAttribute("aria-hidden", String(isOpen));
+            document.querySelectorAll(".whatsapp-chat-bubble, .whatsapp-icon-btn").forEach((button) => {
+                button.setAttribute("aria-expanded", String(!isOpen));
+            });
         }
 
         // Open WhatsApp with the selected pre-filled message.
@@ -2162,7 +2221,13 @@
             const menuBox = document.getElementById("whatsappMenuBox");
             const tooltip = document.getElementById("waStatusTooltip");
 
-            if (menuBox) menuBox.style.display = "none";
+            if (menuBox) {
+                menuBox.style.display = "none";
+                menuBox.setAttribute("aria-hidden", "true");
+            }
+            document.querySelectorAll(".whatsapp-chat-bubble, .whatsapp-icon-btn").forEach((button) => {
+                button.setAttribute("aria-expanded", "false");
+            });
             if (!tooltip) return;
 
             tooltip.textContent = whatsappWindow
@@ -2229,10 +2294,26 @@
 
         initializeWhatsAppDrag();
 
+        const whatsappWidget = document.querySelector(".whatsapp-float-container");
+        let whatsappBubbleHideTimer;
+        window.addEventListener("scroll", () => {
+            whatsappWidget.classList.add("is-chat-prompt-visible");
+            clearTimeout(whatsappBubbleHideTimer);
+            whatsappBubbleHideTimer = setTimeout(() => {
+                whatsappWidget.classList.remove("is-chat-prompt-visible");
+            }, 2600);
+        }, { passive: true });
+
         // Close menu when clicking outside
         window.addEventListener("click", () => {
             const menuBox = document.getElementById("whatsappMenuBox");
-            if (menuBox) menuBox.style.display = "none";
+            if (menuBox) {
+                menuBox.style.display = "none";
+                menuBox.setAttribute("aria-hidden", "true");
+            }
+            document.querySelectorAll(".whatsapp-chat-bubble, .whatsapp-icon-btn").forEach((button) => {
+                button.setAttribute("aria-expanded", "false");
+            });
         });
 
         const locationContainer = document.getElementById("locationContainer");
@@ -2663,12 +2744,37 @@
         const displayServiceName = document.getElementById("displayServiceName");
         const orderForm = document.getElementById("orderForm");
 
-        window.triggerBooking = function(serviceName) {
+        window.triggerBooking = async function(serviceName) {
             if(!auth.currentUser) {
                 alert("বুকিং করতে হলে আগে লগইন করতে হবে!");
                 document.getElementById("loginModal").style.display = "flex";
                 return;
             }
+            const user = auth.currentUser;
+            const clientName = document.getElementById("clientName");
+            const clientPhone = document.getElementById("clientPhone");
+            const today = new Date();
+            const todayDate = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`;
+            const todayPickerDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+            const defaultName = user.displayName || (user.email ? user.email.split("@")[0] : "");
+            clientName.value = defaultName;
+            clientPhone.value = user.phoneNumber || "";
+            document.getElementById("bookingDate").value = todayDate;
+            document.getElementById("bookingDatePicker").value = todayPickerDate;
+
+            try {
+                const userSnapshot = await get(ref(db, `users/${user.uid}`));
+                if (auth.currentUser?.uid === user.uid) {
+                    const userProfile = userSnapshot.val() || {};
+                    if (userProfile.displayName && clientName.value === defaultName) {
+                        clientName.value = userProfile.displayName;
+                    }
+                    clientPhone.value = userProfile.mobileNumber || userProfile.mobile || userProfile.phone || user.phoneNumber || "";
+                }
+            } catch (error) {
+                console.warn("Could not load booking profile details:", error);
+            }
+
             document.getElementById("selectedService").value = serviceName;
             displayServiceName.innerText = `${serviceName} বুকিং ফর্ম (গাজীপুর)`;
             
@@ -2788,6 +2894,7 @@
 
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
+                updateMobileBookingCount(auth.currentUser);
                 try {
                     const telegramResponse = await fetch("/api/send-booking-telegram", {
                         method: "POST",
@@ -2846,6 +2953,29 @@
         const ordersModal = document.getElementById("ordersModal");
         const closeOrders = document.getElementById("closeOrders");
         const ordersList = document.getElementById("ordersList");
+        const mobileBookingCount = document.getElementById("mobileBookingCount");
+
+        async function updateMobileBookingCount(user) {
+            if (!user) {
+                mobileBookingCount.hidden = true;
+                mobileBookingCount.textContent = "0";
+                document.getElementById("mobileBottomBookings").dataset.bookingCount = "0";
+                return;
+            }
+
+            try {
+                const userOrdersQuery = query(ref(db, "orders"), orderByChild("userId"), equalTo(user.uid));
+                const snapshot = await get(userOrdersQuery);
+                if (auth.currentUser?.uid !== user.uid) return;
+                const count = snapshot.numChildren();
+                mobileBookingCount.textContent = count > 99 ? "99+" : String(count);
+                mobileBookingCount.hidden = count === 0;
+                document.getElementById("mobileBottomBookings").dataset.bookingCount = String(count);
+                window.translatePage?.();
+            } catch (error) {
+                console.warn("Could not load booking count:", error);
+            }
+        }
 
         myOrdersBtn.addEventListener("click", async () => {
             profileDropdown.classList.remove("show");
@@ -3134,8 +3264,44 @@
         const authSubmitBtn = document.getElementById("authSubmitBtn");
         const authMessage = document.getElementById("authMessage");
         const bookingNavBtn = document.getElementById("myOrdersBtn");
+        const mobileBottomAuth = document.getElementById("mobileBottomAuth");
+        const mobileBottomAuthLabel = document.getElementById("mobileBottomAuthLabel");
+        const mobileBottomLoginIcon = document.getElementById("mobileBottomLoginIcon");
+        const mobileBottomLogoutIcon = document.getElementById("mobileBottomLogoutIcon");
+
+        document.getElementById("mobileBottomHome").addEventListener("click", () => {
+            document.querySelectorAll(".mobile-bottom-nav-item").forEach((item) => item.classList.remove("is-active"));
+            document.getElementById("mobileBottomHome").classList.add("is-active");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        document.getElementById("mobileBottomBookings").addEventListener("click", () => {
+            document.querySelectorAll(".mobile-bottom-nav-item").forEach((item) => item.classList.remove("is-active"));
+            document.getElementById("mobileBottomBookings").classList.add("is-active");
+            if (auth.currentUser) {
+                bookingNavBtn.click();
+            } else {
+                loginBtnNav.click();
+            }
+        });
+        document.getElementById("mobileBottomAuth").addEventListener("click", () => {
+            document.querySelectorAll(".mobile-bottom-nav-item").forEach((item) => item.classList.remove("is-active"));
+            mobileBottomAuth.classList.add("is-active");
+            if (auth.currentUser) {
+                signOut(auth).catch((error) => alert("লগ-আউট করা যায়নি: " + error.message));
+            } else {
+                loginBtnNav.click();
+            }
+        });
 
         let isRegistering = false;
+
+        function setAccountDisplayName(name) {
+            const displayName = name?.trim() || "User";
+            userNameDisplay.innerText = displayName;
+            userFirstNameDisplay.innerText = displayName.split(/\s+/)[0] || "User";
+            profileFullName.innerText = displayName;
+            profileAvatar.innerText = displayName.charAt(0).toUpperCase();
+        }
 
         loginBtnNav.addEventListener("click", () => {
             isRegistering = false;
@@ -3202,6 +3368,7 @@
                         mobileNumber: `+880${mobile}`,
                         createdAt: new Date().toISOString()
                     });
+                    setAccountDisplayName(name);
                     alert("সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে!");
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
@@ -3267,17 +3434,27 @@
         });
 
         onAuthStateChanged(auth, async (user) => {
+            mobileBottomAuth.dataset.authState = user ? "logout" : "login";
+            mobileBottomLoginIcon.hidden = Boolean(user);
+            mobileBottomLogoutIcon.hidden = !user;
+            window.translatePage?.();
+            updateMobileBookingCount(user);
             if (user) {
                 loginBtnNav.style.display = "none";
                 mobileLoginBtn.style.display = "none";
                 userProfile.style.display = "flex";
                 bookingNavBtn.style.display = "block";
                 notificationMenu.style.display = "block";
-                const displayName = user.displayName || (user.email ? user.email.split('@')[0] : user.phoneNumber || 'User');
-                userNameDisplay.innerText = displayName;
-                userFirstNameDisplay.innerText = displayName.trim().split(/\s+/)[0] || 'User';
-                profileFullName.innerText = displayName;
-                profileAvatar.innerText = (displayName || 'U').charAt(0).toUpperCase();
+                const fallbackName = user.displayName || (user.email ? user.email.split('@')[0] : user.phoneNumber || 'User');
+                setAccountDisplayName(fallbackName);
+                try {
+                    const userSnapshot = await get(ref(db, `users/${user.uid}`));
+                    if (auth.currentUser?.uid === user.uid) {
+                        setAccountDisplayName(userSnapshot.val()?.displayName || fallbackName);
+                    }
+                } catch (error) {
+                    console.warn("Could not load account display name:", error);
+                }
                 await loadDeletedNotificationsForUser(user);
                 listenForNewOffers();
                 saveFcmTokenForUser(user);
@@ -3297,7 +3474,7 @@
     <script>
         (function () {
             const languagePairs = {
-                'সব সেবা': 'All Services', 'আমার বুকিং': 'My Bookings',
+                'সব সেবা': 'All Services', 'আমার বুকিং': 'My Bookings', 'হোম': 'Home', 'কল': 'Call',
                 'লগইন': 'Log in', 'লগইন করুন': 'Log in', 'রেজিস্ট্রেশন করুন': 'Register', 'রেজিস্ট্রেশন': 'Register',
                 'নতুন অ্যাকাউন্ট খুলতে চান?': 'Create a new account?', 'আগেই অ্যাকাউন্ট আছে?': 'Already have an account?',
                 'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? (যেমন: AC servicing)': 'What service are you looking for? (e.g. AC servicing)',
@@ -3321,7 +3498,7 @@
                 'আপনার সঠিক এলাকা নির্বাচন করুন': 'Choose your exact area', 'আপনার বর্তমান অবস্থান': 'My Current Location', 'গাজীপুরের এলাকা': 'Gazipur Areas',
                 'আপনার ডেলিভারি ঠিকানা সেট করুন': 'Set your delivery address', 'আমাদের সার্ভিস শুধু গাজীপুর এলাকার জন্য। আপনার সঠিক এলাকা নির্বাচন করুন।': 'Our service is available only in Gazipur. Choose your exact area.',
                 'গাজীপুর কোনাবাড়ি, টঙ্গী, শ্রীপুর...': 'Gazipur Konabari, Tongi, Sreepur...', 'বন্ধ করুন': 'Close',
-                'কোন সেবাটি নিতে চান?': 'Which service do you need?', 'এসি সার্ভিসিং করাতে চাই': 'I want AC servicing', 'হোম ক্লিনিং সার্ভিস চাই': 'I want home cleaning',
+                'কোন সেবাটি নিতে চান?': 'Which service do you need?', 'এলপিজি সিলিন্ডার লাগবে': 'Need an LPG cylinder', 'জরুরি ঔষধ লাগবে': 'Need urgent medicine', 'ফুড ডেলিভারি লাগবে': 'Need food delivery', 'গ্রোসারি ও বাজার লাগবে': 'Need groceries', 'লন্ড্রি সার্ভিস লাগবে': 'Need laundry service', 'অন্যান্য সার্ভিস সম্পর্কে জানতে চাই': 'Ask about other services', 'চ্যাট করুন': 'Chat with us', 'এসি সার্ভিসিং করাতে চাই': 'I want AC servicing', 'হোম ক্লিনিং সার্ভিস চাই': 'I want home cleaning',
                 'প্লাম্বিং বা ইলেকট্রিক কাজ': 'Plumbing or electrical work', 'অন্যান্য সার্ভিস সম্পর্কে জিজ্ঞাসা': 'Ask about other services', 'Chat with us': 'Chat with us',
                 'আপনার নাম': 'Your Name', 'মোবাইল নম্বর': 'Mobile Number', 'আপনার সম্পূর্ণ ঠিকানা (গাজীপুরের ভেতর)': 'Full address (within Gazipur)',
                 'আপনার সমস্যা বা কাজের বিবরণ বিস্তারিত লিখুন...': 'Describe your problem or service details...', 'বুকিংয়ের তারিখ': 'Booking Date', 'তারিখ পরিষ্কার': 'Clear Date', 'সমস্যার ছবি যোগ করুন (ঐচ্ছিক - সর্বোচ্চ ৩টি):': 'Add problem images (optional - up to 3):', 'সমস্যার ছবি যোগ করুন (ঐচ্ছিক - সর্বোচ্চ ৫টি):': 'Add problem images (optional - up to 5):',
@@ -3393,6 +3570,22 @@
                 const profileAllServices = document.getElementById('profileAllServices');
                 if (profileAllServices) profileAllServices.textContent = currentLanguage === 'en' ? 'All Services' : 'সব সেবা';
                 const bookingLabel = currentLanguage === 'en' ? 'My Bookings' : 'আমার বুকিং';
+                const mobileBottomNav = document.getElementById('mobileBottomNav');
+                const mobileBottomHomeLabel = document.getElementById('mobileBottomHomeLabel');
+                const mobileBottomCallLabel = document.getElementById('mobileBottomCallLabel');
+                const mobileBottomBookingsLabel = document.getElementById('mobileBottomBookingsLabel');
+                const mobileBottomBookings = document.getElementById('mobileBottomBookings');
+                const mobileBottomAuth = document.getElementById('mobileBottomAuth');
+                const mobileBottomAuthLabel = document.getElementById('mobileBottomAuthLabel');
+                const bookingCount = Number(mobileBottomBookings?.dataset.bookingCount || 0);
+                const isLoggedIn = mobileBottomAuth?.dataset.authState === 'logout';
+                if (mobileBottomNav) mobileBottomNav.setAttribute('aria-label', currentLanguage === 'en' ? 'Mobile navigation' : 'মোবাইল নেভিগেশন');
+                if (mobileBottomHomeLabel) mobileBottomHomeLabel.textContent = currentLanguage === 'en' ? 'Home' : 'হোম';
+                if (mobileBottomCallLabel) mobileBottomCallLabel.textContent = currentLanguage === 'en' ? 'Call' : 'কল';
+                if (mobileBottomBookingsLabel) mobileBottomBookingsLabel.textContent = bookingLabel;
+                if (mobileBottomBookings) mobileBottomBookings.setAttribute('aria-label', bookingCount ? `${bookingLabel}, ${bookingCount}` : bookingLabel);
+                if (mobileBottomAuthLabel) mobileBottomAuthLabel.textContent = currentLanguage === 'en' ? (isLoggedIn ? 'Logout' : 'Login') : (isLoggedIn ? 'লগ আউট' : 'লগইন');
+                if (mobileBottomAuth) mobileBottomAuth.setAttribute('aria-label', mobileBottomAuthLabel?.textContent || 'Login');
                 const myOrdersLabel = document.getElementById('myOrdersLabel');
                 if (myOrdersLabel) myOrdersLabel.textContent = bookingLabel;
                 const profileMyOrdersLabel = document.getElementById('profileMyOrdersLabel');
