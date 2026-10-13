@@ -590,7 +590,7 @@
             position: fixed;
             left: 24px;
             bottom: max(20px, env(safe-area-inset-bottom));
-            z-index: 9998;
+            z-index: 10002;
             display: grid;
             place-items: center;
             width: 30px;
@@ -610,8 +610,9 @@
         .page-scroll-top { bottom: max(76px, calc(env(safe-area-inset-bottom) + 56px)); }
         .page-scroll-bottom { bottom: max(20px, env(safe-area-inset-bottom)); }
         .page-scroll-control.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
-        .page-scroll-control:hover { background: rgba(239, 252, 247, 0.9); transform: translateY(-2px); }
-        .page-scroll-control:focus-visible { outline: 2px solid rgba(8, 127, 91, 0.28); outline-offset: 2px; }
+        .page-scroll-control:hover { background: transparent; transform: translateY(-2px); }
+        .page-scroll-control:focus-visible { outline: none; }
+        .page-scroll-control:focus-visible svg { filter: drop-shadow(0 0 4px rgba(8,127,91,0.55)); }
         .page-scroll-control svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
         
         .wa-status-tooltip { display: none; position: absolute; bottom: 65px; right: 0; background: #222; color: #fff; padding: 10px 14px; border-radius: 6px; font-size: 12px; width: 220px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10000; line-height: 1.4; }
@@ -679,6 +680,10 @@
             .mobile-bottom-nav-item:focus-visible { outline: 2px solid #087f5b; outline-offset: -2px; }
             .mobile-booking-count { position: absolute; top: 2px; left: calc(50% + 5px); display: grid; place-items: center; min-width: 16px; height: 16px; padding: 0 4px; border: 2px solid #fff; border-radius: 999px; background: #d9534f; color: #fff; font-family: Arial, sans-serif !important; font-size: 9px; font-weight: 800; line-height: 1; }
             .mobile-booking-count[hidden] { display: none; }
+            .page-scroll-control { z-index: 10002; width: 38px; height: 38px; border: 0; background: transparent; box-shadow: none; }
+            .page-scroll-top { bottom: calc(136px + env(safe-area-inset-bottom)); }
+            .page-scroll-bottom { bottom: calc(86px + env(safe-area-inset-bottom)); }
+            .whatsapp-float-container { right: 16px; bottom: calc(98px + env(safe-area-inset-bottom)); }
             #ordersModal .modal-content { display: flex; flex-direction: column; width: 100%; max-height: calc(100dvh - 24px); padding: 16px; }
             #ordersModal .modal-content h2 { flex: 0 0 auto; font-size: 21px !important; }
             #ordersList { flex: 1 1 auto; min-height: 0; max-height: none !important; overflow-y: auto; overscroll-behavior: contain; }
@@ -1067,7 +1072,7 @@
     <div id="userMainView">
         <section class="dynamic-banner-shell">
             <div class="dynamic-banner">
-                <img id="dynamicBannerImage" alt="Sheba banner" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80">
+                <img id="dynamicBannerImage" alt="ShebaNow home service and food delivery banner" src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80">
                 <div id="locationMount" aria-live="polite"></div>
                 <div class="banner-content">
                     <div class="banner-badge">24/7 home service</div>
@@ -1240,7 +1245,7 @@
                 </div>
                 <div class="service-card" data-name="ফুড ডেলিভারি food delivery restaurant meal" onclick="triggerBooking('ফুড ডেলিভারি')">
                     <div class="img-box">
-                        <img src="food-delivery.svg" alt="ShebaNow টি-শার্ট ও ডেলিভারি ব্যাগ পরা খাবার ডেলিভারি রাইডার">
+                        <img src="https://images.unsplash.com/photo-1572195577046-2f25894c06fc?auto=format&fit=crop&w=1600&q=85" alt="A food delivery rider on a scooter with a delivery bag">
                     </div>
                     <h3>ফুড ডেলিভারি</h3>
                     <p>গরম খাবার, দ্রুত ডেলিভারি!</p>
@@ -1955,10 +1960,14 @@
 
         const GOOGLE_MAPS_API_KEY = "AIzaSyDzqvReJoGQdOigth3KdBrCKDNFCvHWitY";
         const FALLBACK_BANNER_URL = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80';
+        const FOOD_DELIVERY_BANNER_URL = 'https://images.unsplash.com/photo-1572195577046-2f25894c06fc?auto=format&fit=crop&w=1600&q=85';
+        const FRESH_MILK_BANNER_URL = 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=1600&q=85';
         const DEFAULT_BANNER_IMAGES = [
             'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80',
             'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1600&q=80',
-            'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1600&q=80'
+            'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1600&q=80',
+            FOOD_DELIVERY_BANNER_URL,
+            FRESH_MILK_BANNER_URL
         ];
         const DEFAULT_LOCATION_TEXT = 'গাজীপুর (কোনাবাড়ি)';
         const DEFAULT_LOCATION_COORDINATES = { latitude: 24.0104, longitude: 90.4185 };
@@ -2104,7 +2113,7 @@
             bannerRotateTimer = setInterval(() => {
                 bannerCurrentIndex = (bannerCurrentIndex + 1) % bannerImages.length;
                 bannerImage.src = bannerImages[bannerCurrentIndex];
-            }, 5000);
+            }, 2000);
         }
 
         function normalizeBannerList(bannerData) {
@@ -2152,7 +2161,7 @@
                     resolvedImages = normalizeBannerList(legacyData);
                 }
 
-                bannerImages = resolvedImages;
+                bannerImages = [...new Set([...resolvedImages, FOOD_DELIVERY_BANNER_URL, FRESH_MILK_BANNER_URL])];
                 bannerCurrentIndex = 0;
                 bannerImage.src = bannerImages[0];
                 startBannerRotation();
@@ -2195,12 +2204,42 @@
 
         arrangeServiceCards();
         storeDefaultServiceImages();
+        startBannerRotation();
         loadDynamicBanner();
         window.applyServiceCardImages();
 
         // Toggle Pre-filled Service Options Menu (Like your Screenshot)
+        const whatsappWidget = document.querySelector(".whatsapp-float-container");
+        let isWhatsAppScrolling = false;
+        let whatsappScrollEndTimer;
+        let whatsappBubbleHideTimer;
+        let whatsappIdlePromptTimer;
+
+        function hideWhatsAppChatPrompt() {
+            clearTimeout(whatsappBubbleHideTimer);
+            whatsappWidget.classList.remove("is-chat-prompt-visible");
+        }
+
+        function scheduleWhatsAppIdlePrompt(delay = 5000) {
+            clearTimeout(whatsappIdlePromptTimer);
+            if (isWhatsAppScrolling) return;
+            whatsappIdlePromptTimer = setTimeout(showWhatsAppChatPrompt, delay);
+        }
+
+        function showWhatsAppChatPrompt() {
+            if (isWhatsAppScrolling) return;
+            clearTimeout(whatsappIdlePromptTimer);
+            clearTimeout(whatsappBubbleHideTimer);
+            whatsappWidget.classList.add("is-chat-prompt-visible");
+            whatsappBubbleHideTimer = setTimeout(() => {
+                whatsappWidget.classList.remove("is-chat-prompt-visible");
+                scheduleWhatsAppIdlePrompt(2400);
+            }, 2600);
+        }
+
         window.toggleWhatsAppMenu = function(e) {
             e.stopPropagation();
+            showWhatsAppChatPrompt();
             const menuBox = document.getElementById("whatsappMenuBox");
             const tooltip = document.getElementById("waStatusTooltip");
             tooltip.style.display = "none"; // hide offline tooltip if open
@@ -2244,10 +2283,10 @@
             const icon = document.querySelector('.whatsapp-icon-btn');
             if (!widget || !icon) return;
 
-            widget.style.left = 'auto';
-            widget.style.top = 'auto';
-            widget.style.right = '20px';
-            widget.style.bottom = '20px';
+            widget.style.left = '';
+            widget.style.top = '';
+            widget.style.right = '';
+            widget.style.bottom = '';
             localStorage.removeItem('shebaNowWhatsAppPosition');
 
             let pointerStart = null;
@@ -2294,15 +2333,20 @@
 
         initializeWhatsAppDrag();
 
-        const whatsappWidget = document.querySelector(".whatsapp-float-container");
-        let whatsappBubbleHideTimer;
         window.addEventListener("scroll", () => {
-            whatsappWidget.classList.add("is-chat-prompt-visible");
-            clearTimeout(whatsappBubbleHideTimer);
-            whatsappBubbleHideTimer = setTimeout(() => {
-                whatsappWidget.classList.remove("is-chat-prompt-visible");
-            }, 2600);
+            isWhatsAppScrolling = true;
+            clearTimeout(whatsappScrollEndTimer);
+            clearTimeout(whatsappIdlePromptTimer);
+            hideWhatsAppChatPrompt();
+            whatsappScrollEndTimer = setTimeout(() => {
+                isWhatsAppScrolling = false;
+                scheduleWhatsAppIdlePrompt();
+            }, 700);
         }, { passive: true });
+        document.querySelector(".whatsapp-icon-btn").addEventListener("pointerenter", showWhatsAppChatPrompt);
+        document.querySelector(".whatsapp-icon-btn").addEventListener("focus", showWhatsAppChatPrompt);
+        document.querySelector(".whatsapp-chat-bubble").addEventListener("focus", showWhatsAppChatPrompt);
+        scheduleWhatsAppIdlePrompt();
 
         // Close menu when clicking outside
         window.addEventListener("click", () => {
