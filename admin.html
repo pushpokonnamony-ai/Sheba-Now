@@ -393,6 +393,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getDatabase, ref, push, set, get, update, remove, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
         import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+        import { updateBookingWithNotifications } from "./booking-notifications.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD96Zb90WfRKmssz3eA9veyJxgZlihC0UI",
@@ -981,14 +982,31 @@
         }
 
         window.updateOrderStatus = async function(orderId, status) {
-            await update(ref(db, `orders/${orderId}`), { status });
-            alert("স্ট্যাটাস আপডেট করা হয়েছে!");
+            try {
+                const result = await updateBookingWithNotifications({ db, get, push, ref, update }, orderId, { status });
+                alert(result.notificationCount && !result.notificationsSent
+                    ? "স্ট্যাটাস আপডেট হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
+                    : "স্ট্যাটাস আপডেট করা হয়েছে!");
+            } catch (error) {
+                console.error("Booking status update failed:", error);
+                alert("স্ট্যাটাস আপডেট করা যায়নি: " + error.message);
+            }
         }
 
         window.approvePayment = async function(orderId) {
-            await update(ref(db, `orders/${orderId}`), { paymentStatus: "অনুমোদিত", status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" });
-            alert("পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
-            loadAdminOrders();
+            try {
+                const result = await updateBookingWithNotifications({ db, get, push, ref, update }, orderId, {
+                    paymentStatus: "অনুমোদিত",
+                    status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)"
+                });
+                alert(result.notificationCount && !result.notificationsSent
+                    ? "পেমেন্ট অনুমোদিত হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
+                    : "পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
+                loadAdminOrders();
+            } catch (error) {
+                console.error("Payment approval failed:", error);
+                alert("পেমেন্ট অনুমোদন করা যায়নি: " + error.message);
+            }
         }
 
         window.deleteAdminOrder = async function(orderId) {

@@ -1,6 +1,3 @@
-const TELEGRAM_BOT_TOKEN = '8937594572:AAHCV3WPPPXoNkdfzPlCzHy5AYcBdMcNh7s';
-const TELEGRAM_CHAT_ID = '6394284813';
-
 function escapeTelegramText(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -37,6 +34,20 @@ export default async function handler(req, res) {
   }
 
   try {
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    if (!botToken || !chatId) {
+      const missingVariables = [
+        !botToken && 'TELEGRAM_BOT_TOKEN',
+        !chatId && 'TELEGRAM_CHAT_ID'
+      ].filter(Boolean);
+      console.error('Telegram notification environment variables are missing:', missingVariables);
+      return res.status(500).json({
+        error: 'Telegram notification is not configured.',
+        details: `Set the following Vercel environment variable(s): ${missingVariables.join(', ')}.`
+      });
+    }
+
     const booking = req.body || {};
     const locationUrl = getGoogleMapsUrl(booking.location);
     const locationLabel = booking.location?.fullAddress
@@ -60,23 +71,48 @@ export default async function handler(req, res) {
         : ''
     ].filter(Boolean).join('\n');
 
-    const telegramResponse = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text,
-          parse_mode: 'HTML'
-        })
+    let telegramResponse;
+    let telegramResult;
+    try {
+      telegramResponse = await fetch(
+        `https://api.telegram.org/bot${botToken}/sendMessage`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text,
+            parse_mode: 'HTML'
+          })
+        }
+      );
+      const responseBody = await telegramResponse.text();
+      try {
+        telegramResult = JSON.parse(responseBody);
+      } catch {
+        telegramResult = { description: responseBody || 'Telegram returned an empty or invalid response.' };
       }
-    );
+    } catch (error) {
+      console.error('Telegram API request could not be completed:', error);
+      return res.status(502).json({
+        error: 'Could not reach the Telegram API.',
+        details: error.message
+      });
+    }
 
-    if (!telegramResponse.ok) {
-      const errorBody = await telegramResponse.text();
-      console.error('Telegram API rejected booking notification:', errorBody);
-      return res.status(502).json({ message: 'Telegram notification failed.' });
+    if (!telegramResponse.ok || telegramResult.ok !== true) {
+      const details = telegramResult.description || 'Unknown Telegram API error.';
+      console.error('Telegram API rejected booking notification:', {
+        httpStatus: telegramResponse.status,
+        errorCode: telegramResult.error_code || null,
+        description: details
+      });
+      return res.status(502).json({
+        error: 'Telegram API rejected the booking notification.',
+        details,
+        telegramErrorCode: telegramResult.error_code || null,
+        telegramHttpStatus: telegramResponse.status
+      });
     }
 
     return res.status(200).json({ success: true });

@@ -8,15 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>ShebaNow | প্রয়োজনীয় সকল সেবা এক জায়গায়</title>
     <meta name="description" content="ঘরে বসেই এক ক্লিকে আপনার প্রয়োজনীয় সার্ভিস বুক করুন।">
-    <link rel="canonical" href="https://sheebanowa2z.netlify.app/">
+    <link rel="canonical" href="https://shebanow.xyz/">
 
     <!-- Social sharing preview -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://sheebanowa2z.netlify.app/">
+    <meta property="og:url" content="https://shebanow.xyz/">
     <meta property="og:title" content="ShebaNow | প্রয়োজনীয় সকল সেবা এক জায়গায়">
     <meta property="og:description" content="ঘরে বসেই এক ক্লিকে আপনার প্রয়োজনীয় সার্ভিস বুক করুন।">
-    <meta property="og:image" content="https://sheebanowa2z.netlify.app/header-bg.jpg?v=3">
-    <meta property="og:image:secure_url" content="https://sheebanowa2z.netlify.app/header-bg.jpg?v=3">
+    <meta property="og:image" content="https://shebanow.xyz/header-bg.jpg?v=3">
+    <meta property="og:image:secure_url" content="https://shebanow.xyz/header-bg.jpg?v=3">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -25,7 +25,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ShebaNow | প্রয়োজনীয় সকল সেবা এক জায়গায়">
     <meta name="twitter:description" content="ঘরে বসেই এক ক্লিকে আপনার প্রয়োজনীয় সার্ভিস বুক করুন।">
-    <meta name="twitter:image" content="https://sheebanowa2z.netlify.app/header-bg.jpg?v=3">
+    <meta name="twitter:image" content="https://shebanow.xyz/header-bg.jpg?v=3">
     <meta name="twitter:image:alt" content="ShebaNow সেবা প্ল্যাটফর্ম">
 
     <!-- Cloudflare Web Analytics -->
@@ -660,13 +660,29 @@
         .admin-location-details { display: block; margin-top: 4px; color: #526660; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
         .admin-location-label { display: block; margin-top: 5px; color: #087f5b; font-size: 11px; font-weight: 900; }
 
-        footer { background: #222; color: #aaa; text-align: center; padding: 25px 15px; margin-top: 40px; }
+        footer { width: 100vw; max-width: 100vw; background: #222; color: #aaa; text-align: center; padding: 25px 15px; margin-top: 40px; }
         footer h3 { color: white; margin-bottom: 8px; font-size: 28px; font-weight: 900; letter-spacing: -0.04em; }
         footer h3 .brand-green { color: #008060; }
         footer h3 .brand-red { color: #d9534f; }
         footer p { font-size: 16px; margin: 8px 0; line-height: 1.6; font-weight: 700; color: #e5e5e5; }
         footer p .brand-green { color: #008060 !important; }
         footer p .brand-red { color: #d9534f !important; }
+        .footer-social { margin: 0 auto 18px; }
+        .footer-social p { margin: 0 0 12px; color: #e5e5e5; font-size: 15px; }
+        .footer-social-links { display: flex; justify-content: center; align-items: center; gap: 14px; }
+        .footer-social-links a { display: inline-flex; justify-content: center; align-items: center; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.24); border-radius: 50%; color: #fff; background: rgba(255,255,255,0.08); transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease; }
+        .footer-social-links a:hover { transform: translateY(-2px) scale(1.08); background: rgba(255,255,255,0.14); }
+        .footer-social-links a:nth-child(1) svg { fill: #1877f2; }
+        .footer-social-links a:nth-child(1):hover { border-color: #1877f2; }
+        .footer-social-links a:nth-child(2):hover { border-color: #e1306c; }
+        .footer-social-links a:nth-child(3) svg { fill: #ff0000; }
+        .footer-social-links a:nth-child(3):hover { border-color: #ff0000; }
+        .footer-social-links a:focus-visible { outline: 3px solid #79e3bd; outline-offset: 3px; }
+        .footer-social-links svg { display: block; width: 21px; height: 21px; fill: currentColor; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .footer-social-links a { transition: none; }
+        }
 
         .mobile-bottom-nav { display: none; }
 
@@ -1522,6 +1538,19 @@
 
     <footer>
         <div class="footer-content">
+            <div class="footer-social">
+                <div class="footer-social-links" aria-label="ShebaNow social media">
+                    <a href="https://www.facebook.com/share/19pmYfKrof/" target="_blank" rel="noopener noreferrer" aria-label="ShebaNow on Facebook">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.2H10V21h3.4z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/shebanow.xyz?mdxt=MW15N2xiOWloYm5rbw==" target="_blank" rel="noopener noreferrer" aria-label="ShebaNow on Instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><defs><linearGradient id="instagram-gradient" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#feda75"/><stop offset="45%" stop-color="#d62976"/><stop offset="100%" stop-color="#4f5bd5"/></linearGradient></defs><path fill="url(#instagram-gradient)" d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8zm4.2 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.2-3.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg>
+                    </a>
+                    <a href="https://www.youtube.com/@sheba_now_xyz" target="_blank" rel="noopener noreferrer" aria-label="ShebaNow on YouTube">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+                    </a>
+                </div>
+            </div>
             <h3><span class="brand-green">Sheba</span><span class="brand-red">Now</span></h3>
             <p>আপনার প্রতিদিনের সেবায় আমরা সদা প্রস্তুত (শুধুমাত্র গাজীপুর).</p>
             <p>© 2026 <span class="brand-green">Sheba</span><span class="brand-red">Now</span>. All Rights Reserved.</p>
@@ -1664,8 +1693,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getDatabase, ref, push, set, get, update, remove, onChildAdded, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getDatabase, ref, push, set, get, update, remove, onChildAdded, onValue, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
         import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
+        import { updateBookingWithNotifications } from "./booking-notifications.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD96Zb90WfRKmssz3eA9veyJxgZlihC0UI",
@@ -1720,6 +1750,7 @@
         }
         const deletedNotificationIds = new Set(Array.isArray(savedDeletedNotificationIds) ? savedDeletedNotificationIds : []);
         let stopNotificationListener = null;
+        let stopUserNotificationListener = null;
 
         function escapeNotificationText(value) {
             return String(value || "").replace(/[&<>"']/g, (character) => ({
@@ -1732,21 +1763,25 @@
             notificationBadge.style.display = unreadNotificationIds.size ? "flex" : "none";
             notificationBell.classList.toggle("has-unread", unreadNotificationIds.size > 0);
 
-            const visibleNotificationItems = notificationItems.filter((item) => !deletedNotificationIds.has(item.id));
+            const visibleNotificationItems = notificationItems.filter((item) =>
+                !deletedNotificationIds.has(item.id) && !deletedNotificationIds.has(item.databaseId || item.id)
+            );
             if (!visibleNotificationItems.length) {
                 notificationList.innerHTML = '<div class="notification-empty">কোনো নোটিফিকেশন নেই।</div>';
                 return;
             }
 
             notificationList.innerHTML = visibleNotificationItems
-                .slice().sort((first, second) => String(second.createdAt || "").localeCompare(String(first.createdAt || "")))
+                .slice().sort((first, second) =>
+                    String(second.createdAt || second.created_at || "").localeCompare(String(first.createdAt || first.created_at || ""))
+                )
                 .map((item) => `
                     <div class="notification-item ${unreadNotificationIds.has(item.id) ? "unread" : ""}" data-notification-id="${escapeNotificationText(item.id)}">
                         <div class="notification-item-media">${item.image ? `<img src="${escapeNotificationText(item.image)}" alt="">` : "✦"}</div>
                         <div class="notification-item-content"><strong>${escapeNotificationText(item.title)}</strong>
-                        <p>${escapeNotificationText(item.body)}</p>
-                        <time>${item.createdAt ? new Date(item.createdAt).toLocaleString("bn-BD") : ""}</time></div>
-                        <button type="button" class="notification-delete-btn" data-delete-notification-id="${escapeNotificationText(item.id)}" aria-label="নোটিফিকেশন মুছুন" title="নোটিফিকেশন মুছুন"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M10 11v6M14 11v6"></path><path d="M6 7l1 13h10l1-13"></path><path d="M9 7V4h6v3"></path></svg></button>
+                        <p>${escapeNotificationText(item.body || item.message)}</p>
+                        <time>${item.createdAt || item.created_at ? new Date(item.createdAt || item.created_at).toLocaleString("bn-BD") : ""}</time></div>
+                        ${item.userSpecific ? "" : `<button type="button" class="notification-delete-btn" data-delete-notification-id="${escapeNotificationText(item.id)}" aria-label="নোটিফিকেশন মুছুন" title="নোটিফিকেশন মুছুন"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M10 11v6M14 11v6"></path><path d="M6 7l1 13h10l1-13"></path><path d="M9 7V4h6v3"></path></svg></button>`}
                     </div>
                 `).join("");
         }
@@ -1805,15 +1840,29 @@
             return null;
         }
 
-        function markNotificationsRead() {
-            unreadNotificationIds.clear();
-            notificationItems.forEach((item) => readNotificationIds.add(item.id));
-            localStorage.setItem("shebaNowReadNotifications", JSON.stringify([...readNotificationIds]));
+        async function markNotificationRead(notificationId) {
+            const item = notificationItems.find((notification) => notification.id === notificationId);
+            if (!item || !unreadNotificationIds.has(notificationId)) return;
+
+            if (item.userSpecific) {
+                const user = auth.currentUser;
+                if (!user) throw new Error("You must be signed in to update this notification.");
+                await update(ref(db, `users/${user.uid}/notifications/${item.databaseId}`), {
+                    is_read: true,
+                    read_at: Date.now()
+                });
+                item.is_read = true;
+            } else {
+                readNotificationIds.add(item.id);
+                localStorage.setItem("shebaNowReadNotifications", JSON.stringify([...readNotificationIds]));
+            }
+
+            unreadNotificationIds.delete(notificationId);
             renderNotificationCenter();
         }
 
-        async function listenForNewOffers() {
-            if (stopNotificationListener) return;
+        async function listenForNewOffers(user = auth.currentUser) {
+            if (!user || stopNotificationListener || stopUserNotificationListener) return;
 
             try {
                 const notificationsRef = ref(db, "notifications");
@@ -1826,11 +1875,15 @@
                     existingSnapshot.forEach((childSnapshot) => {
                         existingNotificationIds.add(childSnapshot.key);
                         const offer = childSnapshot.val() || {};
-                        if ((!offer.status || offer.status === "published") && !deletedNotificationIds.has(childSnapshot.key)) {
+                        if ((!offer.status || offer.status === "published") &&
+                            (!offer.user_id || offer.user_id === user.uid) &&
+                            !deletedNotificationIds.has(childSnapshot.key)) {
                             existingNotifications.push({ id: childSnapshot.key, ...offer });
                         }
                     });
                 }
+                if (auth.currentUser?.uid !== user.uid) return;
+
                 existingNotifications
                     .sort((first, second) => String(second.createdAt || "").localeCompare(String(first.createdAt || "")))
                     .slice(0, 30)
@@ -1840,12 +1893,13 @@
                     });
                 renderNotificationCenter();
 
-                if (!auth.currentUser) return;
-
                 stopNotificationListener = onChildAdded(notificationsRef, (snapshot) => {
+                    if (auth.currentUser?.uid !== user.uid) return;
                     if (existingNotificationIds.has(snapshot.key)) return;
                     const offer = snapshot.val() || {};
-                    if ((offer.status && offer.status !== "published") || deletedNotificationIds.has(snapshot.key)) return;
+                    if ((offer.status && offer.status !== "published") ||
+                        (offer.user_id && offer.user_id !== user.uid) ||
+                        deletedNotificationIds.has(snapshot.key)) return;
 
                     notificationItems.push({ id: snapshot.key, ...offer });
                     if (!readNotificationIds.has(snapshot.key)) unreadNotificationIds.add(snapshot.key);
@@ -1861,6 +1915,37 @@
                         notification.onclick = () => { window.focus(); notification.close(); };
                     }
                 });
+
+                const userNotificationsRef = ref(db, `users/${user.uid}/notifications`);
+                stopUserNotificationListener = onValue(userNotificationsRef, (snapshot) => {
+                    if (auth.currentUser?.uid !== user.uid) return;
+                    notificationItems
+                        .filter((item) => item.userSpecific)
+                        .forEach((item) => unreadNotificationIds.delete(item.id));
+                    for (let index = notificationItems.length - 1; index >= 0; index -= 1) {
+                        if (notificationItems[index].userSpecific) notificationItems.splice(index, 1);
+                    }
+
+                    if (snapshot.exists()) {
+                        snapshot.forEach((childSnapshot) => {
+                            const data = childSnapshot.val() || {};
+                            const id = `user:${childSnapshot.key}`;
+                            if (data.is_deleted || deletedNotificationIds.has(id) || deletedNotificationIds.has(childSnapshot.key)) return;
+                            const item = {
+                                id,
+                                databaseId: childSnapshot.key,
+                                userSpecific: true,
+                                ...data,
+                                body: data.message || data.body || ""
+                            };
+                            notificationItems.push(item);
+                            if (data.is_read !== true) unreadNotificationIds.add(id);
+                        });
+                    }
+                    renderNotificationCenter();
+                }, (error) => {
+                    console.error("Booking notification listener failed:", error);
+                });
             } catch (error) {
                 console.error("Offer notification listener failed:", error);
             }
@@ -1871,6 +1956,10 @@
                 stopNotificationListener();
                 stopNotificationListener = null;
             }
+            if (stopUserNotificationListener) {
+                stopUserNotificationListener();
+                stopUserNotificationListener = null;
+            }
             notificationItems.length = 0;
             unreadNotificationIds.clear();
             renderNotificationCenter();
@@ -1880,7 +1969,6 @@
             event.stopPropagation();
             const isOpen = notificationDropdown.classList.toggle("show");
             notificationBell.setAttribute("aria-expanded", String(isOpen));
-            if (isOpen) markNotificationsRead();
         });
         notificationList.addEventListener("click", (event) => {
             const deleteButton = event.target.closest("[data-delete-notification-id]");
@@ -1893,6 +1981,18 @@
 
             const notificationCard = event.target.closest("[data-notification-id]");
             if (!notificationCard) return;
+            const notificationId = notificationCard.dataset.notificationId;
+            const notification = notificationItems.find((item) => item.id === notificationId);
+            markNotificationRead(notificationId).then(() => {
+                if (notification?.booking_id) {
+                    notificationDropdown.classList.remove("show");
+                    notificationBell.setAttribute("aria-expanded", "false");
+                    document.getElementById("myOrdersBtn")?.click();
+                }
+            }).catch((error) => {
+                console.error("Notification read update failed:", error);
+                alert("নোটিফিকেশনটি পড়া হিসেবে চিহ্নিত করা যায়নি। আবার চেষ্টা করুন।");
+            });
         });
         document.addEventListener("click", (event) => {
             if (!notificationMenu.contains(event.target)) {
@@ -2940,7 +3040,7 @@
                 await set(newOrderRef, orderData);
                 updateMobileBookingCount(auth.currentUser);
                 try {
-                    const telegramResponse = await fetch("/api/send-booking-telegram", {
+                    const telegramRequest = {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -2954,10 +3054,22 @@
                             email: auth.currentUser?.email || "",
                             location: orderData.location
                         })
-                    });
+                    };
+                    const telegramResponse = await fetch(
+                        new URL("/api/send-booking-telegram", window.location.origin),
+                        telegramRequest
+                    );
 
                     if (!telegramResponse.ok) {
-                        console.error("Telegram booking notification failed:", await telegramResponse.text());
+                        const responseBody = await telegramResponse.text();
+                        let errorDetails = responseBody;
+                        try {
+                            const errorData = JSON.parse(responseBody);
+                            errorDetails = errorData.details || errorData.error || errorData.message || responseBody;
+                        } catch (parseError) {
+                            console.warn("Telegram API returned a non-JSON error response:", parseError);
+                        }
+                        console.error("Telegram booking notification failed:", telegramResponse.status, errorDetails);
                     }
                 } catch (notificationError) {
                     console.error("Telegram booking notification request failed:", notificationError);
@@ -3265,14 +3377,31 @@
         }
 
         window.updateOrderStatus = async function(orderId, status) {
-            await update(ref(db, `orders/${orderId}`), { status });
-            alert("স্ট্যাটাস আপডেট করা হয়েছে!");
+            try {
+                const result = await updateBookingWithNotifications({ db, get, push, ref, update }, orderId, { status });
+                alert(result.notificationCount && !result.notificationsSent
+                    ? "স্ট্যাটাস আপডেট হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
+                    : "স্ট্যাটাস আপডেট করা হয়েছে!");
+            } catch (error) {
+                console.error("Booking status update failed:", error);
+                alert("স্ট্যাটাস আপডেট করা যায়নি: " + error.message);
+            }
         }
 
         window.approvePayment = async function(orderId) {
-            await update(ref(db, `orders/${orderId}`), { paymentStatus: "অনুমোদিত", status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)" });
-            alert("পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
-            loadAdminOrders();
+            try {
+                const result = await updateBookingWithNotifications({ db, get, push, ref, update }, orderId, {
+                    paymentStatus: "অনুমোদিত",
+                    status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)"
+                });
+                alert(result.notificationCount && !result.notificationsSent
+                    ? "পেমেন্ট অনুমোদিত হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
+                    : "পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
+                loadAdminOrders();
+            } catch (error) {
+                console.error("Payment approval failed:", error);
+                alert("পেমেন্ট অনুমোদন করা যায়নি: " + error.message);
+            }
         }
 
         window.deleteAdminOrder = async function(orderId) {

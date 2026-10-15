@@ -35,14 +35,14 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: JSON.stringify({ message: 'Method not allowed.' }) };
   }
 
-  const botToken = "8937594572:AAHCV3WPPPXoNkdfzPlCzHy5AYcBdMcNh7s";
-const chatId = "6394284813";
-  if (!botToken || !chatId) {
-    console.error('Telegram notification environment variables are missing.');
-    return { statusCode: 500, body: JSON.stringify({ message: 'Telegram notification is not configured.' }) };
-  }
-
   try {
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    if (!botToken || !chatId) {
+      console.error('Telegram notification environment variables are missing.');
+      return { statusCode: 500, body: JSON.stringify({ message: 'Telegram notification is not configured.' }) };
+    }
+
     const booking = JSON.parse(event.body || '{}');
     const locationUrl = getGoogleMapsUrl(booking.location);
     const locationLabel = booking.location?.fullAddress
@@ -76,9 +76,9 @@ const chatId = "6394284813";
       })
     });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error('Telegram API rejected booking notification:', errorBody);
+    const telegramResult = await response.json();
+    if (!response.ok || telegramResult.ok !== true) {
+      console.error('Telegram API rejected booking notification:', telegramResult.description || 'Unknown Telegram API error.');
       return { statusCode: 502, body: JSON.stringify({ message: 'Telegram notification failed.' }) };
     }
 
