@@ -2707,6 +2707,7 @@
         const adminPasswordInput = document.getElementById("adminPasswordInput");
 
         let uploadedImages = { 1: null, 2: null, 3: null, 4: null, 5: null };
+        let bookingSubmissionInProgress = false;
 
         function generateOrderId() {
             const chars = "0123456789";
@@ -2974,6 +2975,8 @@
 
         orderForm.addEventListener("submit", async (e) => {
             e.preventDefault();
+            if (bookingSubmissionInProgress) return;
+
             const service = document.getElementById("selectedService").value;
             const name = document.getElementById("clientName").value;
             const phone = document.getElementById("clientPhone").value;
@@ -2988,6 +2991,13 @@
                 alert("তারিখ দিন/মাস/বছর ফরম্যাটে দিন, যেমন 25/12/2026।");
                 return;
             }
+
+            bookingSubmissionInProgress = true;
+            const submitButton = orderForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = "বুকিং হচ্ছে...";
+            submitButton.setAttribute("aria-busy", "true");
 
             const selectedImages = [];
             for(let i=1; i<=5; i++) {
@@ -3039,46 +3049,53 @@
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
                 updateMobileBookingCount(auth.currentUser);
-                try {
-                    const telegramRequest = {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            orderId: customOrderId,
-                            service,
-                            name,
-                            phone,
-                            address,
-                            description,
-                            date,
-                            email: auth.currentUser?.email || "",
-                            location: orderData.location
-                        })
-                    };
-                    const telegramResponse = await fetch(
-                        new URL("/api/send-booking-telegram", window.location.origin),
-                        telegramRequest
-                    );
+                void (async () => {
+                    try {
+                        const telegramRequest = {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                orderId: customOrderId,
+                                service,
+                                name,
+                                phone,
+                                address,
+                                description,
+                                date,
+                                email: auth.currentUser?.email || "",
+                                location: orderData.location
+                            })
+                        };
+                        const telegramResponse = await fetch(
+                            new URL("/api/send-booking-telegram", window.location.origin),
+                            telegramRequest
+                        );
 
-                    if (!telegramResponse.ok) {
-                        const responseBody = await telegramResponse.text();
-                        let errorDetails = responseBody;
-                        try {
-                            const errorData = JSON.parse(responseBody);
-                            errorDetails = errorData.details || errorData.error || errorData.message || responseBody;
-                        } catch (parseError) {
-                            console.warn("Telegram API returned a non-JSON error response:", parseError);
+                        if (!telegramResponse.ok) {
+                            const responseBody = await telegramResponse.text();
+                            let errorDetails = responseBody;
+                            try {
+                                const errorData = JSON.parse(responseBody);
+                                errorDetails = errorData.details || errorData.error || errorData.message || responseBody;
+                            } catch (parseError) {
+                                console.warn("Telegram API returned a non-JSON error response:", parseError);
+                            }
+                            console.error("Telegram booking notification failed:", telegramResponse.status, errorDetails);
                         }
-                        console.error("Telegram booking notification failed:", telegramResponse.status, errorDetails);
+                    } catch (notificationError) {
+                        console.error("Telegram booking notification request failed:", notificationError);
                     }
-                } catch (notificationError) {
-                    console.error("Telegram booking notification request failed:", notificationError);
-                }
+                })();
                 alert("আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে!");
                 bookingModal.style.display = "none";
                 orderForm.reset();
             } catch (error) {
                 alert("ত্রুটি: " + error.message);
+            } finally {
+                bookingSubmissionInProgress = false;
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+                submitButton.removeAttribute("aria-busy");
             }
         });
 
