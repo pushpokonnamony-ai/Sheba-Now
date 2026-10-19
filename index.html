@@ -695,6 +695,9 @@
         .auth-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 8px; color: #777; font-size: 12px; }
         .auth-divider::before, .auth-divider::after { content: ''; height: 1px; flex: 1; background: #ddd; }
         .auth-message { min-height: 18px; margin-top: 8px; color: #b42318; font-size: 12px; text-align: center; }
+        .remember-credentials { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; color: #43534d; font-size: 13px; font-weight: 700; cursor: pointer; }
+        .remember-credentials[hidden] { display: none; }
+        .remember-credentials input { width: 16px; height: 16px; margin: 0; accent-color: #087f5b; }
         .phone-input-group { display: flex; align-items: center; width: 100%; margin-top: 8px; }
         .phone-country-code { display: flex; align-items: center; align-self: stretch; padding: 0 10px; border: 1px solid #ccc; border-right: none; border-radius: 4px 0 0 4px; background: #f5f8f7; color: #1f2937; font-weight: 700; white-space: nowrap; }
         .phone-input-group input { flex: 1; min-width: 0; margin-bottom: 10px; border-radius: 0 4px 4px 0; }
@@ -1637,7 +1640,7 @@
         <div class="modal-content" style="max-width: 390px;">
             <span class="close-btn" id="closeLogin">&times;</span>
             <h2 id="loginTitle">লগইন করুন</h2>
-            <form id="authForm">
+            <form id="authForm" autocomplete="on">
                 <div id="nameFieldContainer" style="display: none;">
                     <input type="text" id="authNameInput" placeholder="আপনার পুরো নাম">
                 </div>
@@ -1648,11 +1651,15 @@
                     </div>
                     <small style="display: block; margin: -5px 0 8px; color: #666; font-size: 11px;">শুধু ১০ সংখ্যার নম্বর দিন, যেমন 1642949519</small>
                 </div>
-                <input type="email" id="authEmailInput" placeholder="ইমেইল ঠিকানা" required>
+                <input type="email" id="authEmailInput" name="username" placeholder="ইমেইল ঠিকানা" autocomplete="username" required>
                 <div class="auth-field-with-icon">
-                    <input type="password" id="authPassInput" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট)" required>
+                    <input type="password" id="authPassInput" name="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট)" autocomplete="current-password" required>
                     <button type="button" class="password-toggle" data-password-target="authPassInput" aria-label="পাসওয়ার্ড দেখান">&#128065;</button>
                 </div>
+                <label class="remember-credentials" id="rememberCredentialsLabel" for="rememberCredentials">
+                    <input type="checkbox" id="rememberCredentials">
+                    <span>আমাকে মনে রাখুন (ইমেইল ও পাসওয়ার্ড সাজেস্ট করুন)</span>
+                </label>
                 <div id="confirmPasswordContainer" class="auth-field-with-icon" style="display: none;">
                     <input type="password" id="authConfirmPassInput" placeholder="পাসওয়ার্ড আবার লিখুন" autocomplete="new-password">
                     <button type="button" class="password-toggle" data-password-target="authConfirmPassInput" aria-label="কনফার্ম পাসওয়ার্ড দেখান">&#128065;</button>
@@ -3869,6 +3876,11 @@
         const authConfirmPassInput = document.getElementById("authConfirmPassInput");
         const authSubmitBtn = document.getElementById("authSubmitBtn");
         const authMessage = document.getElementById("authMessage");
+        const authEmailInput = document.getElementById("authEmailInput");
+        const authPassInput = document.getElementById("authPassInput");
+        const rememberCredentialsLabel = document.getElementById("rememberCredentialsLabel");
+        const rememberCredentials = document.getElementById("rememberCredentials");
+        const rememberedEmailKey = "shebanow.rememberedEmail";
         const bookingNavBtn = document.getElementById("myOrdersBtn");
         const mobileBottomAuth = document.getElementById("mobileBottomAuth");
         const mobileBottomAuthLabel = document.getElementById("mobileBottomAuthLabel");
@@ -3901,6 +3913,27 @@
 
         let isRegistering = false;
 
+        function loadRememberedEmail() {
+            try {
+                return localStorage.getItem(rememberedEmailKey) || "";
+            } catch (error) {
+                console.warn("Could not read the remembered email from browser storage.", error);
+                return "";
+            }
+        }
+
+        function rememberEmail(email) {
+            try {
+                if (rememberCredentials.checked) {
+                    localStorage.setItem(rememberedEmailKey, email);
+                } else {
+                    localStorage.removeItem(rememberedEmailKey);
+                }
+            } catch (error) {
+                console.warn("Could not update the remembered email in browser storage.", error);
+            }
+        }
+
         function setAccountDisplayName(name) {
             const displayName = name?.trim() || "User";
             userNameDisplay.innerText = displayName;
@@ -3912,6 +3945,9 @@
         loginBtnNav.addEventListener("click", () => {
             isRegistering = false;
             updateAuthModalUI();
+            const rememberedEmail = loadRememberedEmail();
+            authEmailInput.value = rememberedEmail;
+            rememberCredentials.checked = Boolean(rememberedEmail);
             authMessage.textContent = "";
             loginModal.style.display = "flex";
         });
@@ -3932,6 +3968,8 @@
                 authMobileInput.required = true;
                 confirmPasswordContainer.style.display = "block";
                 authConfirmPassInput.required = true;
+                authPassInput.autocomplete = "new-password";
+                rememberCredentialsLabel.hidden = true;
                 authSubmitBtn.innerText = "রেজিস্ট্রেশন";
                 toggleAuthText.innerText = "আগেই অ্যাকাউন্ট আছে?";
                 toggleAuthLink.innerText = "লগইন করুন";
@@ -3942,6 +3980,8 @@
                 authMobileInput.required = false;
                 confirmPasswordContainer.style.display = "none";
                 authConfirmPassInput.required = false;
+                authPassInput.autocomplete = "current-password";
+                rememberCredentialsLabel.hidden = false;
                 authSubmitBtn.innerText = "লগইন";
                 toggleAuthText.innerText = "নতুন অ্যাকাউন্ট খুলতে চান?";
                 toggleAuthLink.innerText = "রেজিস্ট্রেশন করুন";
@@ -3950,8 +3990,8 @@
 
         authForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const email = document.getElementById("authEmailInput").value;
-            const password = document.getElementById("authPassInput").value;
+            const email = authEmailInput.value.trim();
+            const password = authPassInput.value;
             const name = document.getElementById("authNameInput")?.value || "";
             const mobile = authMobileInput.value.replace(/\D/g, "");
             const confirmPassword = authConfirmPassInput.value;
@@ -3978,6 +4018,7 @@
                     showNotification("সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে!");
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
+                    rememberEmail(email);
                     showNotification("সফলভাবে লগইন হয়েছে!");
                 }
                 loginModal.style.display = "none";
@@ -4111,6 +4152,7 @@
                 'টি গ্রাহক রিভিউ': ' customer reviews', 'সফল অর্ডার': 'successful orders',
                 'লগইন': 'Log in', 'লগইন করুন': 'Log in', 'রেজিস্ট্রেশন করুন': 'Register', 'রেজিস্ট্রেশন': 'Register',
                 'নতুন অ্যাকাউন্ট খুলতে চান?': 'Create a new account?', 'আগেই অ্যাকাউন্ট আছে?': 'Already have an account?',
+                'আমাকে মনে রাখুন (ইমেইল ও পাসওয়ার্ড সাজেস্ট করুন)': 'Remember me (suggest email and password)',
                 'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? (যেমন: AC servicing)': 'What service are you looking for? (e.g. AC servicing)',
                 'গাজীপুর (কোনাবাড়ি)': 'Gazipur (Konabari)', 'জনপ্রিয় সেবাসমূহ (গাজীপুর এর জন্য প্রযোজ্য)': 'Popular Services (Available in Gazipur)',
                 'আপনার প্রয়োজনীয় যেকোনো সেবায় পাশে আছে': 'ShebaNow is here for all your service needs', 'বইবাড়ী (BoiBari)': 'BoiBari (Library)', 'লাইব্রেরি এখন আপনার ঘরের কোণে।': 'A library in the corner of your home.',
