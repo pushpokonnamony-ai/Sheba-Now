@@ -2187,6 +2187,48 @@
             renderNotificationCenter();
         }
 
+        async function markAllNotificationsRead() {
+            const unreadIds = [...unreadNotificationIds];
+            if (!unreadIds.length) return;
+
+            const user = auth.currentUser;
+            const readAt = Date.now();
+            const userSpecificItems = unreadIds
+                .map((id) => notificationItems.find((item) => item.id === id))
+                .filter((item) => item?.userSpecific);
+            const globalIds = unreadIds.filter((id) =>
+                !notificationItems.find((item) => item.id === id)?.userSpecific
+            );
+            const updates = {};
+
+            if (userSpecificItems.length && !user) {
+                throw new Error("You must be signed in to update these notifications.");
+            }
+            userSpecificItems.forEach((item) => {
+                updates[`users/${user.uid}/notifications/${item.databaseId}/is_read`] = true;
+                updates[`users/${user.uid}/notifications/${item.databaseId}/read_at`] = readAt;
+                item.is_read = true;
+            });
+            globalIds.forEach((id) => readNotificationIds.add(id));
+
+            localStorage.setItem("shebaNowReadNotifications", JSON.stringify([...readNotificationIds]));
+            unreadIds.forEach((id) => unreadNotificationIds.delete(id));
+            renderNotificationCenter();
+
+            try {
+                if (Object.keys(updates).length) await update(ref(db), updates);
+            } catch (error) {
+                globalIds.forEach((id) => readNotificationIds.delete(id));
+                userSpecificItems.forEach((item) => {
+                    item.is_read = false;
+                });
+                unreadIds.forEach((id) => unreadNotificationIds.add(id));
+                localStorage.setItem("shebaNowReadNotifications", JSON.stringify([...readNotificationIds]));
+                renderNotificationCenter();
+                throw error;
+            }
+        }
+
         async function listenForNewOffers(user = auth.currentUser) {
             if (!user || stopNotificationListener || stopUserNotificationListener) return;
 
@@ -2328,6 +2370,10 @@
             if (isOpen) {
                 closeProfileDropdown();
                 scheduleNotificationDropdownClose();
+                markAllNotificationsRead().catch((error) => {
+                    console.error("Mark all notifications read failed:", error);
+                    showNotification("নোটিফিকেশনগুলো পড়া হিসেবে চিহ্নিত করা যায়নি। আবার চেষ্টা করুন।");
+                });
             } else {
                 window.clearTimeout(notificationDropdownTimer);
             }
