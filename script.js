@@ -227,7 +227,7 @@ function submitPayment() {
   const trxId = document.getElementById('clientTrxId').value.trim();
 
   if (!paymentOrderId || !name || !phone || !method || !senderPhone || !trxId) {
-    alert('সব ফিল্ড পূরণ করুন।');
+    showNotification('সব ফিল্ড পূরণ করুন।');
     return;
   }
 
@@ -236,7 +236,7 @@ function submitPayment() {
   const order = orders.find((item) => item.id === paymentOrderId);
 
   if (!order) {
-    alert('অর্ডার খুঁজে পাওয়া যায়নি।');
+    showNotification('অর্ডার খুঁজে পাওয়া যায়নি।');
     return;
   }
 
@@ -256,7 +256,7 @@ function submitPayment() {
   document.getElementById('userPaymentForm').reset();
   renderUserOrders();
   renderAdminOrders();
-  alert('পেমেন্ট তথ্য সাবমিট হয়েছে। অ্যাডমিন কনফার্ম করার অপেক্ষায় আছে।');
+  showNotification('পেমেন্ট তথ্য সাবমিট হয়েছে। অ্যাডমিন কনফার্ম করার অপেক্ষায় আছে।');
 }
 
 function confirmOrder(orderId) {
@@ -268,7 +268,7 @@ function confirmOrder(orderId) {
   saveOrders(orders);
   renderUserOrders();
   renderAdminOrders();
-  alert('পেমেন্ট কনফার্ম করা হয়েছে।');
+  showNotification('পেমেন্ট কনফার্ম করা হয়েছে।');
 }
 
 function initializeUserPage() {
@@ -307,7 +307,7 @@ function initializeUserPage() {
     const bookingDate = document.getElementById('bookingDate').value;
 
     if (!selectedService || !customerName || !phone || !address || !problem || !bookingDate) {
-      alert('সব ফিল্ড পূরণ করুন।');
+      showNotification('সব ফিল্ড পূরণ করুন।');
       return;
     }
 
@@ -327,7 +327,7 @@ function initializeUserPage() {
     orderForm.reset();
     document.getElementById('imagePreviewContainer').innerHTML = '';
     hideModal('bookingModal');
-    alert('আপনার বুকিং সফল হয়েছে। এখন Make Payment বাটনে ক্লিক করে পেমেন্ট দিন।');
+    showNotification('আপনার বুকিং সফল হয়েছে। এখন Make Payment বাটনে ক্লিক করে পেমেন্ট দিন।');
   });
 
   userPaymentForm.addEventListener('submit', (event) => {
@@ -410,7 +410,7 @@ function initializeAdminPage() {
       adminDashboard.style.display = 'block';
       syncAdminSettings();
     } else {
-      alert('ভুল ইউজারনেম বা পাসওয়ার্ড!');
+      showNotification('ভুল ইউজারনেম বা পাসওয়ার্ড!');
     }
   });
 
@@ -428,17 +428,17 @@ function initializeAdminPage() {
     const newPass = document.getElementById('newPassInput').value.trim();
 
     if (currentPass !== getAdminPassword()) {
-      alert('বর্তমান পাসওয়ার্ড সঠিক নয়।');
+      showNotification('বর্তমান পাসওয়ার্ড সঠিক নয়।');
       return;
     }
 
     if (!newPass || newPass.length < 4) {
-      alert('নতুন পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে।');
+      showNotification('নতুন পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে।');
       return;
     }
 
     setAdminPassword(newPass);
-    alert('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে।');
+    showNotification('পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে।');
     hideModal('adminPasswordModal');
     changePassForm.reset();
   });
@@ -450,7 +450,7 @@ function initializeAdminPage() {
     const number = document.getElementById('paymentNumberInput').value.trim();
 
     if (!fee || fee < 0) {
-      alert('সার্ভিস ফি সঠিকভাবে লিখুন।');
+      showNotification('সার্ভিস ফি সঠিকভাবে লিখুন।');
       return;
     }
 
@@ -460,7 +460,7 @@ function initializeAdminPage() {
     settings.paymentNumber = number;
     saveSettings(settings);
 
-    alert('পেমেন্ট সেটিংস সফলভাবে আপডেট হয়েছে।');
+    showNotification('পেমেন্ট সেটিংস সফলভাবে আপডেট হয়েছে।');
     renderAdminOrders();
     renderUserOrders();
   });

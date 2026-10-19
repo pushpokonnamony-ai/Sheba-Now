@@ -28,6 +28,7 @@
     <meta name="twitter:image" content="https://shebanow.xyz/header-bg.jpg?v=3">
     <meta name="twitter:image:alt" content="ShebaNow সেবা প্ল্যাটফর্ম">
 
+    <script src="./custom-notifications.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ad37231139524b76b322b87fa7ba390e"}'></script>
     <!-- End Cloudflare Web Analytics -->
@@ -2256,7 +2257,7 @@
                 }
             }).catch((error) => {
                 console.error("Notification read update failed:", error);
-                alert("নোটিফিকেশনটি পড়া হিসেবে চিহ্নিত করা যায়নি। আবার চেষ্টা করুন।");
+                showNotification("নোটিফিকেশনটি পড়া হিসেবে চিহ্নিত করা যায়নি। আবার চেষ্টা করুন।");
             });
         });
         document.addEventListener("click", (event) => {
@@ -2822,7 +2823,7 @@
                         document.execCommand('copy');
                         copyInput.remove();
                     }
-                    alert('লোকেশন লিংক কপি হয়েছে। এখন শেয়ার করতে পারবেন।');
+                    showNotification('লোকেশন লিংক কপি হয়েছে। এখন শেয়ার করতে পারবেন।');
                 } catch (copyError) {
                     console.error('Location share and copy failed:', copyError);
                     window.open(mapUrl, '_blank', 'noopener,noreferrer');
@@ -2854,7 +2855,7 @@
 
             if (!navigator.geolocation) {
                 setAccuracyStatus('এই ব্রাউজারে exact location পাওয়া যাচ্ছে না।', 'error');
-                alert("আপনার ব্রাউজার জিওলোকেশন সমর্থন করে না।");
+                showNotification("আপনার ব্রাউজার জিওলোকেশন সমর্থন করে না।");
                 return;
             }
 
@@ -2942,7 +2943,7 @@
 
                 const message = 'আপনার exact location পাওয়া যায়নি। Browser settings থেকে Location permission Allow করে আবার চেষ্টা করুন।';
                 setAccuracyStatus(message, 'error');
-                alert(message);
+                showNotification(message);
                 areaModal.style.display = "flex";
             };
 
@@ -2967,7 +2968,7 @@
                     if (watchId !== null) navigator.geolocation.clearWatch(watchId);
                     const message = "লোকেশন পারমিশন দেওয়া হয়নি। Browser settings থেকে Location permission Allow করে আবার চেষ্টা করুন।";
                     setAccuracyStatus(message, 'error');
-                    alert(message);
+                    showNotification(message);
                     areaModal.style.display = "flex";
                 }
             }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 });
@@ -3142,12 +3143,12 @@
             const savedPassword = snapshot.exists() ? snapshot.val() : "1234";
 
             if(currentPassInput !== savedPassword) {
-                alert("বর্তমান পাসওয়ার্ডটি সঠিক নয়!");
+                showNotification("বর্তমান পাসওয়ার্ডটি সঠিক নয়!");
                 return;
             }
 
             await set(passRef, newPassInput);
-            alert("অ্যাডমিন পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!");
+            showNotification("অ্যাডমিন পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!");
             adminChangePassModal.style.display = "none";
             adminChangePassForm.reset();
         });
@@ -3168,7 +3169,7 @@
                 adminPanelContainer.style.display = "block";
                 loadAdminOrders();
             } else {
-                alert("ভুল পাসওয়ার্ড!");
+                showNotification("ভুল পাসওয়ার্ড!");
             }
         });
 
@@ -3272,14 +3273,14 @@
             const customOrderId = generateOrderId();
 
             if (!service || !name || !phone || !address) {
-                alert("নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা পূরণ করুন।");
+                showNotification("নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা পূরণ করুন।");
                 return;
             }
 
             const dateParts = date.split("/").map(Number);
             const selectedDate = dateParts.length === 3 ? new Date(dateParts[2], dateParts[1] - 1, dateParts[0]) : null;
             if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date) || !selectedDate || selectedDate.getFullYear() !== dateParts[2] || selectedDate.getMonth() !== dateParts[1] - 1 || selectedDate.getDate() !== dateParts[0]) {
-                alert("তারিখ দিন/মাস/বছর ফরম্যাটে দিন, যেমন 25/12/2026।");
+                showNotification("তারিখ দিন/মাস/বছর ফরম্যাটে দিন, যেমন 25/12/2026।");
                 return;
             }
 
@@ -3298,21 +3299,47 @@
             }
 
             try {
-                const user = auth.currentUser || (await signInAnonymously(auth)).user;
-                const finalImages = await Promise.all(selectedImages.map(async (file, index) => {
-                    const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '-');
-                    const imagePath = `order-images/${user.uid}/${customOrderId}-${index + 1}-${Date.now()}-${safeFileName}`;
-                    const uploadedFile = await uploadBytes(storageRef(storage, imagePath), file, {
-                        contentType: file.type || 'image/jpeg',
-                        cacheControl: 'public,max-age=31536000,immutable'
-                    });
-                    return getDownloadURL(uploadedFile.ref);
-                }));
+                let user = auth.currentUser;
+                let imagesUnavailable = false;
+                if (!user) {
+                    try {
+                        user = (await signInAnonymously(auth)).user;
+                    } catch (authError) {
+                        if (authError.code === "auth/admin-restricted-operation" || authError.code === "auth/operation-not-allowed") {
+                            console.warn("Anonymous authentication is disabled; submitting booking without an authenticated user.");
+                        } else {
+                            throw authError;
+                        }
+                    }
+                }
+
+                const finalImages = [];
+                if (user) {
+                    const imageResults = await Promise.all(selectedImages.map(async (file, index) => {
+                        try {
+                            const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '-');
+                            const imagePath = `order-images/${user.uid}/${customOrderId}-${index + 1}-${Date.now()}-${safeFileName}`;
+                            const uploadedFile = await uploadBytes(storageRef(storage, imagePath), file, {
+                                contentType: file.type || 'image/jpeg',
+                                cacheControl: 'public,max-age=31536000,immutable'
+                            });
+                            return getDownloadURL(uploadedFile.ref);
+                        } catch (uploadError) {
+                            console.error("Optional booking image upload failed:", uploadError);
+                            return null;
+                        }
+                    }));
+                    finalImages.push(...imageResults.filter((imageUrl) => imageUrl !== null));
+                    imagesUnavailable = finalImages.length < selectedImages.length;
+                } else if (selectedImages.length) {
+                    imagesUnavailable = true;
+                    console.warn("Booking images were not uploaded because guest authentication is unavailable.");
+                }
 
                 const orderData = {
                     customId: customOrderId,
-                    userId: user.uid,
-                    userEmail: user.email || "",
+                    userId: user?.uid || null,
+                    userEmail: user?.email || "",
                     service,
                     name,
                     phone,
@@ -3340,7 +3367,7 @@
 
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
-                if (!user.isAnonymous) updateMobileBookingCount(user);
+                if (user && !user.isAnonymous) updateMobileBookingCount(user);
                 void (async () => {
                     try {
                         const telegramRequest = {
@@ -3354,7 +3381,7 @@
                                 address,
                                 description,
                                 date,
-                                email: user.email || "",
+                                email: user?.email || "",
                                 location: orderData.location
                             })
                         };
@@ -3378,15 +3405,19 @@
                         console.error("Telegram booking notification request failed:", notificationError);
                     }
                 })();
-                alert("আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে!");
+                showNotification(imagesUnavailable
+                    ? "আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে! তবে সংযুক্ত এক বা একাধিক ছবি আপলোড করা যায়নি।"
+                    : "আপনার বুকিংটি সফলভাবে সম্পন্ন হয়েছে!");
                 bookingModal.style.display = "none";
                 orderForm.reset();
             } catch (error) {
                 console.error("Booking submission failed:", error);
-                if (error.code === "auth/operation-not-allowed") {
-                    alert("গেস্ট বুকিং চালু নেই। Firebase Console-এর Authentication > Sign-in method থেকে Anonymous sign-in চালু করুন।");
+                if (error.code === "auth/admin-restricted-operation" || error.code === "auth/operation-not-allowed") {
+                    showNotification("গেস্ট বুকিং যাচাই করা যায়নি। Firebase Authentication সেটিংস অথবা ডাটাবেস অনুমতি যাচাই করে আবার চেষ্টা করুন।");
+                } else if (error.code === "PERMISSION_DENIED" || error.code === "database/permission-denied") {
+                    showNotification("বুকিং জমা দেওয়া যায়নি। Firebase Realtime Database-এর orders rules-এ গেস্ট বুকিং তৈরির অনুমতি প্রয়োজন।");
                 } else {
-                    alert("ত্রুটি: " + error.message);
+                    showNotification("বুকিং জমা দেওয়া যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
                 }
             } finally {
                 bookingSubmissionInProgress = false;
@@ -3557,11 +3588,11 @@
                     paymentStatus: "পেমেন্ট রিভিউাধীন",
                     paymentDetails: paymentInfo
                 });
-                alert("পেমেন্ট তথ্য সফলভাবে জমা দেওয়া হয়েছে!");
+                showNotification("পেমেন্ট তথ্য সফলভাবে জমা দেওয়া হয়েছে!");
                 userPaymentModal.style.display = "none";
                 userPaymentForm.reset();
             } catch(err) {
-                alert("ত্রুটি: " + err.message);
+                showNotification("ত্রুটি: " + err.message);
             }
         });
 
@@ -3584,7 +3615,7 @@
             const phone = document.getElementById("adminReceivePhone").value;
 
             if (gateway !== "Cash On Delivery" && !phone.trim()) {
-                alert("অনলাইন পেমেন্টের জন্য রিসিভ করার নম্বর দিন।");
+                showNotification("অনলাইন পেমেন্টের জন্য রিসিভ করার নম্বর দিন।");
                 return;
             }
 
@@ -3597,12 +3628,12 @@
                         ? "COD অনুমোদনের অপেক্ষায়"
                         : "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
                 });
-                alert("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
+                showNotification("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
                 adminSetPriceModal.style.display = "none";
                 adminSetPriceForm.reset();
                 loadAdminOrders();
             } catch(err) {
-                alert("ত্রুটি: " + err.message);
+                showNotification("ত্রুটি: " + err.message);
             }
         });
 
@@ -3693,12 +3724,12 @@
         window.updateOrderStatus = async function(orderId, status) {
             try {
                 const result = await updateBookingWithNotifications({ db, get, push, ref, update }, orderId, { status });
-                alert(result.notificationCount && !result.notificationsSent
+                showNotification(result.notificationCount && !result.notificationsSent
                     ? "স্ট্যাটাস আপডেট হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
                     : "স্ট্যাটাস আপডেট করা হয়েছে!");
             } catch (error) {
                 console.error("Booking status update failed:", error);
-                alert("স্ট্যাটাস আপডেট করা যায়নি: " + error.message);
+                showNotification("স্ট্যাটাস আপডেট করা যায়নি: " + error.message);
             }
         }
 
@@ -3708,20 +3739,20 @@
                     paymentStatus: "অনুমোদিত",
                     status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)"
                 });
-                alert(result.notificationCount && !result.notificationsSent
+                showNotification(result.notificationCount && !result.notificationsSent
                     ? "পেমেন্ট অনুমোদিত হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
                     : "পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
                 loadAdminOrders();
             } catch (error) {
                 console.error("Payment approval failed:", error);
-                alert("পেমেন্ট অনুমোদন করা যায়নি: " + error.message);
+                showNotification("পেমেন্ট অনুমোদন করা যায়নি: " + error.message);
             }
         }
 
         window.deleteAdminOrder = async function(orderId) {
             if(confirm('আপনি কি নিশ্চিত অ্যাডমিন প্যানেল থেকে এই অর্ডারটি সরাতে চান?')) {
                 await remove(ref(db, `orders/${orderId}`));
-                alert("অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!");
+                showNotification("অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!");
                 loadAdminOrders();
             }
         }
@@ -3774,7 +3805,7 @@
             document.querySelectorAll(".mobile-bottom-nav-item").forEach((item) => item.classList.remove("is-active"));
             mobileBottomAuth.classList.add("is-active");
             if (auth.currentUser && !auth.currentUser.isAnonymous) {
-                signOut(auth).catch((error) => alert("লগ-আউট করা যায়নি: " + error.message));
+                signOut(auth).catch((error) => showNotification("লগ-আউট করা যায়নি: " + error.message));
             } else {
                 loginBtnNav.click();
             }
@@ -3856,10 +3887,10 @@
                         createdAt: new Date().toISOString()
                     });
                     setAccountDisplayName(name);
-                    alert("সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে!");
+                    showNotification("সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে!");
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
-                    alert("সফলভাবে লগইন হয়েছে!");
+                    showNotification("সফলভাবে লগইন হয়েছে!");
                 }
                 loginModal.style.display = "none";
                 authForm.reset();
@@ -3908,7 +3939,7 @@
         logoutBtn.addEventListener("click", () => {
             signOut(auth).then(() => {
                 profileDropdown.classList.remove("show");
-                alert("লগ-আউট সফল হয়েছে!");
+                showNotification("লগ-আউট সফল হয়েছে!");
             });
         });
 
@@ -3916,7 +3947,7 @@
             signOut(auth).then(() => {
                 mobileMenuDrawer?.classList.remove("show");
                 mobileMenuBackdrop?.classList.remove("show");
-                alert("লগ-আউট সফল হয়েছে!");
+                showNotification("লগ-আউট সফল হয়েছে!");
             });
         });
 

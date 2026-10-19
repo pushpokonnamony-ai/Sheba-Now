@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>Sheba<span style="color: #d9534f;">Now</span> - অ্যাডমিন প্যানেল</title>
+    <script src="./custom-notifications.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { font-family: "Noto Sans Bengali", "SolaimanLipi", "SutonnyMJ", "Segoe UI", sans-serif; background-color: #f9f9f9; color: #333; }
@@ -826,10 +827,10 @@
                             label: serviceLabel,
                             updatedAt: new Date().toISOString()
                         } : null);
-                        alert(offerText ? `${serviceLabel} এর অফার ব্যাজ সেভ হয়েছে।` : `${serviceLabel} এর অফার ব্যাজ সরানো হয়েছে।`);
+                        showNotification(offerText ? `${serviceLabel} এর অফার ব্যাজ সেভ হয়েছে।` : `${serviceLabel} এর অফার ব্যাজ সরানো হয়েছে।`);
                     } catch (error) {
                         console.error('Service offer save failed:', error);
-                        alert('অফার ব্যাজ সেভ করা যায়নি। আবার চেষ্টা করুন।');
+                        showNotification('অফার ব্যাজ সেভ করা যায়নি। আবার চেষ্টা করুন।');
                     }
                 });
             });
@@ -843,10 +844,10 @@
                     try {
                         await remove(ref(db, `siteSettings/serviceOffers/${serviceKey}`));
                         if (input) input.value = '';
-                        alert(`${serviceLabel} এর অফার ব্যাজ সরানো হয়েছে।`);
+                        showNotification(`${serviceLabel} এর অফার ব্যাজ সরানো হয়েছে।`);
                     } catch (error) {
                         console.error('Service offer removal failed:', error);
-                        alert('অফার ব্যাজ সরানো যায়নি। আবার চেষ্টা করুন।');
+                        showNotification('অফার ব্যাজ সরানো যায়নি। আবার চেষ্টা করুন।');
                     }
                 });
             });
@@ -885,7 +886,7 @@
                     const file = input && input.files ? input.files[0] : null;
 
                     if (!file) {
-                        alert(`${serviceLabel} এর জন্য কমপক্ষে একটি ছবি নির্বাচন করুন।`);
+                        showNotification(`${serviceLabel} এর জন্য কমপক্ষে একটি ছবি নির্বাচন করুন।`);
                         return;
                     }
 
@@ -908,10 +909,10 @@
                         }
 
                         input.value = '';
-                        alert(`${serviceLabel} এর ছবি সফলভাবে সেভ হয়েছে।`);
+                        showNotification(`${serviceLabel} এর ছবি সফলভাবে সেভ হয়েছে।`);
                     } catch (error) {
                         console.error('Service card image save failed:', error);
-                        alert('ছবিটি আপলোড করা যায়নি। আবার চেষ্টা করুন।');
+                        showNotification('ছবিটি আপলোড করা যায়নি। আবার চেষ্টা করুন।');
                     }
                 });
             });
@@ -931,10 +932,10 @@
                         if (typeof window.applyServiceCardImages === 'function') {
                             await window.applyServiceCardImages();
                         }
-                        alert(`${serviceLabel} এর কাস্টম ছবি মুছে ফেলা হয়েছে।`);
+                        showNotification(`${serviceLabel} এর কাস্টম ছবি মুছে ফেলা হয়েছে।`);
                     } catch (error) {
                         console.error('Service image delete failed:', error);
-                        alert('ছবি ডিলিট করা যায়নি। আবার চেষ্টা করুন।');
+                        showNotification('ছবি ডিলিট করা যায়নি। আবার চেষ্টা করুন।');
                     }
                 });
             });
@@ -974,7 +975,7 @@
             const files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
 
             if (!files.length) {
-                alert("কমপক্ষে একটি ব্যানার ছবি নির্বাচন করুন।");
+                showNotification("কমপক্ষে একটি ব্যানার ছবি নির্বাচন করুন।");
                 return;
             }
 
@@ -1001,10 +1002,10 @@
                 if (preview) preview.src = firstImage;
 
                 fileInput.value = '';
-                alert('সব ব্যানার ছবি আপলোড ও স্লাইডশো সেট করা হয়েছে।');
+                showNotification('সব ব্যানার ছবি আপলোড ও স্লাইডশো সেট করা হয়েছে।');
             } catch (error) {
                 console.error('Banner upload failed:', error);
-                alert('ব্যানার আপলোড失败 হয়েছে। আবার চেষ্টা করুন।');
+                showNotification('ব্যানার আপলোড失败 হয়েছে। আবার চেষ্টা করুন।');
             }
         }
 
@@ -1016,10 +1017,10 @@
                 if (preview) preview.src = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80';
                 const bannerInput = document.getElementById('bannerUploadInput');
                 if (bannerInput) bannerInput.value = '';
-                alert('ব্যানার ছবি ডিলিট হয়েছে।');
+                showNotification('ব্যানার ছবি ডিলিট হয়েছে।');
             } catch (error) {
                 console.error('Banner delete failed:', error);
-                alert('ব্যানার ডিলিট করা যায়নি। আবার চেষ্টা করুন।');
+                showNotification('ব্যানার ডিলিট করা যায়নি। আবার চেষ্টা করুন।');
             }
         }
 
@@ -1107,7 +1108,7 @@
                 loadAdminOrders();
                 loadBannerPreview();
             } else {
-                alert("ভুল পাসওয়ার্ড!");
+                showNotification("ভুল পাসওয়ার্ড!");
             }
         });
 
@@ -1130,12 +1131,12 @@
             const savedPassword = snapshot.exists() ? snapshot.val() : "1234";
 
             if(currentPassInput !== savedPassword) {
-                alert("বর্তমান পাসওয়ার্ডটি সঠিক নয়!");
+                showNotification("বর্তমান পাসওয়ার্ডটি সঠিক নয়!");
                 return;
             }
 
             await set(passRef, newPassInput);
-            alert("অ্যাডমিন পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে এবং সব ডিভাইসের জন্য আপডেট হয়েছে!");
+            showNotification("অ্যাডমিন পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে এবং সব ডিভাইসের জন্য আপডেট হয়েছে!");
             adminChangePassModal.style.display = "none";
             adminChangePassForm.reset();
         });
@@ -1160,7 +1161,7 @@
             const phone = document.getElementById("adminReceivePhone").value;
 
             if (gateway !== "Cash On Delivery" && !phone.trim()) {
-                alert("অনলাইন পেমেন্টের জন্য রিসিভ করার নম্বর দিন।");
+                showNotification("অনলাইন পেমেন্টের জন্য রিসিভ করার নম্বর দিন।");
                 return;
             }
 
@@ -1173,12 +1174,12 @@
                         ? "COD অনুমোদনের অপেক্ষায়"
                         : "ফি নির্ধারিত হয়েছে (পেমেন্ট বাকি)"
                 });
-                alert("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
+                showNotification("বুকিং ফি ও পেমেন্ট নম্বর সফলভাবে সেট করা হয়েছে!");
                 adminSetPriceModal.style.display = "none";
                 adminSetPriceForm.reset();
                 loadAdminOrders();
             } catch(err) {
-                alert("ত্রুটি: " + err.message);
+                showNotification("ত্রুটি: " + err.message);
             }
         });
 
@@ -1279,12 +1280,12 @@
         window.updateOrderStatus = async function(orderId, status) {
             try {
                 const result = await updateBookingWithNotifications({ db, get, push, ref, update }, orderId, { status });
-                alert(result.notificationCount && !result.notificationsSent
+                showNotification(result.notificationCount && !result.notificationsSent
                     ? "স্ট্যাটাস আপডেট হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
                     : "স্ট্যাটাস আপডেট করা হয়েছে!");
             } catch (error) {
                 console.error("Booking status update failed:", error);
-                alert("স্ট্যাটাস আপডেট করা যায়নি: " + error.message);
+                showNotification("স্ট্যাটাস আপডেট করা যায়নি: " + error.message);
             }
         }
 
@@ -1294,20 +1295,20 @@
                     paymentStatus: "অনুমোদিত",
                     status: "Confirmed (পেমেন্ট ও সেবা প্রদানকারী নির্ধারিত)"
                 });
-                alert(result.notificationCount && !result.notificationsSent
+                showNotification(result.notificationCount && !result.notificationsSent
                     ? "পেমেন্ট অনুমোদিত হয়েছে, তবে গ্রাহকের userId না থাকায় নোটিফিকেশন পাঠানো যায়নি।"
                     : "পেমেন্ট সফলভাবে অনুমোদিত হয়েছে!");
                 loadAdminOrders();
             } catch (error) {
                 console.error("Payment approval failed:", error);
-                alert("পেমেন্ট অনুমোদন করা যায়নি: " + error.message);
+                showNotification("পেমেন্ট অনুমোদন করা যায়নি: " + error.message);
             }
         }
 
         window.deleteAdminOrder = async function(orderId) {
             if(confirm('আপনি কি নিশ্চিত অ্যাডমিন প্যানেল থেকে এই অর্ডারটি সরাতে চান?')) {
                 await remove(ref(db, `orders/${orderId}`));
-                alert("অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!");
+                showNotification("অর্ডারটি অ্যাডমিন প্যানেল থেকে মুছে ফেলা হয়েছে!");
                 loadAdminOrders();
             }
         }
