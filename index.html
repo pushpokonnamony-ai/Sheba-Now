@@ -39,6 +39,14 @@
         html[lang="bn"] *, html[lang="bn"] *::before, html[lang="bn"] *::after { font-family: 'Noto Sans Bengali', 'Segoe UI', Tahoma, sans-serif !important; }
         html[lang="en"] *, html[lang="en"] *::before, html[lang="en"] *::after { font-family: 'Times New Roman', Times, serif !important; }
         
+        .announcement-bar { position: relative; z-index: 101; overflow: hidden; overflow: clip; padding: 10px 0; background: linear-gradient(110deg, #075f48, #087f5b 55%, #075f48); color: #fff; box-shadow: 0 3px 12px rgba(7, 54, 41, 0.2); }
+        .announcement-track { display: flex; width: max-content; animation: announcement-scroll 50s linear infinite; }
+        .announcement-message { display: flex; flex: 0 0 auto; align-items: center; gap: 0.5em; padding-right: 3em; font-size: 14px; font-weight: 700; line-height: 1.6; white-space: nowrap; }
+        .announcement-message img { width: 18px; height: 18px; flex: 0 0 18px; object-fit: contain; }
+        .announcement-message a { color: #fff; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.65); text-underline-offset: 3px; }
+        .announcement-message a:hover { text-decoration-color: #fff; }
+        @keyframes announcement-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
         .navbar { display: flex; flex-flow: row nowrap; justify-content: flex-start; align-items: center; background: #ffffff; padding: 14px 2.5%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; gap: 8px; overflow: visible; }
         .mobile-search-row, .mobile-menu-backdrop, .mobile-menu-drawer, #userFirstNameDisplay { display: none; }
         .mobile-menu-toggle { position: fixed; top: 15px; right: 2.5%; z-index: 110; display: none; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border: 1px solid #d7e3e0; border-radius: 12px; background: #f5fbf8; color: #087f5b; cursor: pointer; }
@@ -949,7 +957,12 @@
             .profile-trigger { padding-left: 4px; padding-right: 5px; gap: 4px; }
         }
 
+        @media (max-width: 768px) {
+            .announcement-message { font-size: 12px; }
+        }
+
         @media (max-width: 420px) {
+            .announcement-bar { padding: 8px 0; }
             .navbar { max-width: 100%; padding-left: 5px; padding-right: 5px; gap: 3px; }
             .logo { font-size: 22px; }
             .nav-links { gap: 2px; }
@@ -965,6 +978,18 @@
 </head>
 <body>
 
+    <aside class="announcement-bar" aria-label="সেবা সংক্রান্ত ঘোষণা">
+        <div class="announcement-track">
+            <div class="announcement-message">
+                <img src="https://static.xx.fbcdn.net/images/emoji.php/v9/t39/1/16/1f4e2.png" alt="📢">
+                <span>বর্তমানে আমাদের সেবা চালু আছে: কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর) • জরুরি ঔষধ, সিলিন্ডার,ফ্রেশ মিল্ক, ফুড ও হোম সার্ভিস ডেলিভারির জন্য কল বা হোয়াটসঅ্যাপ করুন: <a href="tel:+8801577707450" aria-label="01577-707450 নম্বরে কল করুন">01577-707450</a> • <a href="https://wa.me/8801577707450" aria-label="ShebaNow-এর অফিসিয়াল WhatsApp-এ যোগাযোগ করুন">WhatsApp</a></span>
+            </div>
+            <div class="announcement-message" aria-hidden="true">
+                <img src="https://static.xx.fbcdn.net/images/emoji.php/v9/t39/1/16/1f4e2.png" alt="">
+                <span>বর্তমানে আমাদের সেবা চালু আছে: কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর) • জরুরি ঔষধ, সিলিন্ডার,ফ্রেশ মিল্ক, ফুড ও হোম সার্ভিস ডেলিভারির জন্য কল বা হোয়াটসঅ্যাপ করুন: <a href="tel:+8801577707450" tabindex="-1">01577-707450</a> • <a href="https://wa.me/8801577707450" tabindex="-1">WhatsApp</a></span>
+            </div>
+        </div>
+    </aside>
     <header class="navbar">
         <div class="logo" id="siteLogo">Sheba<span>Now</span></div>
         <div class="search-box" id="searchBoxContainer">
@@ -1692,7 +1717,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getDatabase, ref, push, set, get, update, remove, onChildAdded, onValue, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
         import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
         import { updateBookingWithNotifications } from "./booking-notifications.js";
@@ -2356,7 +2381,9 @@
         window.sendWhatsAppPreFilled = function(messageText) {
             const phoneNumber = "8801577707450";
             const encodedMsg = encodeURIComponent(messageText);
-            const whatsappWindow = window.open(`https://wa.me/${phoneNumber}?text=${encodedMsg}`, '_blank');
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMsg}`;
+            const whatsappWindow = window.open(whatsappUrl, '_blank');
+            if (!whatsappWindow) window.location.href = whatsappUrl;
             const menuBox = document.getElementById("whatsappMenuBox");
             const tooltip = document.getElementById("waStatusTooltip");
 
@@ -2369,9 +2396,7 @@
             });
             if (!tooltip) return;
 
-            tooltip.textContent = whatsappWindow
-                ? "Message window opened. Please tap Send in WhatsApp."
-                : "Please allow pop-ups to open WhatsApp and send your message.";
+            tooltip.textContent = "WhatsApp-এ মেসেজ পাঠাতে Send চাপুন।";
             tooltip.style.display = "block";
             setTimeout(() => {
                 tooltip.style.display = "none";
@@ -2890,34 +2915,32 @@
         const orderForm = document.getElementById("orderForm");
 
         window.triggerBooking = async function(serviceName) {
-            if(!auth.currentUser) {
-                alert("বুকিং করতে হলে আগে লগইন করতে হবে!");
-                document.getElementById("loginModal").style.display = "flex";
-                return;
-            }
             const user = auth.currentUser;
             const clientName = document.getElementById("clientName");
             const clientPhone = document.getElementById("clientPhone");
             const today = new Date();
             const todayDate = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`;
             const todayPickerDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
-            const defaultName = user.displayName || (user.email ? user.email.split("@")[0] : "");
+            const registeredUser = user && !user.isAnonymous;
+            const defaultName = registeredUser ? (user.displayName || (user.email ? user.email.split("@")[0] : "")) : "";
             clientName.value = defaultName;
-            clientPhone.value = user.phoneNumber || "";
+            clientPhone.value = registeredUser ? (user.phoneNumber || "") : "";
             document.getElementById("bookingDate").value = todayDate;
             document.getElementById("bookingDatePicker").value = todayPickerDate;
 
-            try {
-                const userSnapshot = await get(ref(db, `users/${user.uid}`));
-                if (auth.currentUser?.uid === user.uid) {
-                    const userProfile = userSnapshot.val() || {};
-                    if (userProfile.displayName && clientName.value === defaultName) {
-                        clientName.value = userProfile.displayName;
+            if (registeredUser) {
+                try {
+                    const userSnapshot = await get(ref(db, `users/${user.uid}`));
+                    if (auth.currentUser?.uid === user.uid) {
+                        const userProfile = userSnapshot.val() || {};
+                        if (userProfile.displayName && clientName.value === defaultName) {
+                            clientName.value = userProfile.displayName;
+                        }
+                        clientPhone.value = userProfile.mobileNumber || userProfile.mobile || userProfile.phone || user.phoneNumber || "";
                     }
-                    clientPhone.value = userProfile.mobileNumber || userProfile.mobile || userProfile.phone || user.phoneNumber || "";
+                } catch (error) {
+                    console.warn("Could not load booking profile details:", error);
                 }
-            } catch (error) {
-                console.warn("Could not load booking profile details:", error);
             }
 
             document.getElementById("selectedService").value = serviceName;
@@ -2978,12 +3001,17 @@
             if (bookingSubmissionInProgress) return;
 
             const service = document.getElementById("selectedService").value;
-            const name = document.getElementById("clientName").value;
-            const phone = document.getElementById("clientPhone").value;
-            const address = document.getElementById("clientAddress").value;
+            const name = document.getElementById("clientName").value.trim();
+            const phone = document.getElementById("clientPhone").value.trim();
+            const address = document.getElementById("clientAddress").value.trim();
             const description = document.getElementById("problemDescription").value;
             const date = document.getElementById("bookingDate").value;
             const customOrderId = generateOrderId();
+
+            if (!service || !name || !phone || !address) {
+                alert("নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা পূরণ করুন।");
+                return;
+            }
 
             const dateParts = date.split("/").map(Number);
             const selectedDate = dateParts.length === 3 ? new Date(dateParts[2], dateParts[1] - 1, dateParts[0]) : null;
@@ -3007,9 +3035,10 @@
             }
 
             try {
+                const user = auth.currentUser || (await signInAnonymously(auth)).user;
                 const finalImages = await Promise.all(selectedImages.map(async (file, index) => {
                     const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '-');
-                    const imagePath = `order-images/${auth.currentUser.uid}/${customOrderId}-${index + 1}-${Date.now()}-${safeFileName}`;
+                    const imagePath = `order-images/${user.uid}/${customOrderId}-${index + 1}-${Date.now()}-${safeFileName}`;
                     const uploadedFile = await uploadBytes(storageRef(storage, imagePath), file, {
                         contentType: file.type || 'image/jpeg',
                         cacheControl: 'public,max-age=31536000,immutable'
@@ -3019,8 +3048,8 @@
 
                 const orderData = {
                     customId: customOrderId,
-                    userId: auth.currentUser.uid,
-                    userEmail: auth.currentUser.email,
+                    userId: user.uid,
+                    userEmail: user.email || "",
                     service,
                     name,
                     phone,
@@ -3048,7 +3077,7 @@
 
                 const newOrderRef = push(ref(db, "orders"));
                 await set(newOrderRef, orderData);
-                updateMobileBookingCount(auth.currentUser);
+                if (!user.isAnonymous) updateMobileBookingCount(user);
                 void (async () => {
                     try {
                         const telegramRequest = {
@@ -3062,7 +3091,7 @@
                                 address,
                                 description,
                                 date,
-                                email: auth.currentUser?.email || "",
+                                email: user.email || "",
                                 location: orderData.location
                             })
                         };
@@ -3090,7 +3119,12 @@
                 bookingModal.style.display = "none";
                 orderForm.reset();
             } catch (error) {
-                alert("ত্রুটি: " + error.message);
+                console.error("Booking submission failed:", error);
+                if (error.code === "auth/operation-not-allowed") {
+                    alert("গেস্ট বুকিং চালু নেই। Firebase Console-এর Authentication > Sign-in method থেকে Anonymous sign-in চালু করুন।");
+                } else {
+                    alert("ত্রুটি: " + error.message);
+                }
             } finally {
                 bookingSubmissionInProgress = false;
                 submitButton.disabled = false;
@@ -3476,7 +3510,7 @@
         document.getElementById("mobileBottomAuth").addEventListener("click", () => {
             document.querySelectorAll(".mobile-bottom-nav-item").forEach((item) => item.classList.remove("is-active"));
             mobileBottomAuth.classList.add("is-active");
-            if (auth.currentUser) {
+            if (auth.currentUser && !auth.currentUser.isAnonymous) {
                 signOut(auth).catch((error) => alert("লগ-আউট করা যায়নি: " + error.message));
             } else {
                 loginBtnNav.click();
@@ -3624,12 +3658,13 @@
         });
 
         onAuthStateChanged(auth, async (user) => {
-            mobileBottomAuth.dataset.authState = user ? "logout" : "login";
-            mobileBottomLoginIcon.hidden = Boolean(user);
-            mobileBottomLogoutIcon.hidden = !user;
+            const registeredUser = user && !user.isAnonymous;
+            mobileBottomAuth.dataset.authState = registeredUser ? "logout" : "login";
+            mobileBottomLoginIcon.hidden = Boolean(registeredUser);
+            mobileBottomLogoutIcon.hidden = !registeredUser;
             window.translatePage?.();
             updateMobileBookingCount(user);
-            if (user) {
+            if (registeredUser) {
                 loginBtnNav.style.display = "none";
                 mobileLoginBtn.style.display = "none";
                 userProfile.style.display = "flex";
