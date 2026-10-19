@@ -175,6 +175,7 @@
         }
         .en-ui, .en-ui * { font-family: "Times New Roman", Times, serif !important; font-weight: 700; letter-spacing: 0.01em; }
         .service-image-admin-card h3 { margin-bottom: 12px; color: #008060; font-weight: 900; }
+        .service-image-admin-card > p { margin: -5px 0 14px; color: #60736e; font-size: 12px; line-height: 1.6; }
         .service-image-settings-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; align-items: stretch; }
         .service-image-row {
             display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px;
@@ -184,6 +185,29 @@
         .service-image-label { font-weight: 700; font-size: 13px; color: #1c2b2d; min-width: 130px; flex: 1 1 130px; }
         .service-image-controls { display: flex; align-items: center; gap: 8px; flex: 1 1 220px; justify-content: flex-end; flex-wrap: wrap; min-width: 0; }
         .service-image-controls input[type="file"] { flex: 1 1 150px; min-width: 0; max-width: 180px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 8px; }
+        .review-admin-card { background: linear-gradient(145deg, #fff, #f4fbf7); border: 1px solid #dcebe5; border-radius: 14px; padding: 18px; margin-bottom: 18px; box-shadow: 0 10px 28px rgba(15, 23, 42, .06); }
+        .review-admin-card h3 { margin-bottom: 8px; color: #075f48; font-weight: 900; }
+        .review-admin-card > p { margin-bottom: 13px; color: #60736e; font-size: 12px; line-height: 1.6; }
+        .review-orders-form, #reviewAdminForm { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+        .review-admin-card input, .review-admin-card select, .review-admin-card textarea { width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d5e3de; border-radius: 8px; background: #fff; color: #18352e; font: inherit; }
+        .review-admin-card textarea { grid-column: 1 / -1; min-height: 74px; resize: vertical; }
+        .review-admin-card input:focus, .review-admin-card select:focus, .review-admin-card textarea:focus { outline: 2px solid rgba(15, 155, 114, .2); border-color: #0f9b72; }
+        .review-orders-form button, #reviewAdminForm button { min-height: 40px; padding: 9px 13px; border: 0; border-radius: 8px; background: #087f5b; color: #fff; font-weight: 800; cursor: pointer; }
+        #cancelReviewEdit { background: #65756f; }
+        .review-admin-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+        .review-admin-item { min-width: 0; padding: 12px; border: 1px solid #e1ebe6; border-radius: 10px; background: #fff; }
+        .review-admin-item strong { color: #173c30; }
+        .review-admin-item p { margin: 7px 0; color: #43534d; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+        .review-admin-item small { color: #60736e; }
+        .review-admin-actions { display: flex; gap: 7px; }
+        .review-admin-actions button { padding: 6px 10px; border: 0; border-radius: 7px; color: #fff; background: #087f5b; font-weight: 700; cursor: pointer; }
+        .review-admin-actions .delete-review { background: #c62828; }
+        #reviewAdminMessage, #reviewOrdersMessage { grid-column: 1 / -1; min-height: 18px; margin: 0; font-size: 12px; }
+        .service-offer-controls { display: flex; align-items: center; gap: 8px; flex: 1 1 100%; flex-wrap: wrap; min-width: 0; }
+        .service-offer-controls input { flex: 1 1 220px; min-width: 0; padding: 9px 10px; border: 1px solid #d5e3de; border-radius: 8px; background: #fff; color: #18352e; font: inherit; }
+        .service-offer-controls input:focus { outline: 2px solid rgba(15, 155, 114, 0.2); border-color: #0f9b72; }
+        .service-offer-controls button { background: #087f5b; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .service-offer-controls .clear-service-offer { background: #64746f; }
         .service-image-preview { width: 42px; height: 42px; object-fit: cover; border-radius: 8px; border: 1px solid #dfe7e4; background: #f3f7f6; display: none; flex-shrink: 0; }
         .service-image-controls button { background: #008060; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .admin-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -225,6 +249,8 @@
             #offerNotificationForm textarea, #offerNotificationForm .btn-submit { grid-column: auto; }
             .offer-image-upload { grid-column: auto; }
             .offer-card-heading h3 { font-size: 17px; }
+            .review-orders-form, #reviewAdminForm { grid-template-columns: 1fr; }
+            .review-admin-card textarea, #reviewAdminMessage, #reviewOrdersMessage { grid-column: auto; }
         }
 
         footer { background: #222; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 50px; }
@@ -304,9 +330,38 @@
         </div>
 
         <div class="service-image-admin-card">
-            <h3>সার্ভিস কার্ডের ছবি সেট করুন</h3>
+            <h3>সার্ভিস কার্ডের ছবি ও অফার সেট করুন</h3>
+            <p>প্রতিটি সেবার জন্য ঐচ্ছিক অফার/কমিশন ব্যাজ লিখে সেভ করুন। ফাঁকা রেখে সেভ করলে ব্যাজটি সরবে; বুকিং বা মূল দামে কোনো পরিবর্তন হবে না।</p>
             <div id="serviceImageSettingsList" class="service-image-settings-list"></div>
         </div>
+
+        <section class="review-admin-card" aria-labelledby="reviewAdminHeading">
+            <h3 id="reviewAdminHeading">গ্রাহক রিভিউ ও অর্ডার পরিসংখ্যান পরিচালনা</h3>
+            <p>রিভিউ যোগ করুন, সম্পাদনা বা মুছুন। সম্পন্ন অর্ডারের প্রদর্শিত সংখ্যা এখানে বদলান; এটি বুকিং রেকর্ড পরিবর্তন করে না।</p>
+            <form id="reviewOrdersForm" class="review-orders-form">
+                <input id="completedOrdersInput" type="text" maxlength="50" placeholder="যেমন: ৫০+ সফল অর্ডার" aria-label="সম্পন্ন অর্ডারের প্রদর্শিত সংখ্যা" required>
+                <button type="submit">অর্ডার সংখ্যা সেভ</button>
+                <p id="reviewOrdersMessage" role="status"></p>
+            </form>
+            <form id="reviewAdminForm">
+                <input type="hidden" id="reviewIdInput">
+                <input id="reviewNameInput" type="text" maxlength="80" placeholder="গ্রাহকের নাম" required>
+                <select id="reviewRatingInput" required aria-label="তারকা রেটিং">
+                    <option value="">তারকা রেটিং (১–৫)</option>
+                    <option value="5">৫ স্টার</option>
+                    <option value="4">৪ স্টার</option>
+                    <option value="3">৩ স্টার</option>
+                    <option value="2">২ স্টার</option>
+                    <option value="1">১ স্টার</option>
+                </select>
+                <input id="reviewLocationInput" type="text" maxlength="100" placeholder="লোকেশন (ঐচ্ছিক)">
+                <textarea id="reviewCommentInput" maxlength="1000" placeholder="গ্রাহকের মন্তব্য" required></textarea>
+                <button id="saveReviewButton" type="submit">রিভিউ যোগ করুন</button>
+                <button id="cancelReviewEdit" type="button" hidden>সম্পাদনা বাতিল</button>
+                <p id="reviewAdminMessage" role="status"></p>
+            </form>
+            <div id="reviewAdminList" class="review-admin-list" aria-live="polite"></div>
+        </section>
 
         <div style="overflow-x: auto;">
             <table class="admin-table">
@@ -408,6 +463,189 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const storage = getStorage(app);
+
+        const REVIEW_PATH = 'siteSettings/reviews';
+        const completedOrdersInput = document.getElementById('completedOrdersInput');
+        const reviewOrdersForm = document.getElementById('reviewOrdersForm');
+        const reviewOrdersMessage = document.getElementById('reviewOrdersMessage');
+        const reviewAdminForm = document.getElementById('reviewAdminForm');
+        const reviewAdminMessage = document.getElementById('reviewAdminMessage');
+        const reviewAdminList = document.getElementById('reviewAdminList');
+        const reviewIdInput = document.getElementById('reviewIdInput');
+        const reviewNameInput = document.getElementById('reviewNameInput');
+        const reviewRatingInput = document.getElementById('reviewRatingInput');
+        const reviewLocationInput = document.getElementById('reviewLocationInput');
+        const reviewCommentInput = document.getElementById('reviewCommentInput');
+        const saveReviewButton = document.getElementById('saveReviewButton');
+        const cancelReviewEdit = document.getElementById('cancelReviewEdit');
+        let adminReviews = [];
+
+        function getAdminReviews(snapshot) {
+            const reviews = [];
+            snapshot.forEach((child) => {
+                const review = child.val() || {};
+                const rating = Number(review.rating);
+                if (!review.name || !review.comment || !Number.isInteger(rating) || rating < 1 || rating > 5) return;
+                reviews.push({ id: child.key, ...review, rating });
+            });
+            return reviews.sort((first, second) => Number(second.updatedAt || second.createdAt || 0) - Number(first.updatedAt || first.createdAt || 0));
+        }
+
+        function renderAdminReviews() {
+            reviewAdminList.replaceChildren();
+            if (!adminReviews.length) {
+                const empty = document.createElement('p');
+                empty.className = 'review-empty';
+                empty.textContent = 'এখনো কোনো রিভিউ যোগ করা হয়নি।';
+                reviewAdminList.append(empty);
+                return;
+            }
+
+            adminReviews.forEach((review) => {
+                const card = document.createElement('article');
+                card.className = 'review-admin-item';
+                const heading = document.createElement('strong');
+                heading.textContent = `${review.name} · ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}`;
+                const location = document.createElement('small');
+                location.textContent = review.location || 'লোকেশন উল্লেখ নেই';
+                const comment = document.createElement('p');
+                comment.textContent = review.comment;
+                const actions = document.createElement('div');
+                actions.className = 'review-admin-actions';
+                const editButton = document.createElement('button');
+                editButton.type = 'button';
+                editButton.textContent = 'সম্পাদনা';
+                editButton.addEventListener('click', () => {
+                    reviewIdInput.value = review.id;
+                    reviewNameInput.value = review.name;
+                    reviewRatingInput.value = String(review.rating);
+                    reviewLocationInput.value = review.location || '';
+                    reviewCommentInput.value = review.comment;
+                    saveReviewButton.textContent = 'রিভিউ আপডেট করুন';
+                    cancelReviewEdit.hidden = false;
+                    reviewAdminForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'delete-review';
+                deleteButton.textContent = 'মুছুন';
+                deleteButton.addEventListener('click', async () => {
+                    if (!window.confirm(`${review.name} এর রিভিউ মুছে ফেলবেন?`)) return;
+                    deleteButton.disabled = true;
+                    try {
+                        await remove(ref(db, `${REVIEW_PATH}/${review.id}`));
+                        adminReviews = adminReviews.filter((item) => item.id !== review.id);
+                        renderAdminReviews();
+                        reviewAdminMessage.style.color = '#087f5b';
+                        reviewAdminMessage.textContent = 'রিভিউ মুছে ফেলা হয়েছে।';
+                    } catch (error) {
+                        console.error('Review delete failed:', error);
+                        reviewAdminMessage.style.color = '#b42318';
+                        reviewAdminMessage.textContent = `রিভিউ মুছতে সমস্যা হয়েছে: ${error.message}`;
+                    } finally {
+                        deleteButton.disabled = false;
+                    }
+                });
+                actions.append(editButton, deleteButton);
+                card.append(heading, location, comment, actions);
+                reviewAdminList.append(card);
+            });
+        }
+
+        async function loadReviewManagement() {
+            reviewAdminList.textContent = 'রিভিউ লোড হচ্ছে...';
+            reviewOrdersMessage.textContent = '';
+            try {
+                const [reviewsSnapshot, ordersSnapshot] = await Promise.all([
+                    get(ref(db, REVIEW_PATH)),
+                    get(ref(db, 'siteSettings/reviewStats/completedOrdersLabel'))
+                ]);
+                adminReviews = reviewsSnapshot.exists() ? getAdminReviews(reviewsSnapshot) : [];
+                completedOrdersInput.value = ordersSnapshot.exists() && typeof ordersSnapshot.val() === 'string'
+                    ? ordersSnapshot.val()
+                    : '0+ সফল অর্ডার';
+                renderAdminReviews();
+            } catch (error) {
+                console.error('Review management load failed:', error);
+                reviewAdminList.textContent = 'রিভিউ সেটিংস লোড করা যায়নি। আবার চেষ্টা করুন।';
+                reviewOrdersMessage.style.color = '#b42318';
+                reviewOrdersMessage.textContent = `ডাটা লোড করতে সমস্যা হয়েছে: ${error.message}`;
+            }
+        }
+
+        reviewOrdersForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const label = completedOrdersInput.value.trim();
+            if (!label) {
+                completedOrdersInput.focus();
+                return;
+            }
+            reviewOrdersForm.querySelector('button[type="submit"]').disabled = true;
+            try {
+                await set(ref(db, 'siteSettings/reviewStats/completedOrdersLabel'), label);
+                reviewOrdersMessage.style.color = '#087f5b';
+                reviewOrdersMessage.textContent = 'সম্পন্ন অর্ডারের সংখ্যা সেভ হয়েছে।';
+            } catch (error) {
+                console.error('Completed orders label save failed:', error);
+                reviewOrdersMessage.style.color = '#b42318';
+                reviewOrdersMessage.textContent = `সেভ করা যায়নি: ${error.message}`;
+            } finally {
+                reviewOrdersForm.querySelector('button[type="submit"]').disabled = false;
+            }
+        });
+
+        function resetReviewForm() {
+            reviewAdminForm.reset();
+            reviewIdInput.value = '';
+            saveReviewButton.textContent = 'রিভিউ যোগ করুন';
+            cancelReviewEdit.hidden = true;
+        }
+
+        cancelReviewEdit.addEventListener('click', resetReviewForm);
+        reviewAdminForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = reviewNameInput.value.trim();
+            const rating = Number(reviewRatingInput.value);
+            const comment = reviewCommentInput.value.trim();
+            if (!name || !comment || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+                reviewAdminMessage.style.color = '#b42318';
+                reviewAdminMessage.textContent = 'নাম, ১–৫ স্টার রেটিং এবং মন্তব্য দিন।';
+                return;
+            }
+
+            const reviewId = reviewIdInput.value;
+            const existingReview = adminReviews.find((item) => item.id === reviewId);
+            const review = {
+                name,
+                rating,
+                comment,
+                location: reviewLocationInput.value.trim(),
+                createdAt: existingReview?.createdAt || Date.now(),
+                updatedAt: Date.now()
+            };
+            const submitButton = reviewAdminForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            try {
+                if (reviewId) {
+                    await update(ref(db, `${REVIEW_PATH}/${reviewId}`), review);
+                } else {
+                    const reviewRef = push(ref(db, REVIEW_PATH));
+                    await set(reviewRef, review);
+                    review.id = reviewRef.key;
+                }
+                adminReviews = getAdminReviews(await get(ref(db, REVIEW_PATH)));
+                renderAdminReviews();
+                resetReviewForm();
+                reviewAdminMessage.style.color = '#087f5b';
+                reviewAdminMessage.textContent = reviewId ? 'রিভিউ আপডেট হয়েছে।' : 'নতুন রিভিউ যোগ হয়েছে।';
+            } catch (error) {
+                console.error('Review save failed:', error);
+                reviewAdminMessage.style.color = '#b42318';
+                reviewAdminMessage.textContent = `রিভিউ সেভ করা যায়নি: ${error.message}`;
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
 
         const FALLBACK_BANNER_URL = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80';
 
@@ -547,9 +785,11 @@
             { key: 'maid-caregiver', label: 'বুয়া ও কেয়ারগিভার' },
             { key: 'emergency-medicine', label: 'জরুরি ঔষধ সেবা' },
             { key: 'ambulance', label: 'অ্যাম্বুলেন্স সেবা' },
+            { key: 'fresh-milk', label: 'ফ্রেশ মিল্ক' },
             { key: 'food-delivery', label: 'ফুড ডেলিভারি' },
             { key: 'grocery-market', label: 'গ্রোসারি ও বাজার' },
-            { key: 'napkin-diaper', label: 'ন্যাপকিন ও ডায়াপার' }
+            { key: 'napkin-diaper', label: 'ন্যাপকিন ও ডায়াপার' },
+            { key: 'boibari', label: 'বইবাড়ী' }
         ];
 
         function renderServiceImageSettings() {
@@ -565,8 +805,61 @@
                         <button type="button" data-service-key="${service.key}" data-service-label="${service.label}">সেভ করুন</button>
                         <button type="button" class="delete-btn" data-delete-key="${service.key}" data-delete-label="${service.label}">ডিলিট</button>
                     </div>
+                    <div class="service-offer-controls">
+                        <input type="text" maxlength="60" data-offer-key="${service.key}" aria-label="${service.label} offer badge" placeholder="অফার/কমিশন ট্যাগ (যেমন: ৳৫০ ক্যাশব্যাক)">
+                        <button type="button" data-save-offer-key="${service.key}" data-offer-label="${service.label}">অফার সেভ</button>
+                        <button type="button" class="clear-service-offer" data-clear-offer-key="${service.key}" data-offer-label="${service.label}">অফার সরান</button>
+                    </div>
                 </div>
             `).join('');
+
+            container.querySelectorAll('button[data-save-offer-key]').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const serviceKey = button.dataset.saveOfferKey;
+                    const serviceLabel = button.dataset.offerLabel;
+                    const input = container.querySelector(`input[data-offer-key="${serviceKey}"]`);
+                    const offerText = input?.value.trim() || '';
+
+                    try {
+                        await set(ref(db, `siteSettings/serviceOffers/${serviceKey}`), offerText ? {
+                            text: offerText,
+                            label: serviceLabel,
+                            updatedAt: new Date().toISOString()
+                        } : null);
+                        alert(offerText ? `${serviceLabel} এর অফার ব্যাজ সেভ হয়েছে।` : `${serviceLabel} এর অফার ব্যাজ সরানো হয়েছে।`);
+                    } catch (error) {
+                        console.error('Service offer save failed:', error);
+                        alert('অফার ব্যাজ সেভ করা যায়নি। আবার চেষ্টা করুন।');
+                    }
+                });
+            });
+
+            container.querySelectorAll('button[data-clear-offer-key]').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const serviceKey = button.dataset.clearOfferKey;
+                    const serviceLabel = button.dataset.offerLabel;
+                    const input = container.querySelector(`input[data-offer-key="${serviceKey}"]`);
+
+                    try {
+                        await remove(ref(db, `siteSettings/serviceOffers/${serviceKey}`));
+                        if (input) input.value = '';
+                        alert(`${serviceLabel} এর অফার ব্যাজ সরানো হয়েছে।`);
+                    } catch (error) {
+                        console.error('Service offer removal failed:', error);
+                        alert('অফার ব্যাজ সরানো যায়নি। আবার চেষ্টা করুন।');
+                    }
+                });
+            });
+
+            get(ref(db, 'siteSettings/serviceOffers')).then((snapshot) => {
+                const offers = snapshot.exists() ? snapshot.val() : {};
+                SERVICE_IMAGE_CONFIG.forEach((service) => {
+                    const input = container.querySelector(`input[data-offer-key="${service.key}"]`);
+                    if (input) input.value = typeof offers[service.key]?.text === 'string' ? offers[service.key].text : '';
+                });
+            }).catch((error) => {
+                console.error('Service offer settings load failed:', error);
+            });
 
             container.querySelectorAll('input[data-service-key]').forEach(input => {
                 input.addEventListener('change', (event) => {
@@ -792,6 +1085,7 @@
         if(sessionStorage.getItem("isAdminLoggedIn") === "true") {
             adminLoginModal.style.display = "none";
             renderServiceImageSettings();
+            loadReviewManagement();
             loadAdminOrders();
             loadBannerPreview();
         }
@@ -809,6 +1103,7 @@
                 adminLoginModal.style.display = "none";
                 adminPasswordInput.value = "";
                 renderServiceImageSettings();
+                loadReviewManagement();
                 loadAdminOrders();
                 loadBannerPreview();
             } else {
@@ -1027,6 +1322,20 @@
                 'বর্তমান পাসওয়ার্ড': 'Current password', 'নতুন পাসওয়ার্ড (কমপক্ষে ৪ সংখ্যা)': 'New password (at least 4 characters)',
                 'পাসওয়ার্ড আপডেট করুন': 'Update Password', 'হোম পেজ ডাইনামিক ব্যানার': 'Homepage Dynamic Banner',
                 'ব্যানার আপলোড ও সেভ করুন': 'Upload and Save Banner', 'ডিলিট করুন': 'Delete', 'সার্ভিস কার্ডের ছবি সেট করুন': 'Set Service Card Images',
+                'সার্ভিস কার্ডের ছবি ও অফার সেট করুন': 'Set Service Card Images and Offers',
+                'প্রতিটি সেবার জন্য ঐচ্ছিক অফার/কমিশন ব্যাজ লিখে সেভ করুন। ফাঁকা রেখে সেভ করলে ব্যাজটি সরবে; বুকিং বা মূল দামে কোনো পরিবর্তন হবে না।': 'Set an optional offer or commission badge for each service. Save it empty to remove the badge; booking and base prices will not change.',
+                'অফার সেভ': 'Save Offer', 'অফার সরান': 'Remove Offer',
+                'অফার/কমিশন ট্যাগ (যেমন: ৳৫০ ক্যাশব্যাক)': 'Custom offer/commission tag (e.g. ৳50 cashback)',
+                'গ্রাহক রিভিউ ও অর্ডার পরিসংখ্যান পরিচালনা': 'Manage Customer Reviews and Order Statistics',
+                'রিভিউ যোগ করুন, সম্পাদনা বা মুছুন। সম্পন্ন অর্ডারের প্রদর্শিত সংখ্যা এখানে বদলান; এটি বুকিং রেকর্ড পরিবর্তন করে না।': 'Add, edit, or delete reviews. Change the displayed completed-order count here; this does not change booking records.',
+                'যেমন: ৫০+ সফল অর্ডার': 'e.g. 50+ successful orders',
+                'সম্পন্ন অর্ডারের প্রদর্শিত সংখ্যা': 'Displayed completed-order count',
+                'অর্ডার সংখ্যা সেভ': 'Save Order Count',
+                'গ্রাহকের নাম': 'Customer name',
+                'তারকা রেটিং (১–৫)': 'Star rating (1–5)',
+                'লোকেশন (ঐচ্ছিক)': 'Location (optional)',
+                'গ্রাহকের মন্তব্য': 'Customer comment',
+                'সম্পাদনা বাতিল': 'Cancel edit',
                 'অর্ডার আইডি': 'Order ID', 'সেবার নাম': 'Service Name', 'গ্রাহকের নাম ও ফোন': 'Customer Name and Phone',
                 'ঠিকানা ও বিবরণ': 'Address and Details', 'ছবিসমূহ': 'Images', 'স্ট্যাটাস ও পেমেন্ট ইনফো': 'Status and Payment Info', 'অ্যাকশন': 'Actions',
                 'লোড হচ্ছে...': 'Loading...', 'কোনো অর্ডার নেই': 'No orders found', 'ছবি নেই': 'No image', 'পেমেন্টের অপেক্ষায়': 'Awaiting payment',

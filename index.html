@@ -38,16 +38,29 @@
         #userMainView { width: 100%; min-width: 0; overflow-x: hidden; }
         html[lang="bn"] *, html[lang="bn"] *::before, html[lang="bn"] *::after { font-family: 'Noto Sans Bengali', 'Segoe UI', Tahoma, sans-serif !important; }
         html[lang="en"] *, html[lang="en"] *::before, html[lang="en"] *::after { font-family: 'Times New Roman', Times, serif !important; }
+        html[lang="en"] .announcement-bar, html[lang="en"] .announcement-bar * { font-family: Arial, 'Noto Sans Bengali', sans-serif !important; }
+        html[lang="en"] .review-section, html[lang="en"] .review-section * { font-family: Arial, 'Noto Sans Bengali', sans-serif !important; }
         
-        .announcement-bar { position: relative; z-index: 101; overflow: hidden; overflow: clip; padding: 10px 0; background: linear-gradient(110deg, #075f48, #087f5b 55%, #075f48); color: #fff; box-shadow: 0 3px 12px rgba(7, 54, 41, 0.2); }
-        .announcement-track { display: flex; width: max-content; animation: announcement-scroll 50s linear infinite; }
-        .announcement-message { display: flex; flex: 0 0 auto; align-items: center; gap: 0.5em; padding-right: 3em; font-size: 14px; font-weight: 700; line-height: 1.6; white-space: nowrap; }
-        .announcement-message img { width: 18px; height: 18px; flex: 0 0 18px; object-fit: contain; }
-        .announcement-message a { color: #fff; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.65); text-underline-offset: 3px; }
-        .announcement-message a:hover { text-decoration-color: #fff; }
+        .sticky-header { position: sticky; top: 0; z-index: 1000; }
+        .announcement-bar { position: relative; z-index: 101; overflow: hidden; overflow: clip; padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.18); background: linear-gradient(105deg, #063e32 0%, #087f5b 48%, #07513f 100%); color: #fff; box-shadow: 0 5px 18px rgba(4, 45, 34, 0.24); }
+        .announcement-bar::before { position: absolute; top: 0; right: 0; left: 0; height: 2px; background: linear-gradient(90deg, transparent, #a8f0cf, #fff2bd, #a8f0cf, transparent); content: ""; opacity: 0.9; }
+        .announcement-track { display: flex; width: max-content; animation: announcement-scroll 30s linear infinite; }
+        .announcement-message { display: flex; flex: 0 0 auto; align-items: center; gap: 10px; padding: 0 38px 0 14px; font-size: 13px; font-weight: 600; line-height: 1.65; white-space: nowrap; }
+        .announcement-bar { --announcement-icon-size: 34px; }
+        .announcement-icon { display: grid; width: var(--announcement-icon-size); height: var(--announcement-icon-size); flex: 0 0 var(--announcement-icon-size); place-items: center; border: 1px solid #f4c76b; border-radius: 50%; background: linear-gradient(145deg, #fff8e7, #f4d18b); box-shadow: 0 2px 10px rgba(190, 137, 43, 0.38), inset 0 1px 2px rgba(255, 255, 255, 0.95); color: #875312; font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; font-size: calc(var(--announcement-icon-size) * 0.72); line-height: 1; }
+        .announcement-label { padding: 4px 10px; border: 1px solid rgba(211, 255, 231, 0.32); border-radius: 999px; background: rgba(232, 255, 243, 0.13); color: #e3ffef; font-size: 11px; font-weight: 800; letter-spacing: 0.02em; }
+        .announcement-locations { color: #fff; font-weight: 700; }
+        .announcement-separator { color: #c5f2d9; font-size: 18px; opacity: 0.85; }
+        .announcement-offer { color: #f5fff9; }
+        .announcement-contact { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; background: rgba(0, 31, 23, 0.2); }
+        .announcement-message a { color: #fff; font-weight: 800; text-decoration: none; transition: background-color 0.18s ease, border-color 0.18s ease; }
+        .announcement-phone { padding: 3px 9px; border: 1px solid rgba(255, 255, 255, 0.32); border-radius: 999px; background: rgba(255, 255, 255, 0.12); letter-spacing: 0.03em; }
+        .announcement-whatsapp { padding: 3px 9px; border: 1px solid rgba(168, 240, 207, 0.55); border-radius: 999px; background: rgba(27, 190, 111, 0.24); }
+        .announcement-message a:hover { border-color: rgba(255, 255, 255, 0.75); background-color: rgba(255, 255, 255, 0.2); }
+        .announcement-message a:focus-visible { outline: 2px solid #fff2bd; outline-offset: 3px; }
         @keyframes announcement-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        .navbar { display: flex; flex-flow: row nowrap; justify-content: flex-start; align-items: center; background: #ffffff; padding: 14px 2.5%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; gap: 8px; overflow: visible; }
+        .navbar { display: flex; flex-flow: row nowrap; justify-content: flex-start; align-items: center; background: #ffffff; padding: 14px 2.5%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); gap: 8px; overflow: visible; }
         .mobile-search-row, .mobile-menu-backdrop, .mobile-menu-drawer, #userFirstNameDisplay { display: none; }
         .mobile-menu-toggle { position: fixed; top: 15px; right: 2.5%; z-index: 110; display: none; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border: 1px solid #d7e3e0; border-radius: 12px; background: #f5fbf8; color: #087f5b; cursor: pointer; }
         .mobile-menu-toggle svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
@@ -354,6 +367,46 @@
         .hero p { font-size: 14px; }
         .hero-primary-line,
         .hero-location-line { display: inline; }
+        .review-section { width: 100%; max-width: 1120px; margin: 28px auto; padding: 0 16px; color: #18352e; }
+        .review-section-heading { margin-bottom: 14px; color: #075f48; font-size: 22px; font-weight: 900; }
+        .review-dashboard { display: grid; grid-template-columns: minmax(220px, 0.8fr) minmax(280px, 1.2fr); gap: 20px; padding: 22px; border: 1px solid #dcebe5; border-radius: 20px; background: linear-gradient(145deg, #fff, #f2faf6); box-shadow: 0 12px 30px rgba(12, 70, 55, 0.08); }
+        .review-summary { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 16px; border-radius: 15px; background: linear-gradient(145deg, #075f48, #0b8d67); color: #fff; text-align: center; }
+        .review-average { font-size: clamp(42px, 7vw, 58px); font-weight: 900; line-height: 1; }
+        .review-out-of { margin-top: 5px; color: #e5fff2; font-size: 13px; font-weight: 700; }
+        .review-summary-stars { margin: 9px 0 4px; color: #ffe27a; font-size: 21px; letter-spacing: 2px; }
+        .review-count { color: #f3fff8; font-size: 13px; font-weight: 700; }
+        .review-orders-count { margin-top: 14px; padding: 7px 12px; border: 1px solid rgba(255,255,255,.42); border-radius: 999px; background: rgba(255,255,255,.13); font-size: 13px; font-weight: 800; }
+        .rating-breakdown { align-self: center; }
+        .rating-breakdown h3 { margin-bottom: 12px; color: #18352e; font-size: 15px; font-weight: 900; }
+        .rating-row { display: grid; grid-template-columns: 42px minmax(0, 1fr) 42px; align-items: center; gap: 9px; margin: 8px 0; color: #435a52; font-size: 12px; font-weight: 800; }
+        .rating-row-label { white-space: nowrap; }
+        .rating-bar-track { height: 10px; overflow: hidden; border-radius: 999px; background: #dfeae5; }
+        .rating-bar-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f5b82e, #f18a1a); transition: width .35s ease; }
+        .rating-row-count { color: #526660; text-align: right; }
+        .review-cards { display: grid; grid-auto-columns: calc((100% - 42px) / 4); grid-auto-flow: column; gap: 14px; margin-top: 16px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #a9c9bc transparent; padding: 2px 2px 10px; }
+        .review-card { display: flex; min-width: 280px; flex-direction: column; padding: 15px; border: 1px solid #e2e9e5; border-radius: 12px; background: linear-gradient(155deg, #fff 0%, #fbfdfc 100%); box-shadow: 0 5px 18px rgba(15, 55, 43, .07); scroll-snap-align: start; transition: transform .2s ease, box-shadow .2s ease; }
+        .review-card:hover { transform: translateY(-2px); box-shadow: 0 9px 22px rgba(15, 55, 43, .11); }
+        .review-card-header { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .review-card-avatar { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border: 2px solid rgba(255,255,255,.85); border-radius: 50%; color: #fff; font-size: 18px; font-weight: 900; box-shadow: 0 2px 8px rgba(18, 55, 45, .16); }
+        .review-card-identity { min-width: 0; flex: 1; }
+        .review-card-name { display: block; overflow: hidden; color: #173c30; font-size: 14px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+        .review-card-location { display: block; overflow: hidden; margin-top: 3px; color: #708078; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+        .review-card-stars { flex: 0 0 auto; color: #e5a600; font-size: 13px; letter-spacing: 1px; white-space: nowrap; }
+        .review-card-comment { display: -webkit-box; margin: 13px 0 0; padding: 11px 12px; overflow: hidden; border-radius: 9px; background: #f4f8f6; color: #43534d; font-size: 13px; font-weight: 600; line-height: 1.75; overflow-wrap: break-word; word-break: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
+        .review-empty { grid-column: 1 / -1; padding: 22px; border: 1px dashed #cbdcd4; border-radius: 14px; color: #60736e; text-align: center; font-size: 13px; font-weight: 700; }
+        .all-reviews-button { display: none; margin: 12px 0 0 auto; padding: 9px 15px; border: 1px solid #087f5b; border-radius: 999px; background: #fff; color: #075f48; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+        .all-reviews-button:hover { background: #edfaf5; }
+        .all-reviews-dialog { width: min(720px, calc(100% - 28px)); max-width: none; max-height: min(80vh, 720px); padding: 22px; border: 0; border-radius: 18px; color: #18352e; box-shadow: 0 20px 60px rgba(0, 0, 0, .28); }
+        .all-reviews-dialog::backdrop { background: rgba(9, 30, 24, .62); }
+        .all-reviews-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+        .all-reviews-dialog-header h2 { margin: 0; color: #075f48; font-size: 20px; }
+        .all-reviews-close { width: 36px; height: 36px; border: 0; border-radius: 50%; background: #edf5f1; color: #18352e; font-size: 24px; line-height: 1; cursor: pointer; }
+        .all-reviews-list { display: grid; gap: 10px; max-height: calc(80vh - 100px); overflow-y: auto; padding: 2px 4px 2px 2px; }
+        .all-reviews-list .review-card-comment { display: block; overflow: visible; }
+        .review-cards.review-cards-empty { display: block; overflow: visible; }
+        @media (min-width: 769px) and (max-width: 1040px) {
+            .review-cards { grid-auto-columns: calc((100% - 14px) / 2); }
+        }
 
         .dynamic-banner-shell { width: 100%; max-width: 1280px; margin: 18px auto 0; padding: 0 18px; }
         .dynamic-banner {
@@ -528,8 +581,8 @@
         .services-container h2 { margin-bottom: 15px; font-size: 20px; color: #333; }
         .services-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; min-width: 0; }
         
-        .service-card { background: white; padding: 15px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,128,96,0.08); }
-        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 22px rgba(12,70,55,0.12); }
+        .service-card { background: #fff; padding: 16px; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); text-align: center; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(15, 55, 43, 0.1); }
         
         .service-card .img-box {
             height: 120px;
@@ -540,7 +593,7 @@
             justify-content: center;
             font-weight: bold;
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             font-size: 16px;
             position: relative;
             overflow: hidden;
@@ -565,9 +618,10 @@
         .service-card .img-box .card-icon {
             display: none;
         }
-        .service-card h3 { margin-bottom: 6px; font-size: 18px; font-weight: 900; }
-        .service-card p { font-size: 14px; color: #666; margin-bottom: 12px; font-weight: 600; }
-        .btn-order { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 42px; background: linear-gradient(135deg, #0b9f76, #067b59); color: white; border: 1px solid rgba(255,255,255,0.24); padding: 9px 14px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 900; font-size: 14px; letter-spacing: 0.01em; box-shadow: 0 8px 16px rgba(6,123,89,0.2), inset 0 1px 0 rgba(255,255,255,0.2); transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; }
+        .service-offer-badge { position: absolute; top: 8px; right: 8px; z-index: 2; max-width: calc(100% - 16px); padding: 6px 11px; border: 1px solid #fff; border-radius: 999px; background: #ff0000; color: #fff; box-shadow: 0 4px 14px rgba(48, 0, 10, 0.55), 0 0 0 2px rgba(255, 0, 0, 0.3); font-size: 12px; font-weight: 900; line-height: 1.4; text-align: center; overflow-wrap: anywhere; pointer-events: none; }
+        .service-card h3 { margin-bottom: 7px; color: #1f2937; font-size: 18px; font-weight: 700; }
+        .service-card p { margin-bottom: 12px; color: #6b7280; font-size: 14px; font-weight: 500; }
+        .btn-order { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 42px; min-height: 42px; background: linear-gradient(135deg, #0b9f76, #067b59); color: white; border: 1px solid rgba(255,255,255,0.24); padding: 10px 12px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: 700; font-size: 14px; letter-spacing: 0.01em; box-shadow: 0 4px 10px rgba(6,123,89,0.16); transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; }
         .btn-order::after { content: '→'; font-family: 'Segoe UI Symbol', sans-serif; font-size: 17px; line-height: 1; transition: transform 0.2s ease; }
         .btn-order:hover { transform: translateY(-2px); filter: saturate(1.08); box-shadow: 0 12px 22px rgba(6,123,89,0.28), inset 0 1px 0 rgba(255,255,255,0.24); }
         .btn-order:hover::after { transform: translateX(3px); }
@@ -897,12 +951,17 @@
             .hero-location-line { margin-top: 2px; }
             .services-container { width: 100%; margin: 15px auto; padding: 0 12px; }
             .services-container h2 { font-size: clamp(11px, 3.2vw, 15px); white-space: nowrap; }
+            .review-section { margin: 20px auto; padding: 0 12px; }
+            .review-section-heading { font-size: 18px; }
+            .review-dashboard { grid-template-columns: 1fr; gap: 14px; padding: 14px; }
+            .review-summary { padding: 15px 12px; }
+            .review-cards { grid-auto-columns: minmax(280px, 86%); gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; }
             .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-            .service-card { min-width: 0; padding: 8px; border-radius: 12px; }
-            .service-card .img-box { height: clamp(96px, 26vw, 128px); margin-bottom: 8px; }
-            .service-card h3 { font-size: clamp(12px, 2.2vw, 16px); line-height: 1.3; }
-            .service-card p { font-size: clamp(10px, 1.8vw, 13px); line-height: 1.35; margin-bottom: 8px; }
-            .btn-order { min-height: 36px; padding: 7px 4px; font-size: 11px; border-radius: 10px; gap: 4px; }
+            .service-card { min-width: 0; padding: 12px; border-radius: 12px; }
+            .service-card .img-box { height: clamp(96px, 26vw, 128px); margin-bottom: 12px; }
+            .service-card h3 { font-size: clamp(12px, 2.2vw, 16px); line-height: 1.35; }
+            .service-card p { font-size: clamp(10px, 1.8vw, 13px); line-height: 1.45; margin-bottom: 10px; }
+            .btn-order { height: 42px; min-height: 42px; padding: 10px 12px; font-size: 14px; border-radius: 10px; gap: 7px; }
             .btn-order::after { font-size: 15px; }
             footer {
                 padding: 30px 20px;
@@ -941,7 +1000,6 @@
             .service-card .img-box { height: 192px; }
             .service-card h3 { font-size: 19px; }
             .service-card p { font-size: 15px; }
-            .btn-order { min-height: 44px; padding: 10px 14px; font-size: 14px; }
             .nav-links { flex: 0 0 auto; }
             .nav-links > * { flex: 0 0 auto; }
         }
@@ -958,7 +1016,10 @@
         }
 
         @media (max-width: 768px) {
-            .announcement-message { font-size: 12px; }
+            .announcement-bar { padding: 7px 0; }
+            .announcement-message { gap: 7px; padding-right: 28px; font-size: 12px; }
+            .announcement-label { padding: 3px 8px; font-size: 10px; }
+            .announcement-contact { gap: 5px; padding: 3px 7px; }
         }
 
         @media (max-width: 420px) {
@@ -978,15 +1039,24 @@
 </head>
 <body>
 
+    <div class="sticky-header">
     <aside class="announcement-bar" aria-label="সেবা সংক্রান্ত ঘোষণা">
         <div class="announcement-track">
             <div class="announcement-message">
-                <img src="https://static.xx.fbcdn.net/images/emoji.php/v9/t39/1/16/1f4e2.png" alt="📢">
-                <span>বর্তমানে আমাদের সেবা চালু আছে: কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর) • জরুরি ঔষধ, সিলিন্ডার,ফ্রেশ মিল্ক, ফুড ও হোম সার্ভিস ডেলিভারির জন্য কল বা হোয়াটসঅ্যাপ করুন: <a href="tel:+8801577707450" aria-label="01577-707450 নম্বরে কল করুন">01577-707450</a> • <a href="https://wa.me/8801577707450" aria-label="ShebaNow-এর অফিসিয়াল WhatsApp-এ যোগাযোগ করুন">WhatsApp</a></span>
+                <span class="announcement-icon" aria-hidden="true">📢</span>
+                <span class="announcement-label">সেবা চালু</span>
+                <span class="announcement-locations">কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর)</span>
+                <span class="announcement-separator" aria-hidden="true">•</span>
+                <span class="announcement-offer">ঔষধ, সিলিন্ডার, ফ্রেশ মিল্ক, ফুড ডেলিভারি সহ নিচের যেকোনো হোম সার্ভিসের জন্য</span>
+                <span class="announcement-contact"><span>কল বা হোয়াটসঅ্যাপ করুন</span><a class="announcement-phone" href="tel:+8801577707450" aria-label="01577-707450 নম্বরে কল করুন">01577-707450</a><a class="announcement-whatsapp" href="https://wa.me/8801577707450" aria-label="ShebaNow-এর অফিসিয়াল WhatsApp-এ যোগাযোগ করুন">WhatsApp</a></span>
             </div>
             <div class="announcement-message" aria-hidden="true">
-                <img src="https://static.xx.fbcdn.net/images/emoji.php/v9/t39/1/16/1f4e2.png" alt="">
-                <span>বর্তমানে আমাদের সেবা চালু আছে: কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর) • জরুরি ঔষধ, সিলিন্ডার,ফ্রেশ মিল্ক, ফুড ও হোম সার্ভিস ডেলিভারির জন্য কল বা হোয়াটসঅ্যাপ করুন: <a href="tel:+8801577707450" tabindex="-1">01577-707450</a> • <a href="https://wa.me/8801577707450" tabindex="-1">WhatsApp</a></span>
+                <span class="announcement-icon" aria-hidden="true">📢</span>
+                <span class="announcement-label">সেবা চালু</span>
+                <span class="announcement-locations">কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর)</span>
+                <span class="announcement-separator" aria-hidden="true">•</span>
+                <span class="announcement-offer">ঔষধ, সিলিন্ডার, ফ্রেশ মিল্ক, ফুড ডেলিভারি সহ নিচের যেকোনো হোম সার্ভিসের জন্য</span>
+                <span class="announcement-contact"><span>কল বা হোয়াটসঅ্যাপ করুন</span><a class="announcement-phone" href="tel:+8801577707450" tabindex="-1">01577-707450</a><a class="announcement-whatsapp" href="https://wa.me/8801577707450" tabindex="-1">WhatsApp</a></span>
             </div>
         </div>
     </aside>
@@ -1039,6 +1109,7 @@
             <button type="button" id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="মেনু খুলুন" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg></button>
         </nav>
     </header>
+    </div>
     <div class="mobile-search-row">
         <div class="search-box">
             <input type="text" id="mobileSearchInput" placeholder="কী সেবা খুঁজছেন? (যেমন: AC servicing)" aria-label="সেবা খুঁজুন">
@@ -1318,6 +1389,32 @@
                 </div>
             </div>
         </section>
+
+        <section class="review-section" aria-labelledby="reviewSectionHeading">
+            <h2 id="reviewSectionHeading" class="review-section-heading">গ্রাহকদের রিভিউ ও রেটিং</h2>
+            <div class="review-dashboard" id="reviewDashboard" aria-live="polite">
+                <div class="review-summary">
+                    <div class="review-average" id="reviewAverage">০.০</div>
+                    <div class="review-out-of">৫-এর মধ্যে</div>
+                    <div class="review-summary-stars" id="reviewSummaryStars" aria-label="কোনো রেটিং নেই">☆☆☆☆☆</div>
+                    <div class="review-count" id="reviewCount">রিভিউ লোড হচ্ছে...</div>
+                    <div class="review-orders-count" id="reviewOrdersCount">অর্ডার লোড হচ্ছে...</div>
+                </div>
+                <div class="rating-breakdown">
+                    <h3>রেটিংয়ের পরিসংখ্যান</h3>
+                    <div id="ratingBreakdown"></div>
+                </div>
+            </div>
+            <div class="review-cards" id="reviewCards" aria-live="polite"></div>
+            <button type="button" class="all-reviews-button" id="allReviewsButton" aria-haspopup="dialog">সব রিভিউ দেখুন</button>
+        </section>
+        <dialog class="all-reviews-dialog" id="allReviewsDialog" aria-labelledby="allReviewsTitle">
+            <div class="all-reviews-dialog-header">
+                <h2 id="allReviewsTitle">সকল গ্রাহক রিভিউ</h2>
+                <button type="button" class="all-reviews-close" id="closeAllReviews" aria-label="বন্ধ করুন">&times;</button>
+            </div>
+            <div class="all-reviews-list" id="allReviewsList"></div>
+        </dialog>
     </div>
 
     <!-- Floating WhatsApp Widget with Pre-filled Service Options Menu -->
@@ -1735,6 +1832,149 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
+        const REVIEW_PATH = 'siteSettings/reviews';
+        const DEFAULT_COMPLETED_ORDERS_LABEL = '0+ সফল অর্ডার';
+
+        function normalizeReviewSnapshot(snapshot) {
+            const reviews = [];
+            snapshot.forEach((child) => {
+                const review = child.val() || {};
+                const rating = Number(review.rating);
+                if (!review.name || !review.comment || !Number.isInteger(rating) || rating < 1 || rating > 5) return;
+                reviews.push({ id: child.key, ...review, rating });
+            });
+            return reviews.sort((first, second) => Number(second.updatedAt || second.createdAt || 0) - Number(first.updatedAt || first.createdAt || 0));
+        }
+
+        function createReviewCard(review) {
+            const avatarColors = ['#0b8061', '#2875b9', '#8a57b5', '#d06a35', '#168c91', '#bb4d70'];
+            const firstCharacter = Array.from(review.name.trim())[0] || '?';
+            const colorIndex = Array.from(review.name).reduce((total, character) => total + character.codePointAt(0), 0) % avatarColors.length;
+            const card = document.createElement('article');
+            card.className = 'review-card';
+            const header = document.createElement('div');
+            header.className = 'review-card-header';
+            const avatar = document.createElement('span');
+            avatar.className = 'review-card-avatar';
+            avatar.textContent = firstCharacter;
+            avatar.style.backgroundColor = avatarColors[colorIndex];
+            avatar.setAttribute('aria-hidden', 'true');
+            const identity = document.createElement('div');
+            identity.className = 'review-card-identity';
+            const name = document.createElement('strong');
+            name.className = 'review-card-name';
+            name.textContent = review.name;
+            identity.append(name);
+            if (review.location) {
+                const location = document.createElement('span');
+                location.className = 'review-card-location';
+                location.textContent = `📍 ${review.location}`;
+                identity.append(location);
+            }
+            const stars = document.createElement('span');
+            stars.className = 'review-card-stars';
+            stars.textContent = `${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}`;
+            stars.setAttribute('aria-label', `${review.rating} / 5`);
+            const comment = document.createElement('p');
+            comment.className = 'review-card-comment';
+            comment.textContent = review.comment;
+            header.append(avatar, identity, stars);
+            card.append(header, comment);
+            return card;
+        }
+
+        async function loadReviewStatistics() {
+            const reviewCount = document.getElementById('reviewCount');
+            const reviewOrdersCount = document.getElementById('reviewOrdersCount');
+            const ratingBreakdown = document.getElementById('ratingBreakdown');
+            const reviewCards = document.getElementById('reviewCards');
+            const allReviewsButton = document.getElementById('allReviewsButton');
+            const allReviewsList = document.getElementById('allReviewsList');
+
+            try {
+                const [reviewsSnapshot, ordersSnapshot] = await Promise.all([
+                    get(ref(db, REVIEW_PATH)),
+                    get(ref(db, 'siteSettings/reviewStats/completedOrdersLabel'))
+                ]);
+                const reviews = reviewsSnapshot.exists() ? normalizeReviewSnapshot(reviewsSnapshot) : [];
+                const completedOrdersLabel = ordersSnapshot.exists() && typeof ordersSnapshot.val() === 'string'
+                    ? ordersSnapshot.val()
+                    : DEFAULT_COMPLETED_ORDERS_LABEL;
+                const total = reviews.length;
+                const average = total ? reviews.reduce((sum, review) => sum + review.rating, 0) / total : 0;
+                const averageText = average.toFixed(1);
+                document.getElementById('reviewAverage').textContent = averageText;
+                document.getElementById('reviewSummaryStars').textContent = `${'★'.repeat(Math.round(average))}${'☆'.repeat(5 - Math.round(average))}`;
+                document.getElementById('reviewSummaryStars').setAttribute('aria-label', `${averageText} / 5`);
+                reviewCount.dataset.reviewTotal = String(total);
+                reviewCount.textContent = `${total.toLocaleString('bn-BD')}টি গ্রাহক রিভিউ`;
+                reviewOrdersCount.textContent = completedOrdersLabel;
+                ratingBreakdown.replaceChildren();
+                reviewCards.replaceChildren();
+                reviewCards.classList.remove('review-cards-empty');
+                allReviewsList.replaceChildren();
+                allReviewsButton.style.display = total > 4 ? 'block' : 'none';
+
+                for (let rating = 5; rating >= 1; rating -= 1) {
+                    const count = reviews.filter((review) => review.rating === rating).length;
+                    const percentage = total ? Math.round((count / total) * 100) : 0;
+                    const row = document.createElement('div');
+                    row.className = 'rating-row';
+                    row.dataset.rating = String(rating);
+                    row.dataset.percentage = String(percentage);
+                    const label = document.createElement('span');
+                    label.className = 'rating-row-label';
+                    label.textContent = `${rating} ★`;
+                    const track = document.createElement('div');
+                    track.className = 'rating-bar-track';
+                    track.setAttribute('role', 'progressbar');
+                    track.setAttribute('aria-label', `${rating} তারকা রেটিং`);
+                    track.setAttribute('aria-valuemin', '0');
+                    track.setAttribute('aria-valuemax', '100');
+                    track.setAttribute('aria-valuenow', String(percentage));
+                    const fill = document.createElement('div');
+                    fill.className = 'rating-bar-fill';
+                    fill.style.width = `${percentage}%`;
+                    track.append(fill);
+                    const value = document.createElement('span');
+                    value.className = 'rating-row-count';
+                    value.textContent = `${percentage.toLocaleString('bn-BD')}%`;
+                    row.append(label, track, value);
+                    ratingBreakdown.append(row);
+                }
+
+                if (!reviews.length) {
+                    const empty = document.createElement('p');
+                    empty.className = 'review-empty';
+                    empty.textContent = 'এখনো কোনো গ্রাহক রিভিউ যোগ করা হয়নি।';
+                    reviewCards.append(empty);
+                    reviewCards.classList.add('review-cards-empty');
+                    reviewCount.textContent = 'এখনো কোনো রিভিউ নেই';
+                    return;
+                }
+
+                reviews.slice(0, 4).forEach((review) => reviewCards.append(createReviewCard(review)));
+                if (total > 4) {
+                    reviews.forEach((review) => allReviewsList.append(createReviewCard(review)));
+                }
+            } catch (error) {
+                console.error('Review statistics load failed:', error);
+                reviewCount.textContent = 'রিভিউ লোড করা যায়নি';
+                reviewOrdersCount.textContent = 'অর্ডার সংখ্যা লোড করা যায়নি';
+                ratingBreakdown.textContent = 'রেটিংয়ের পরিসংখ্যান লোড করা যায়নি।';
+                reviewCards.innerHTML = '<p class="review-empty">রিভিউ লোড করা যায়নি। পরে আবার চেষ্টা করুন।</p>';
+                reviewCards.classList.add('review-cards-empty');
+                allReviewsButton.style.display = 'none';
+            }
+        }
+
+        const allReviewsDialog = document.getElementById('allReviewsDialog');
+        document.getElementById('allReviewsButton').addEventListener('click', () => allReviewsDialog.showModal());
+        document.getElementById('closeAllReviews').addEventListener('click', () => allReviewsDialog.close());
+        allReviewsDialog.addEventListener('click', (event) => {
+            if (event.target === allReviewsDialog) allReviewsDialog.close();
+        });
+        loadReviewStatistics();
         const VAPID_KEY = "BHuzi3JesVaj-qjlybldwfdR6EvxOLAzE_a5tIBUanLNyDiYf9ZBqaG_d0lbUZkS5FjMNwDeziHuGaDiABy7iEI";
         let messaging;
         let fcmToken;
@@ -2199,21 +2439,44 @@
         }
 
         window.applyServiceCardImages = async function() {
-            const serviceImagesRef = ref(db, 'siteSettings/serviceImages');
+            let customImages = {};
             try {
-                const snapshot = await get(serviceImagesRef);
-                const customImages = snapshot.exists() ? snapshot.val() : {};
-
-                document.querySelectorAll('.service-card').forEach((card) => {
-                    const img = card.querySelector('img');
-                    if (!img) return;
-                    const key = resolveServiceImageKey(card);
-                    const customUrl = customImages[key] && customImages[key].imageUrl ? customImages[key].imageUrl : null;
-                    img.src = customUrl || img.dataset.defaultUrl || img.src;
-                });
+                const imageSnapshot = await get(ref(db, 'siteSettings/serviceImages'));
+                customImages = imageSnapshot.exists() ? imageSnapshot.val() : {};
             } catch (error) {
                 console.error('Service image load failed:', error);
             }
+
+            let serviceOffers = {};
+            try {
+                const offerSnapshot = await get(ref(db, 'siteSettings/serviceOffers'));
+                serviceOffers = offerSnapshot.exists() ? offerSnapshot.val() : {};
+            } catch (error) {
+                console.error('Service offer load failed:', error);
+            }
+
+            document.querySelectorAll('.service-card').forEach((card) => {
+                const key = resolveServiceImageKey(card);
+                const img = card.querySelector('img');
+                if (img) {
+                    const customUrl = customImages[key] && customImages[key].imageUrl ? customImages[key].imageUrl : null;
+                    img.src = customUrl || img.dataset.defaultUrl || img.src;
+                }
+
+                const offerText = typeof serviceOffers[key]?.text === 'string' ? serviceOffers[key].text.trim() : '';
+                let badge = card.querySelector('.service-offer-badge');
+                if (!offerText) {
+                    badge?.remove();
+                    return;
+                }
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'service-offer-badge';
+                    badge.setAttribute('aria-label', 'বিশেষ অফার');
+                    card.querySelector('.img-box')?.append(badge);
+                }
+                if (badge) badge.textContent = offerText;
+            });
         };
 
         let bannerImages = [...DEFAULT_BANNER_IMAGES];
@@ -3699,7 +3962,24 @@
     <script>
         (function () {
             const languagePairs = {
+                'সেবা সংক্রান্ত ঘোষণা': 'Service announcement',
+                'সেবা চালু': 'Service available',
+                'কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর)': 'Konabari, Ambag, Baimail, Deowalia Bari, Jailkhana Gate, Jarun, Parijat and surrounding areas (Gazipur)',
+                'কোনাবাড়ী, আমবাগ, বাইমাইল, দেওয়ালীয়া বাড়ি, জেলখানা গেইট, জরুন, পারিজাত ও সংলগ্ন এলাকা (গাজীপুর)': 'Konabari, Ambag, Baimail, Deowalia Bari, Jailkhana Gate, Jarun, Parijat and surrounding areas (Gazipur)',
+                'ঔষধ, সিলিন্ডার, ফ্রেশ মিল্ক, ফুড ডেলিভারি সহ নিচের যেকোনো হোম সার্ভিসের জন্য': 'For medicine, gas cylinders, fresh milk, food delivery, and any home service listed below',
+                'কল বা হোয়াটসঅ্যাপ করুন': 'Call or WhatsApp',
+                '01577-707450 নম্বরে কল করুন': 'Call 01577-707450',
+                'ShebaNow-এর অফিসিয়াল WhatsApp-এ যোগাযোগ করুন': 'Contact ShebaNow on official WhatsApp',
                 'সব সেবা': 'All Services', 'আমার বুকিং': 'My Bookings', 'হোম': 'Home', 'কল': 'Call',
+                'গ্রাহকদের রিভিউ ও রেটিং': 'Customer Reviews & Ratings', '৫-এর মধ্যে': 'out of 5',
+                'রেটিংয়ের পরিসংখ্যান': 'Rating Breakdown', 'সকল গ্রাহক রিভিউ': 'All Customer Reviews',
+                'সব রিভিউ দেখুন': 'See All Reviews', 'এখনো কোনো গ্রাহক রিভিউ যোগ করা হয়নি।': 'No customer reviews have been added yet.',
+                'এখনো কোনো রিভিউ নেই': 'No reviews yet',
+                'রিভিউ লোড হচ্ছে...': 'Loading reviews...', 'রিভিউ লোড করা যায়নি': 'Could not load reviews',
+                'অর্ডার সংখ্যা লোড করা যায়নি': 'Could not load order count',
+                'রেটিংয়ের পরিসংখ্যান লোড করা যায়নি।': 'Could not load rating statistics.',
+                'রিভিউ লোড করা যায়নি। পরে আবার চেষ্টা করুন।': 'Could not load reviews. Please try again later.',
+                'টি গ্রাহক রিভিউ': ' customer reviews', 'সফল অর্ডার': 'successful orders',
                 'লগইন': 'Log in', 'লগইন করুন': 'Log in', 'রেজিস্ট্রেশন করুন': 'Register', 'রেজিস্ট্রেশন': 'Register',
                 'নতুন অ্যাকাউন্ট খুলতে চান?': 'Create a new account?', 'আগেই অ্যাকাউন্ট আছে?': 'Already have an account?',
                 'খুঁজুন': 'Search', 'কী সেবা খুঁজছেন? (যেমন: AC servicing)': 'What service are you looking for? (e.g. AC servicing)',
@@ -3778,12 +4058,34 @@
                 lastRenderedText.set(node, renderedText);
             }
 
+            function updateReviewLanguage() {
+                const isEnglish = currentLanguage === 'en';
+                const reviewCount = document.getElementById('reviewCount');
+                if (reviewCount?.dataset.reviewTotal !== undefined) {
+                    const total = Number(reviewCount.dataset.reviewTotal);
+                    reviewCount.textContent = total
+                        ? `${total.toLocaleString(isEnglish ? 'en' : 'bn-BD')} ${isEnglish ? 'customer reviews' : 'টি গ্রাহক রিভিউ'}`
+                        : isEnglish ? 'No reviews yet' : 'এখনো কোনো রিভিউ নেই';
+                }
+                document.querySelectorAll('#ratingBreakdown .rating-row').forEach((row) => {
+                    const rating = Number(row.dataset.rating);
+                    const percentage = Number(row.dataset.percentage);
+                    const label = row.querySelector('.rating-row-label');
+                    const value = row.querySelector('.rating-row-count');
+                    const track = row.querySelector('.rating-bar-track');
+                    if (label) label.textContent = `${rating} ★`;
+                    if (value) value.textContent = `${percentage.toLocaleString(isEnglish ? 'en' : 'bn-BD')}%`;
+                    if (track) track.setAttribute('aria-label', isEnglish ? `${rating}-star rating` : `${rating} তারকা রেটিং`);
+                });
+            }
+
             function translatePage() {
                 isTranslating = true;
                 document.documentElement.lang = currentLanguage === 'en' ? 'en' : 'bn';
                 document.title = currentLanguage === 'en' ? 'ShebaNow - All services in one place' : 'ShebaNow - আপনার প্রয়োজনীয় সকল সেবা এক জায়গায়';
                 const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
                 while (walker.nextNode()) translateTextNode(walker.currentNode);
+                updateReviewLanguage();
                 document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach((field) => {
                     if (!field.dataset.originalPlaceholder) field.dataset.originalPlaceholder = field.placeholder;
                     field.placeholder = replaceLanguageText(field.dataset.originalPlaceholder);
@@ -3792,6 +4094,14 @@
                 if (languageLabel) languageLabel.textContent = currentLanguage === 'en' ? 'বাংলা' : 'English';
                 const languageToggle = document.getElementById('languageToggle');
                 if (languageToggle) languageToggle.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch to Bengali' : 'Switch to English');
+                const announcementBar = document.querySelector('.announcement-bar');
+                if (announcementBar) announcementBar.setAttribute('aria-label', currentLanguage === 'en' ? 'Service announcement' : 'সেবা সংক্রান্ত ঘোষণা');
+                document.querySelectorAll('.announcement-phone').forEach((link) => {
+                    link.setAttribute('aria-label', currentLanguage === 'en' ? 'Call 01577-707450' : '01577-707450 নম্বরে কল করুন');
+                });
+                document.querySelectorAll('.announcement-whatsapp').forEach((link) => {
+                    link.setAttribute('aria-label', currentLanguage === 'en' ? 'Contact ShebaNow on official WhatsApp' : 'ShebaNow-এর অফিসিয়াল WhatsApp-এ যোগাযোগ করুন');
+                });
                 const profileAllServices = document.getElementById('profileAllServices');
                 if (profileAllServices) profileAllServices.textContent = currentLanguage === 'en' ? 'All Services' : 'সব সেবা';
                 const bookingLabel = currentLanguage === 'en' ? 'My Bookings' : 'আমার বুকিং';
