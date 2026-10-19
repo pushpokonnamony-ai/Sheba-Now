@@ -185,11 +185,11 @@
         .notification-bell svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
         .notification-bell.has-unread { border-color: rgba(217, 83, 79, 0.35); animation: notification-pulse 2.4s ease-in-out infinite; }
         .notification-badge { position: absolute; top: -7px; right: -7px; min-width: 20px; height: 20px; padding: 0 5px; border: 2px solid #fff; border-radius: 999px; background: linear-gradient(135deg, #e96a5f, #c63838); color: #fff; font-size: 10px; font-weight: 900; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 9px rgba(198, 56, 56, 0.28); }
-        .notification-dropdown { position: absolute; top: calc(100% + 13px); right: 0; width: min(370px, 90vw); max-height: 410px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; display: none; padding: 12px; background: rgba(255,255,255,0.97); border: 1px solid rgba(15, 155, 114, 0.15); border-radius: 17px; box-shadow: 0 22px 48px rgba(15,23,42,0.18); z-index: 200; backdrop-filter: blur(14px); }
+        .notification-dropdown { position: absolute; top: calc(100% + 18px); right: 0; width: min(370px, 90vw); max-height: 410px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; display: none; padding: 12px; background: rgba(255,255,255,0.97); border: 1px solid rgba(15, 155, 114, 0.15); border-radius: 17px; box-shadow: 0 22px 48px rgba(15,23,42,0.18); z-index: 200; backdrop-filter: blur(14px); }
         .notification-dropdown.show { display: block; }
         .notification-dropdown h3 { color: #087f5b; font-size: 16px; margin: 4px 6px 10px; }
         .notification-empty { padding: 26px 8px; color: #778782; text-align: center; font-size: 13px; }
-        .notification-item { display: grid; grid-template-columns: 46px 1fr; gap: 11px; padding: 12px 9px; border-bottom: 1px solid #edf2f1; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; }
+        .notification-item { display: grid; grid-template-columns: 46px minmax(0, 1fr) 28px; align-items: start; gap: 11px; padding: 12px 9px; border-bottom: 1px solid #edf2f1; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; }
         .notification-item:last-child { border-bottom: none; }
         .notification-item:hover { background: #f8fcfa; transform: translateX(2px); }
         .notification-item.unread { background: linear-gradient(100deg, #effbf6, #fffdf7); border-radius: 12px; }
@@ -199,7 +199,7 @@
         .notification-item p { margin-top: 4px; color: #536560; font-size: 12px; line-height: 1.5; }
         .notification-item time { display: block; margin-top: 6px; color: #87928f; font-size: 10px; }
         .notification-item-content { min-width: 0; }
-        .notification-delete-btn { display: grid; place-items: center; align-self: start; width: 28px; height: 28px; margin-left: auto; border: 1px solid #f1d4d4; border-radius: 9px; background: #fff7f7; color: #c2413a; cursor: pointer; opacity: 0.72; transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease, transform 0.2s ease; }
+        .notification-delete-btn { display: grid; place-items: center; align-self: start; width: 28px; height: 28px; margin-left: auto; border: 1px solid #f1d4d4; border-radius: 9px; background: #fff7f7; color: #c2413a; cursor: pointer; opacity: 0.85; transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease, transform 0.2s ease; }
         .notification-delete-btn:hover { opacity: 1; background: #ffe9e8; color: #a92f2a; transform: translateY(-1px); }
         .notification-delete-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
         .notification-dropdown h3 { letter-spacing: 0.01em; font-weight: 900; }
@@ -257,7 +257,7 @@
         .profile-trigger[aria-expanded="true"] .profile-caret { transform: rotate(180deg); }
         .profile-dropdown {
             position: absolute;
-            top: calc(100% + 10px);
+            top: calc(100% + 16px);
             right: 0;
             min-width: 210px;
             background: rgba(255,255,255,0.98);
@@ -394,6 +394,7 @@
         .review-card-location { display: block; overflow: hidden; margin-top: 3px; color: #708078; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
         .review-card-stars { flex: 0 0 auto; color: #e5a600; font-size: 13px; letter-spacing: 1px; white-space: nowrap; }
         .review-card-comment { display: -webkit-box; margin: 13px 0 0; padding: 11px 12px; overflow: hidden; border-radius: 9px; background: #f4f8f6; color: #43534d; font-size: 13px; font-weight: 600; line-height: 1.75; overflow-wrap: break-word; word-break: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
+        .review-card-date { margin: 8px 3px 0; color: #7b8983; font-size: 11px; font-weight: 700; }
         .review-empty { grid-column: 1 / -1; padding: 22px; border: 1px dashed #cbdcd4; border-radius: 14px; color: #60736e; text-align: center; font-size: 13px; font-weight: 700; }
         .all-reviews-button { display: none; margin: 12px 0 0 auto; padding: 9px 15px; border: 1px solid #087f5b; border-radius: 999px; background: #fff; color: #075f48; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
         .all-reviews-button:hover { background: #edfaf5; }
@@ -853,11 +854,18 @@
             }
             .profile-dropdown {
                 position: fixed;
-                top: 70px;
+                top: calc(var(--sticky-header-height, 110px) + 8px);
                 right: 12px;
                 width: min(78vw, 230px);
                 max-width: calc(100vw - 18px);
                 min-width: 0;
+            }
+            .notification-dropdown {
+                position: fixed;
+                top: calc(var(--sticky-header-height, 110px) + 8px);
+                right: 12px;
+                width: min(370px, calc(100vw - 24px));
+                max-height: min(60vh, 410px);
             }
             .profile-summary { display: block; }
             .profile-dropdown a,
@@ -873,18 +881,18 @@
             .profile-dropdown .profile-summary span { font-size: 11px; }
             .notification-dropdown {
                 position: fixed;
-                top: 68px;
-                left: 0 !important;
-                right: auto !important;
-                width: 100vw !important;
-                max-height: calc(100vh - 88px);
+                top: calc(var(--sticky-header-height, 110px) + 8px);
+                left: auto;
+                right: 12px;
+                width: min(370px, calc(100vw - 24px));
+                max-height: min(60vh, 410px);
                 overflow-y: auto;
                 padding: 15px 14px 20px;
-                border-radius: 0 0 20px 20px;
+                border-radius: 17px;
                 z-index: 2500;
             }
             .notification-dropdown h3 { font-size: 17px; margin: 2px 5px 12px; }
-            .notification-item { grid-template-columns: 50px minmax(0, 1fr); gap: 12px; padding: 13px 8px; }
+            .notification-item { grid-template-columns: 50px minmax(0, 1fr) 28px; gap: 12px; padding: 13px 8px; }
             .notification-item-media { width: 50px; height: 50px; }
             .notification-item strong { font-size: 14px; line-height: 1.45; }
             .notification-item p { font-size: 13px; line-height: 1.6; }
@@ -1879,10 +1887,34 @@
             const comment = document.createElement('p');
             comment.className = 'review-card-comment';
             comment.textContent = review.comment;
+            const reviewDate = document.createElement('time');
+            reviewDate.className = 'review-card-date';
+            reviewDate.dataset.reviewDate = String(review.reviewDate || review.createdAt || '');
+            reviewDate.dateTime = String(review.reviewDate || '');
+            reviewDate.textContent = formatReviewDate(reviewDate.dataset.reviewDate);
             header.append(avatar, identity, stars);
-            card.append(header, comment);
+            card.append(header, comment, reviewDate);
             return card;
         }
+
+        function formatReviewDate(value) {
+            if (!value) return '';
+            const date = /^\d{4}-\d{2}-\d{2}$/.test(String(value))
+                ? new Date(`${value}T12:00:00`)
+                : /^\d+$/.test(String(value)) ? new Date(Number(value)) : new Date(value);
+            if (Number.isNaN(date.getTime())) return '';
+            const locale = document.documentElement.lang === 'en' ? 'en' : 'bn-BD';
+            const formattedDate = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(date);
+            return `${locale === 'en' ? 'Reviewed on' : 'রিভিউয়ের তারিখ'}: ${formattedDate}`;
+        }
+        window.formatReviewDate = formatReviewDate;
+
+        function updateReviewCardDates() {
+            document.querySelectorAll('.review-card-date[data-review-date]').forEach((dateElement) => {
+                dateElement.textContent = window.formatReviewDate(dateElement.dataset.reviewDate);
+            });
+        }
+        window.updateReviewCardDates = updateReviewCardDates;
 
         async function loadReviewStatistics() {
             const reviewCount = document.getElementById('reviewCount');
@@ -1999,6 +2031,14 @@
         const notificationBadge = document.getElementById("notificationBadge");
         const notificationDropdown = document.getElementById("notificationDropdown");
         const notificationList = document.getElementById("notificationList");
+        const stickyHeader = document.querySelector(".sticky-header");
+        const updateStickyHeaderMenuOffset = () => {
+            if (stickyHeader) {
+                document.documentElement.style.setProperty("--sticky-header-height", `${Math.ceil(stickyHeader.getBoundingClientRect().height)}px`);
+            }
+        };
+        updateStickyHeaderMenuOffset();
+        window.addEventListener("resize", updateStickyHeaderMenuOffset);
         const notificationItems = [];
         const unreadNotificationIds = new Set();
         let savedReadNotificationIds = [];
@@ -2047,7 +2087,7 @@
                         <div class="notification-item-content"><strong>${escapeNotificationText(item.title)}</strong>
                         <p>${escapeNotificationText(item.body || item.message)}</p>
                         <time>${item.createdAt || item.created_at ? new Date(item.createdAt || item.created_at).toLocaleString("bn-BD") : ""}</time></div>
-                        ${item.userSpecific ? "" : `<button type="button" class="notification-delete-btn" data-delete-notification-id="${escapeNotificationText(item.id)}" aria-label="নোটিফিকেশন মুছুন" title="নোটিফিকেশন মুছুন"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M10 11v6M14 11v6"></path><path d="M6 7l1 13h10l1-13"></path><path d="M9 7V4h6v3"></path></svg></button>`}
+                        <button type="button" class="notification-delete-btn" data-delete-notification-id="${escapeNotificationText(item.id)}" aria-label="নোটিফিকেশন মুছুন" title="নোটিফিকেশন মুছুন"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M10 11v6M14 11v6"></path><path d="M6 7l1 13h10l1-13"></path><path d="M9 7V4h6v3"></path></svg></button>
                     </div>
                 `).join("");
         }
@@ -2056,23 +2096,36 @@
             const user = auth.currentUser;
             if (!user) return;
 
-            deletedNotificationIds.add(notificationId);
+            const itemIndex = notificationItems.findIndex((notification) => notification.id === notificationId);
+            const item = itemIndex === -1 ? null : notificationItems[itemIndex];
+            const persistedIds = new Set([notificationId]);
+            if (item?.databaseId) persistedIds.add(item.databaseId);
+            const wasUnread = unreadNotificationIds.has(notificationId);
+            persistedIds.forEach((id) => deletedNotificationIds.add(id));
             unreadNotificationIds.delete(notificationId);
             localStorage.setItem("shebaNowDeletedNotifications", JSON.stringify([...deletedNotificationIds]));
-            const notificationIndex = notificationItems.findIndex((item) => item.id === notificationId);
-            if (notificationIndex !== -1) notificationItems.splice(notificationIndex, 1);
+            if (itemIndex !== -1) notificationItems.splice(itemIndex, 1);
             renderNotificationCenter();
 
             try {
-                // Store deletion per user so the same account stays synced across devices.
-                await update(ref(db, `users/${user.uid}/deletedNotifications`), {
-                    [notificationId]: { deletedAt: new Date().toISOString() }
-                });
+                const deletedAt = new Date().toISOString();
+                const updates = Object.fromEntries([...persistedIds].map((id) => [
+                    `users/${user.uid}/deletedNotifications/${id}`,
+                    { deletedAt }
+                ]));
+                if (item?.userSpecific && item.databaseId) {
+                    updates[`users/${user.uid}/notifications/${item.databaseId}/is_deleted`] = true;
+                    updates[`users/${user.uid}/notifications/${item.databaseId}/deleted_at`] = Date.now();
+                }
+                await update(ref(db), updates);
             } catch (error) {
                 console.error("Notification delete sync failed:", error);
-                deletedNotificationIds.delete(notificationId);
+                persistedIds.forEach((id) => deletedNotificationIds.delete(id));
                 localStorage.setItem("shebaNowDeletedNotifications", JSON.stringify([...deletedNotificationIds]));
+                if (item) notificationItems.splice(Math.min(itemIndex, notificationItems.length), 0, item);
+                if (wasUnread) unreadNotificationIds.add(notificationId);
                 renderNotificationCenter();
+                showNotification("নোটিফিকেশনটি মুছে রাখা যায়নি। আবার চেষ্টা করুন।");
             }
         }
 
@@ -2231,12 +2284,49 @@
             renderNotificationCenter();
         }
 
+        let notificationDropdownTimer;
+        let profileDropdownTimer;
+
+        function closeNotificationDropdown() {
+            window.clearTimeout(notificationDropdownTimer);
+            notificationDropdown.classList.remove("show");
+            notificationBell.setAttribute("aria-expanded", "false");
+        }
+
+        function closeProfileDropdown() {
+            window.clearTimeout(profileDropdownTimer);
+            profileDropdown?.classList.remove("show");
+            profileTrigger?.setAttribute("aria-expanded", "false");
+        }
+
+        function scheduleNotificationDropdownClose() {
+            window.clearTimeout(notificationDropdownTimer);
+            notificationDropdownTimer = window.setTimeout(closeNotificationDropdown, 3000);
+        }
+
+        function scheduleProfileDropdownClose() {
+            window.clearTimeout(profileDropdownTimer);
+            profileDropdownTimer = window.setTimeout(closeProfileDropdown, 3000);
+        }
+
+        notificationDropdown.addEventListener("pointerdown", scheduleNotificationDropdownClose);
+        notificationDropdown.addEventListener("keydown", scheduleNotificationDropdownClose);
+        notificationDropdown.addEventListener("click", () => {
+            if (notificationDropdown.classList.contains("show")) scheduleNotificationDropdownClose();
+        });
         notificationBell.addEventListener("click", (event) => {
             event.stopPropagation();
             const isOpen = notificationDropdown.classList.toggle("show");
             notificationBell.setAttribute("aria-expanded", String(isOpen));
+            if (isOpen) {
+                closeProfileDropdown();
+                scheduleNotificationDropdownClose();
+            } else {
+                window.clearTimeout(notificationDropdownTimer);
+            }
         });
         notificationList.addEventListener("click", (event) => {
+            if (notificationDropdown.classList.contains("show")) scheduleNotificationDropdownClose();
             const deleteButton = event.target.closest("[data-delete-notification-id]");
             if (deleteButton) {
                 event.preventDefault();
@@ -2251,8 +2341,7 @@
             const notification = notificationItems.find((item) => item.id === notificationId);
             markNotificationRead(notificationId).then(() => {
                 if (notification?.booking_id) {
-                    notificationDropdown.classList.remove("show");
-                    notificationBell.setAttribute("aria-expanded", "false");
+                    closeNotificationDropdown();
                     document.getElementById("myOrdersBtn")?.click();
                 }
             }).catch((error) => {
@@ -2262,8 +2351,7 @@
         });
         document.addEventListener("click", (event) => {
             if (!notificationMenu.contains(event.target)) {
-                notificationDropdown.classList.remove("show");
-                notificationBell.setAttribute("aria-expanded", "false");
+                closeNotificationDropdown();
             }
         });
         let notificationPermissionRequest;
@@ -3916,23 +4004,33 @@
         });
 
         if (profileTrigger && profileDropdown) {
-            profileTrigger.addEventListener("click", () => {
+            profileDropdown.addEventListener("pointerdown", scheduleProfileDropdownClose);
+            profileDropdown.addEventListener("keydown", scheduleProfileDropdownClose);
+            profileDropdown.addEventListener("click", () => {
+                if (profileDropdown.classList.contains("show")) scheduleProfileDropdownClose();
+            });
+            profileTrigger.addEventListener("click", (event) => {
+                event.stopPropagation();
                 const isOpen = profileDropdown.classList.contains("show");
                 profileDropdown.classList.toggle("show", !isOpen);
                 profileTrigger.setAttribute("aria-expanded", String(!isOpen));
+                if (!isOpen) {
+                    closeNotificationDropdown();
+                    scheduleProfileDropdownClose();
+                } else {
+                    window.clearTimeout(profileDropdownTimer);
+                }
             });
 
             document.addEventListener("click", (event) => {
                 if (!profileDropdown.contains(event.target) && !profileTrigger.contains(event.target)) {
-                    profileDropdown.classList.remove("show");
-                    profileTrigger.setAttribute("aria-expanded", "false");
+                    closeProfileDropdown();
                 }
             });
         }
 
         profileMyOrders?.addEventListener("click", () => {
-            profileDropdown?.classList.remove("show");
-            profileTrigger?.setAttribute("aria-expanded", "false");
+            closeProfileDropdown();
             document.getElementById("myOrdersBtn")?.click();
         });
 
@@ -4108,6 +4206,7 @@
                     if (value) value.textContent = `${percentage.toLocaleString(isEnglish ? 'en' : 'bn-BD')}%`;
                     if (track) track.setAttribute('aria-label', isEnglish ? `${rating}-star rating` : `${rating} তারকা রেটিং`);
                 });
+                window.updateReviewCardDates?.();
             }
 
             function translatePage() {

@@ -356,6 +356,7 @@
                     <option value="1">১ স্টার</option>
                 </select>
                 <input id="reviewLocationInput" type="text" maxlength="100" placeholder="লোকেশন (ঐচ্ছিক)">
+                <input id="reviewDateInput" type="date" aria-label="রিভিউয়ের তারিখ" required>
                 <textarea id="reviewCommentInput" maxlength="1000" placeholder="গ্রাহকের মন্তব্য" required></textarea>
                 <button id="saveReviewButton" type="submit">রিভিউ যোগ করুন</button>
                 <button id="cancelReviewEdit" type="button" hidden>সম্পাদনা বাতিল</button>
@@ -476,6 +477,7 @@
         const reviewNameInput = document.getElementById('reviewNameInput');
         const reviewRatingInput = document.getElementById('reviewRatingInput');
         const reviewLocationInput = document.getElementById('reviewLocationInput');
+        const reviewDateInput = document.getElementById('reviewDateInput');
         const reviewCommentInput = document.getElementById('reviewCommentInput');
         const saveReviewButton = document.getElementById('saveReviewButton');
         const cancelReviewEdit = document.getElementById('cancelReviewEdit');
@@ -490,6 +492,25 @@
                 reviews.push({ id: child.key, ...review, rating });
             });
             return reviews.sort((first, second) => Number(second.updatedAt || second.createdAt || 0) - Number(first.updatedAt || first.createdAt || 0));
+        }
+
+        function getLocalDateInputValue(value = new Date()) {
+            const date = value instanceof Date
+                ? value
+                : /^\d+$/.test(String(value)) ? new Date(Number(value)) : new Date(value);
+            if (Number.isNaN(date.getTime())) return '';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatAdminReviewDate(value) {
+            if (!value) return 'তারিখ নেই';
+            const date = /^\d{4}-\d{2}-\d{2}$/.test(String(value))
+                ? new Date(`${value}T12:00:00`)
+                : /^\d+$/.test(String(value)) ? new Date(Number(value)) : new Date(value);
+            return Number.isNaN(date.getTime()) ? 'তারিখ নেই' : date.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric' });
         }
 
         function renderAdminReviews() {
@@ -509,6 +530,8 @@
                 heading.textContent = `${review.name} · ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}`;
                 const location = document.createElement('small');
                 location.textContent = review.location || 'লোকেশন উল্লেখ নেই';
+                const date = document.createElement('small');
+                date.textContent = `রিভিউয়ের তারিখ: ${formatAdminReviewDate(review.reviewDate || review.createdAt)}`;
                 const comment = document.createElement('p');
                 comment.textContent = review.comment;
                 const actions = document.createElement('div');
@@ -521,6 +544,7 @@
                     reviewNameInput.value = review.name;
                     reviewRatingInput.value = String(review.rating);
                     reviewLocationInput.value = review.location || '';
+                    reviewDateInput.value = getLocalDateInputValue(review.reviewDate || review.createdAt);
                     reviewCommentInput.value = review.comment;
                     saveReviewButton.textContent = 'রিভিউ আপডেট করুন';
                     cancelReviewEdit.hidden = false;
@@ -548,7 +572,7 @@
                     }
                 });
                 actions.append(editButton, deleteButton);
-                card.append(heading, location, comment, actions);
+                card.append(heading, location, date, comment, actions);
                 reviewAdminList.append(card);
             });
         }
@@ -598,19 +622,22 @@
         function resetReviewForm() {
             reviewAdminForm.reset();
             reviewIdInput.value = '';
+            reviewDateInput.value = getLocalDateInputValue();
             saveReviewButton.textContent = 'রিভিউ যোগ করুন';
             cancelReviewEdit.hidden = true;
         }
 
+        resetReviewForm();
         cancelReviewEdit.addEventListener('click', resetReviewForm);
         reviewAdminForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const name = reviewNameInput.value.trim();
             const rating = Number(reviewRatingInput.value);
             const comment = reviewCommentInput.value.trim();
-            if (!name || !comment || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+            const reviewDate = reviewDateInput.value;
+            if (!name || !comment || !reviewDate || !Number.isInteger(rating) || rating < 1 || rating > 5) {
                 reviewAdminMessage.style.color = '#b42318';
-                reviewAdminMessage.textContent = 'নাম, ১–৫ স্টার রেটিং এবং মন্তব্য দিন।';
+                reviewAdminMessage.textContent = 'নাম, ১–৫ স্টার রেটিং, রিভিউয়ের তারিখ এবং মন্তব্য দিন।';
                 return;
             }
 
@@ -621,6 +648,7 @@
                 rating,
                 comment,
                 location: reviewLocationInput.value.trim(),
+                reviewDate,
                 createdAt: existingReview?.createdAt || Date.now(),
                 updatedAt: Date.now()
             };
